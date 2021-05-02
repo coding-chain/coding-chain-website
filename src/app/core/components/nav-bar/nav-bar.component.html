@@ -1,0 +1,32 @@
+<nav backgroundColor="primary" mat-tab-nav-bar>
+  <div class="w-75">
+
+    <ng-container *ngIf="user$ | async as user">
+      <!--TODO Admin routes-->
+    </ng-container>
+    <a *ngIf="!(user$ | async) as user" class="nav-link" data-toggle="tab" id="loginLink" mat-tab-link
+       [routerLink]="['/login']" routerLinkActive="active">Connexion</a>
+
+    <a class="nav-link" data-toggle="tab" id="homeLink" mat-tab-link [routerLink]="['/home']" routerLinkActive="active">Accueil</a>
+    <a class="nav-link" data-toggle="tab" id="contactLink" mat-tab-link [routerLink]="['/contact']"
+       routerLinkActive="active">Contact</a>
+  </div>
+  <div class="d-flex w-25 justify-content-end">
+    <ng-container *ngIf="user$ | async as user">
+      <button [matMenuTriggerFor]="userMenu" aria-label="Profile" mat-button>
+        {{user.username}}
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <mat-menu #userMenu="matMenu">
+        <button [routerLink]="['profiles',user.id]" mat-menu-item>
+          <mat-icon>portrait</mat-icon>
+          <span>Profile</span>
+        </button>
+        <button (click)="onLogout()" mat-menu-item>
+          <mat-icon>exit_to_app</mat-icon>
+          <span>Log out</span>
+        </button>
+      </mat-menu>
+    </ng-container>
+  </div>
+</nav>
