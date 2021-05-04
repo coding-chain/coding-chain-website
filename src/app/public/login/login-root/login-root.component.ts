@@ -18,25 +18,25 @@ export class LoginRootComponent implements OnInit {
 
     ngOnInit() {
         this.form = this.formBuilder.group({
-            username: [null, Validators.required],
-            password: [null, Validators.required]
+            username: ['', Validators.required],
+            password: ['', Validators.required]
         });
     }
 
     // convenience getter for easy access to form fields
-    get f() { return this.form.controls; }
+    get fields() { return this.form.controls; }
 
     onSubmit() {
-        alert("submit")
         this.submitted = true;
 
         // stop here if form is invalid
-        if (this.form.invalid) {
-            return;
+        if(this.form.valid){
+          this.loading = true;
+          // todo login happens
+          const user = this.form.value;
+          // this.Login(user);
         }
 
-        this.loading = true;
-        // todo login happens
     }
 
 }
