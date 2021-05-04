@@ -4,7 +4,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-login-root',
   templateUrl: './login-root.component.html',
-  styles: [
+  styleUrls: [
+    './login-root.component.css'
   ]
 })
 export class LoginRootComponent implements OnInit {
