@@ -9,6 +9,7 @@ import {map} from "rxjs/operators";
 import {IParticipationNavigation} from "../../../shared/models/participations/responses";
 import {PageCursor} from "../../../shared/models/pagination/page-cursor";
 import {GetParams} from "../../../shared/models/http/get.params";
+import {ICreateParticipationCommand} from "../../../shared/models/participations/commands";
 
 @Injectable({
   providedIn: 'root'
@@ -33,4 +34,12 @@ export class ParticipationService extends ApiHelperService {
       this, query
     )
   }
+
+  public createOne(body: ICreateParticipationCommand): Observable<IParticipationNavigation>{
+    return this.createAndGet<ICreateParticipationCommand, HateoasResponse<IParticipationNavigation>>(this.apiUrl, body)
+      .pipe(
+        map(res => res.result)
+      );
+  }
+
 }

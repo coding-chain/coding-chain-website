@@ -35,7 +35,10 @@ export class TeamService extends ApiHelperService {
   }
 
   public addMember(body: IAddMemberToTeamCommand): Observable<IMemberNavigation>{
-    return this.createAndGet(`${this.apiUrl}/members`,body);
+    return this.createAndGet< IAddMemberToTeamCommand, HateoasResponse<IMemberNavigation>>(`${this.apiUrl}/members`,body)
+      .pipe(
+        map(res => res.result)
+      );
   }
   public elevateTeamMemberRight(teamId: string, memberId: string): Observable<any>{
     return this.http.post(`${this.apiUrl}/${teamId}/members/${memberId}/elevation`,  {});
