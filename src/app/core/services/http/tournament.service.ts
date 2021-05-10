@@ -68,4 +68,8 @@ export class TournamentService extends ApiHelperService{
         map(res => res.result)
       );
   }
+
+  public getStepsCursor(tournamentId: string, query: GetParams<ITournamentStepNavigation>): PageCursor<ITournamentStepNavigation, ITournamentStepNavigation>{
+    return new PageCursor<ITournamentStepNavigation, ITournamentStepNavigation>(this, {url: `${this.apiUrl}/${tournamentId}`, ...query});
+  }
 }
