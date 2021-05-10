@@ -29,7 +29,7 @@ export class LanguageService extends ApiHelperService{
 
   public getCursor(query: GetParams<IProgrammingLanguageNavigation>): PageCursor<IProgrammingLanguageNavigation,IProgrammingLanguageNavigation> {
     return new PageCursor<IProgrammingLanguageNavigation, IProgrammingLanguageNavigation>(
-      this, query
+      this, {url: this.apiUrl, ...query}
     )
   }
 }

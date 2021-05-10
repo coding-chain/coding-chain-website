@@ -26,7 +26,7 @@ export class TeamService extends ApiHelperService {
 
   public getCursor(query: GetParams<ITeamNavigation>): PageCursor<ITeamNavigation,ITeamNavigation> {
     return new PageCursor<ITeamNavigation, ITeamNavigation>(
-      this, query
+      this, {url: this.apiUrl, ...query}
     )
   }
 

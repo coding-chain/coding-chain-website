@@ -31,7 +31,7 @@ export class ParticipationService extends ApiHelperService {
 
   public getCursor(query: GetParams<IParticipationNavigation>): PageCursor<IParticipationNavigation,IParticipationNavigation> {
     return new PageCursor<IParticipationNavigation, IParticipationNavigation>(
-      this, query
+      this, {url: this.apiUrl, ...query}
     )
   }
 

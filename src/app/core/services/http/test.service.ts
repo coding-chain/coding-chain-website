@@ -28,7 +28,7 @@ export class TestService extends ApiHelperService{
 
   public getCursor(query: GetParams<ITestNavigation>): PageCursor<ITestNavigation,ITestNavigation> {
     return new PageCursor<ITestNavigation, ITestNavigation>(
-      this, query
+      this, {url: this.apiUrl, ...query}
     )
   }
 }

@@ -6,8 +6,14 @@ import {Observable} from "rxjs";
 import {HateoasResponse} from "../../../shared/models/pagination/hateoas-response";
 import {map} from "rxjs/operators";
 import {PageCursor} from "../../../shared/models/pagination/page-cursor";
-import {ITournamentNavigation} from "../../../shared/models/tournaments/responses";
+import {ITournamentNavigation, ITournamentStepNavigation} from "../../../shared/models/tournaments/responses";
 import {GetParams} from "../../../shared/models/http/get.params";
+import {
+  ICreateTournamentCommand,
+  ISetTournamentStepsCommand,
+  IUpdateTournamentCommand
+} from "../../../shared/models/tournaments/commands";
+import {IUpdateStepCommand} from "../../../shared/models/steps/commands";
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +35,37 @@ export class TournamentService extends ApiHelperService{
 
   public getCursor(query: GetParams<ITournamentNavigation>): PageCursor<ITournamentNavigation,ITournamentNavigation> {
     return new PageCursor<ITournamentNavigation, ITournamentNavigation>(
-      this, query
+      this, {url: this.apiUrl, ...query}
     )
+  }
+
+  public createOne(body: ICreateTournamentCommand): Observable<ITournamentNavigation>{
+    return this.createAndGet<ICreateTournamentCommand, HateoasResponse<ITournamentNavigation>>(`${this.apiUrl}`, body)
+      .pipe(
+        map(res => res.result)
+      );
+  }
+
+  public deleteOne(tournamentId: string): Observable<any>{
+    return this.http.delete(`${this.apiUrl}/${tournamentId}`);
+  }
+
+  public updateOne(tournamentId: string, body: IUpdateTournamentCommand): Observable<any>{
+    return this.http.put(`${this.apiUrl}/${tournamentId}`, body);
+  }
+
+  public updateSteps(tournamentId: string, body: ISetTournamentStepsCommand): Observable<any>{
+    return this.http.put(`${this.apiUrl}/${tournamentId}`, body);
+  }
+
+  public deleteStep(tournamentId: string, stepId: string): Observable<any>{
+    return this.http.delete(`${this.apiUrl}/${tournamentId}/steps/${stepId}`);
+  }
+
+  public getStep(tournamentId: string, stepId: string): Observable<ITournamentStepNavigation>{
+    return this.http.get<HateoasResponse<ITournamentStepNavigation>>(`${this.apiUrl}/${tournamentId}/steps/${stepId}`)
+      .pipe(
+        map(res => res.result)
+      );
   }
 }
