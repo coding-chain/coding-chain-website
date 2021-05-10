@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {map} from 'rxjs/operators';
+import {map, switchMap} from 'rxjs/operators';
 import {UrlUtils} from '../../../shared/utils/url.utils';
 import {HateoasResponse} from '../../../shared/models/pagination/hateoas-response';
 import {environment} from '../../../../environments/environment';
@@ -35,7 +35,7 @@ export abstract class ApiHelperService {
       const nextLink = value.links.find(l => l.rel === 'next');
       acc.push(...value.result.map(res => res.result));
       if (nextLink) {
-        this.fetchAll({url: nextLink.href}, acc).subscribe(next => subscriber.next(acc));
+        this.fetchAll({url: nextLink.href}, acc).subscribe(() => subscriber.next(acc));
       } else {
         subscriber.next(acc);
       }
@@ -46,6 +46,12 @@ export abstract class ApiHelperService {
     return this.http.post(url, body, {observe: 'response'}).pipe(
       map(value => value.headers.get('location'))
     );
+  }
+
+  public createAndGet<TBody, TResult>(url: string, body: TBody): Observable<TResult> {
+    return this.createAndLocate(url, body).pipe(
+      switchMap(location =>  this.http.get<TResult>(location) )
+    )
   }
 
   public createAndGetIds<TBody>(url: string, body: TBody): Observable<number[]> {
