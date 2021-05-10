@@ -5,10 +5,9 @@ import {environment} from "../../../../environments/environment";
 import {Observable} from "rxjs";
 import {HateoasResponse} from "../../../shared/models/pagination/hateoas-response";
 import {map} from "rxjs/operators";
-import {GetParticipationNavigationsPaginated} from "../../../shared/models/participations/queries";
 import {PageCursor} from "../../../shared/models/pagination/page-cursor";
 import {IStepNavigation} from "../../../shared/models/steps/responses";
-import {GetStepsNavigationsPaginated} from "../../../shared/models/steps/queries";
+import {GetParams} from "../../../shared/models/http/get.params";
 
 @Injectable({
   providedIn: 'root'
@@ -27,9 +26,9 @@ export class StepService extends ApiHelperService{
       )
   }
 
-  public getCursor(query: GetStepsNavigationsPaginated): PageCursor<IStepNavigation, GetStepsNavigationsPaginated> {
-    return new PageCursor<IStepNavigation, GetStepsNavigationsPaginated>(
-      this, {url: this.apiUrl, ...query}
+  public getCursor(query: GetParams<IStepNavigation>): PageCursor<IStepNavigation,IStepNavigation> {
+    return new PageCursor<IStepNavigation, IStepNavigation>(
+      this, query
     )
   }
 }

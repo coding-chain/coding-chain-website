@@ -7,7 +7,7 @@ import {ITeamNavigation} from "../../../shared/models/teams/responses";
 import {HateoasResponse} from "../../../shared/models/pagination/hateoas-response";
 import {map} from "rxjs/operators";
 import {PageCursor} from "../../../shared/models/pagination/page-cursor";
-import {GetTeamsNavigationsPaginated} from "../../../shared/models/teams/queries";
+import {GetParams} from "../../../shared/models/http/get.params";
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,9 @@ export class TeamService extends ApiHelperService {
     return this.http.get<HateoasResponse<ITeamNavigation>>(`${this.apiUrl}/${id}`).pipe(map(res => res.result));
   }
 
-  public getCursor(query: GetTeamsNavigationsPaginated): PageCursor<ITeamNavigation, GetTeamsNavigationsPaginated> {
-    return new PageCursor<ITeamNavigation, GetTeamsNavigationsPaginated>(this, {url: this.apiUrl, ...query});
+  public getCursor(query: GetParams<ITeamNavigation>): PageCursor<ITeamNavigation,ITeamNavigation> {
+    return new PageCursor<ITeamNavigation, ITeamNavigation>(
+      this, query
+    )
   }
 }

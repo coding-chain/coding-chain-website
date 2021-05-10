@@ -1,15 +1,13 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ApiHelperService} from "./api-helper.service";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../../environments/environment";
 import {Observable} from "rxjs";
-import {ITestNavigation} from "../../../shared/models/tests/responses";
 import {HateoasResponse} from "../../../shared/models/pagination/hateoas-response";
 import {map} from "rxjs/operators";
-import {GetTestNavigationsPaginated} from "../../../shared/models/tests/queries";
 import {PageCursor} from "../../../shared/models/pagination/page-cursor";
 import {ITournamentNavigation} from "../../../shared/models/tournaments/responses";
-import {GetTournamentNavigationsPaginated} from "../../../shared/models/tournaments/queries";
+import {GetParams} from "../../../shared/models/http/get.params";
 
 @Injectable({
   providedIn: 'root'
@@ -29,9 +27,9 @@ export class TournamentService extends ApiHelperService{
       )
   }
 
-  public getCursor(query: GetTournamentNavigationsPaginated): PageCursor<ITournamentNavigation, GetTournamentNavigationsPaginated> {
-    return new PageCursor<ITournamentNavigation, GetTournamentNavigationsPaginated>(
-      this, {url: this.apiUrl, ...query}
+  public getCursor(query: GetParams<ITournamentNavigation>): PageCursor<ITournamentNavigation,ITournamentNavigation> {
+    return new PageCursor<ITournamentNavigation, ITournamentNavigation>(
+      this, query
     )
   }
 }

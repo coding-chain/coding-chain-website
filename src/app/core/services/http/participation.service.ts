@@ -7,9 +7,8 @@ import {IProgrammingLanguageNavigation} from "../../../shared/models/programming
 import {HateoasResponse} from "../../../shared/models/pagination/hateoas-response";
 import {map} from "rxjs/operators";
 import {IParticipationNavigation} from "../../../shared/models/participations/responses";
-import {GetProgrammingLanguagesNavigationsPaginated} from "../../../shared/models/programming-languages/queries";
 import {PageCursor} from "../../../shared/models/pagination/page-cursor";
-import {GetParticipationNavigationsPaginated} from "../../../shared/models/participations/queries";
+import {GetParams} from "../../../shared/models/http/get.params";
 
 @Injectable({
   providedIn: 'root'
@@ -29,9 +28,9 @@ export class ParticipationService extends ApiHelperService {
       )
   }
 
-  public getCursor(query: GetParticipationNavigationsPaginated): PageCursor<IParticipationNavigation, GetParticipationNavigationsPaginated> {
-    return new PageCursor<IParticipationNavigation, GetParticipationNavigationsPaginated>(
-      this, {url: this.apiUrl, ...query}
+  public getCursor(query: GetParams<IParticipationNavigation>): PageCursor<IParticipationNavigation,IParticipationNavigation> {
+    return new PageCursor<IParticipationNavigation, IParticipationNavigation>(
+      this, query
     )
   }
 }
