@@ -1,4 +1,4 @@
-export interface ConnectedUserResponse {
+export interface PublicUser {
   id: string;
   username: string;
   email: string;

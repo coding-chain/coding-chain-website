@@ -1,10 +1,10 @@
 import {KeyValue} from '@angular/common';
 import {JsonUtils} from './json.utils';
-import {GetParams} from '../../core/services/http/api-common.service';
 import {QueryEnum} from '../enums/query.enum';
 import {ObjectUtils} from './object.utils';
 import {GramOrderEnum} from '../enums/gram-order.enum';
 import * as Case from 'case';
+import {GetParams} from "../models/http/get.params";
 
 export class UrlUtils{
 

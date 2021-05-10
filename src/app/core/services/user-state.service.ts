@@ -4,8 +4,10 @@ import * as _ from 'lodash';
 import {AuthenticationService} from './http/authentication.service';
 import {ConnectedUser} from '../../shared/models/users/connected-user';
 
-@Injectable()
-export class UserStateService{
+@Injectable({
+  providedIn: 'root'
+})
+export class UserStateService {
 
   user: ConnectedUser;
   userSubject$ = new BehaviorSubject<ConnectedUser>(null);
@@ -13,8 +15,8 @@ export class UserStateService{
   constructor(private authService: AuthenticationService) {
   }
 
-  loadUser(): void{
-    if (!this.user && this.authService.getRememberMe()){
+  loadUser(): void {
+    if (!this.user && this.authService.getRememberMe()) {
       this.authService.getMe().subscribe(user => {
         this.user = new ConnectedUser(user);
         this.userSubject$.next(_.clone(user));
@@ -23,7 +25,7 @@ export class UserStateService{
     this.userSubject$.next(_.clone(this.user));
   }
 
-  updateUser(user: ConnectedUser): void{
+  updateUser(user: ConnectedUser): void {
     this.user = user;
     this.userSubject$.next(_.clone(user));
   }

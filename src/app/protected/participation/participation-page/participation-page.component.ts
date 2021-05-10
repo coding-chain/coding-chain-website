@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {LanguageService} from "../../../core/services/http/language.service";
 
 @Component({
   selector: 'app-participation-page',
@@ -8,9 +9,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ParticipationPageComponent implements OnInit {
 
-  constructor() { }
+  constructor(private readonly languageService: LanguageService) { }
 
   ngOnInit(): void {
+    var cursor = this.languageService.getCursor({page: 0, size:10})
+    cursor.resultsSubject.subscribe(res => console.log(res));
+    cursor.current();
   }
-
 }

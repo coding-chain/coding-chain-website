@@ -2,16 +2,16 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
 import {EMPTY, Observable, of} from 'rxjs';
-import {ApiCommonService} from './api-common.service';
+import {ApiHelperService} from './api-helper.service';
 import {catchError, map, switchMap} from 'rxjs/operators';
-import {ConnectedUserResponse, UserToken} from '../../../shared/models/users/responses';
+import {PublicUser, UserToken} from '../../../shared/models/users/responses';
 import {LoginUserQuery, RegisterUserCommand} from '../../../shared/models/users/requests';
 import {LoginUser} from '../../../shared/models/users/login-user';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthenticationService extends ApiCommonService {
+export class AuthenticationService extends ApiHelperService {
 
   constructor(http: HttpClient) {
     super(http);
@@ -43,15 +43,15 @@ export class AuthenticationService extends ApiCommonService {
   }
 
   isAuthenticated(): Observable<boolean> {
-    return this.http.get<ConnectedUserResponse>(`${this.apiUrl}/me`, {observe: 'response'})
+    return this.http.get<PublicUser>(`${this.apiUrl}/me`, {observe: 'response'})
       .pipe(
         map(res => res.ok),
         catchError(err => of(false))
       );
   }
 
-  getMe(): Observable<ConnectedUserResponse> {
-    return this.http.get<ConnectedUserResponse>(`${this.apiUrl}/me`).pipe(
+  getMe(): Observable<PublicUser> {
+    return this.http.get<PublicUser>(`${this.apiUrl}/me`).pipe(
       catchError(err => EMPTY)
     );
   }
@@ -60,7 +60,7 @@ export class AuthenticationService extends ApiCommonService {
     return this.http.post(`${this.apiUrl}/registration`, user);
   }
 
-  login(user: LoginUser): Observable<ConnectedUserResponse> {
+  login(user: LoginUser): Observable<PublicUser> {
     return this.http.post<UserToken>(`${this.apiUrl}/authentication`, user).pipe(
       switchMap(token => {
         this.setToken(token.token);
