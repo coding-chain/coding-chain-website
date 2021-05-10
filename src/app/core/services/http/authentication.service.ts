@@ -4,9 +4,9 @@ import {environment} from '../../../../environments/environment';
 import {EMPTY, Observable, of} from 'rxjs';
 import {ApiHelperService} from './api-helper.service';
 import {catchError, map, switchMap} from 'rxjs/operators';
-import {PublicUser, UserToken} from '../../../shared/models/users/responses';
-import {LoginUserQuery, RegisterUserCommand} from '../../../shared/models/users/requests';
 import {LoginUser} from '../../../shared/models/users/login-user';
+import {PublicUser, UserToken} from "../../../shared/models/users/responses";
+import {RegisterUserCommand} from "../../../shared/models/users/requests";
 
 @Injectable({
   providedIn: 'root'

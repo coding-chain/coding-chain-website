@@ -4,7 +4,7 @@ import {ApiHelperService} from "../../../core/services/http/api-helper.service";
 import {GetParams} from "../http/get.params";
 import {HateoasResponse} from "./hateoas-response";
 
-export class PageCursor<TResult, TFilter extends PaginationQuery> {
+export class PageCursor<TResult, TFilter> {
     results: TResult[];
     hasNext: boolean;
     hasPrevious: boolean;
@@ -25,25 +25,23 @@ export class PageCursor<TResult, TFilter extends PaginationQuery> {
 
     next(): number {
         if (this.hasNext) {
-            this.filter.filterObj.page++;
+            this.filter.page++;
             this.sendRequest();
         }
-        return this.filter.filterObj.page;
+        return this.filter.page;
     }
 
     previous(): number {
         if (this.hasPrevious) {
-            this.filter.filterObj.page--;
+            this.filter.page--;
             this.sendRequest();
         }
-        return this.filter.filterObj.page;
+        return this.filter.page;
     }
 
     current(): number {
-        if (this.hasNext) {
-            this.sendRequest();
-        }
-        return this.filter.filterObj.page;
+        this.sendRequest();
+        return this.filter.page;
     }
 
     private sendRequest() {
@@ -58,7 +56,7 @@ export class PageCursor<TResult, TFilter extends PaginationQuery> {
     }
 
     private setTotalPagesFromTotalValuesCount(total: number) {
-        this._totalPages = Math.floor(total / this.filter.filterObj.size);
+        this._totalPages = Math.floor(total / this.filter.size);
     }
 
 

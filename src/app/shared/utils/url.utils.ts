@@ -14,10 +14,20 @@ export class UrlUtils{
     return UrlUtils.transformObjToParams(filterObj);
   }
 
+  static getFilterQueryGetParams(obj: GetParams<any>): KeyValue<string, any>[]{
+    return [
+      {key: 'page', value: obj.page },
+      {key: 'size', value: obj.size }
+    ]
+  }
+
+
   static getQueryArrayFromConstructor(ctr: any, queryType: QueryEnum = QueryEnum.FIELDS): KeyValue<string, any>[]{
     const fields = ObjectUtils.getPropertiesByType(ctr);
     return fields.map(f => ({key: `${queryType.toLowerCase()}[]`, value: f}));
   }
+
+
 
   static getQueryArrayFromPropertiesArray<P>(properties: (keyof P)[], queryType: QueryEnum = QueryEnum.FIELDS): KeyValue<string, any>[]{
     if (!properties) { return []; }
@@ -31,7 +41,7 @@ export class UrlUtils{
       if (param.key.endsWith('[]')){
         url.searchParams.append(param.key,  JsonUtils.stringifyNonString(param.value));
       } else {
-        if (!param.value){
+        if (param.value === null || param.value === undefined){
           url.searchParams.delete(param.key);
         } else {
           url.searchParams.set(param.key, JsonUtils.stringifyNonString(param.value));
@@ -85,6 +95,7 @@ export class UrlUtils{
   }
   static convertGetParamsToUrl<P, F = P>(params: GetParams<P, F>): string{
     return UrlUtils.getUrlWithQueries(params.url,
+      ...UrlUtils.getFilterQueryGetParams(params),
       ...UrlUtils.getFilterQueryFromObj(params.filterObj),
       ...(params.filters ?? []),
       ...UrlUtils.getQueryArrayFromConstructor(params.fieldCtr, QueryEnum.FIELDS),

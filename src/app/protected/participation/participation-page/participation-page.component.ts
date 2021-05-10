@@ -12,7 +12,7 @@ export class ParticipationPageComponent implements OnInit {
   constructor(private readonly languageService: LanguageService) { }
 
   ngOnInit(): void {
-    var cursor = this.languageService.getCursor({page: 0, size:10})
+    var cursor = this.languageService.getCursor({page: 1, size:10})
     cursor.resultsSubject.subscribe(res => console.log(res));
     cursor.current();
   }

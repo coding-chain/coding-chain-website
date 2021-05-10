@@ -10,6 +10,8 @@ import {SharedModule} from '../shared/shared.module';
 import {AuthenticationService} from './services/http/authentication.service';
 import {UserStateService} from './services/user-state.service';
 import {MatButtonModule} from '@angular/material/button';
+import {HateoasResponse} from "../shared/models/pagination/hateoas-response";
+import {HateoasInterceptor} from "./commons/interceptors/hateoas.interceptor";
 
 
 @NgModule({
@@ -32,6 +34,11 @@ import {MatButtonModule} from '@angular/material/button';
     }, {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HateoasInterceptor,
       multi: true
     },
     {

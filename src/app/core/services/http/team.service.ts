@@ -24,6 +24,6 @@ export class TeamService extends ApiHelperService {
   }
 
   public getCursor(query: GetTeamsNavigationsPaginated): PageCursor<ITeamNavigation, GetTeamsNavigationsPaginated> {
-    return new PageCursor<ITeamNavigation, GetTeamsNavigationsPaginated>(this, {url: this.apiUrl, filterObj: query});
+    return new PageCursor<ITeamNavigation, GetTeamsNavigationsPaginated>(this, {url: this.apiUrl, ...query});
   }
 }

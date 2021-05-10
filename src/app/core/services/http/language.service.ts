@@ -1,14 +1,13 @@
-import { Injectable } from '@angular/core';
-import {ApiHelperService} from "./api-helper.service";
-import {HttpClient} from "@angular/common/http";
-import {environment} from "../../../../environments/environment";
-import {Observable, of} from "rxjs";
+import {Injectable} from "@angular/core";
 import {IProgrammingLanguageNavigation} from "../../../shared/models/programming-languages/responses";
+import {GetProgrammingLanguagesNavigationsPaginated} from "../../../shared/models/programming-languages/queries";
+import {ApiHelperService} from "./api-helper.service";
 import {HateoasResponse} from "../../../shared/models/pagination/hateoas-response";
 import {map} from "rxjs/operators";
-import {MapOperator} from "rxjs/src/internal/operators/map";
-import {GetProgrammingLanguagesNavigationsPaginated} from "../../../shared/models/programming-languages/queries";
+import {Observable} from "rxjs";
 import {PageCursor} from "../../../shared/models/pagination/page-cursor";
+import {environment} from "../../../../environments/environment";
+import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +30,7 @@ export class LanguageService extends ApiHelperService{
   public getCursor(query: GetProgrammingLanguagesNavigationsPaginated): PageCursor<IProgrammingLanguageNavigation, GetProgrammingLanguagesNavigationsPaginated>{
 
     return new PageCursor<IProgrammingLanguageNavigation, GetProgrammingLanguagesNavigationsPaginated>(
-      this, {filterObj: query, url: this.apiUrl}
+      this, { url: this.apiUrl, ...query}
     )
   }
 }
