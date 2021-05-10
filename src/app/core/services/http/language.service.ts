@@ -28,7 +28,6 @@ export class LanguageService extends ApiHelperService{
   }
 
   public getCursor(query: GetProgrammingLanguagesNavigationsPaginated): PageCursor<IProgrammingLanguageNavigation, GetProgrammingLanguagesNavigationsPaginated>{
-
     return new PageCursor<IProgrammingLanguageNavigation, GetProgrammingLanguagesNavigationsPaginated>(
       this, { url: this.apiUrl, ...query}
     )

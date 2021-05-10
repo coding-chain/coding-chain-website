@@ -1,4 +1,4 @@
-export interface IStepNavigationNavigation {
+export interface IStepNavigation {
   id: string;
   languageId: string;
   name: string;
