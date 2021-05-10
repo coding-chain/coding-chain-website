@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {NavigationEnd, NavigationStart, Router} from '@angular/router';
+import {UserStateService} from './core/services/user-state.service';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +9,8 @@ import {NavigationEnd, NavigationStart, Router} from '@angular/router';
 })
 export class AppComponent {
   loading: boolean;
-  constructor(router: Router) {
+  constructor(private readonly router: Router, private readonly userStateService: UserStateService) {
+    this.userStateService.loadUser();
     this.loading = false;
     router.events.subscribe(
       (event: any): void => {

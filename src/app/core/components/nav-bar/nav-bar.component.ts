@@ -3,6 +3,7 @@ import {UserStateService} from '../../services/user-state.service';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {ConnectedUserResponse} from '../../../shared/models/users/responses';
 import {ConnectedUser} from '../../../shared/models/users/connected-user';
+import {AuthenticationService} from '../../services/http/authentication.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -12,7 +13,7 @@ import {ConnectedUser} from '../../../shared/models/users/connected-user';
 export class NavBarComponent implements OnInit {
   user$: BehaviorSubject<ConnectedUser>;
 
-  constructor(private userStateService: UserStateService) {
+  constructor(private userStateService: UserStateService, private authService: AuthenticationService) {
     this.user$ = userStateService.userSubject$;
   }
 
@@ -21,5 +22,6 @@ export class NavBarComponent implements OnInit {
 
   onLogout(): void {
     this.userStateService.updateUser(null);
+    this.authService.clearLocalUserData();
   }
 }

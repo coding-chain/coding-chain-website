@@ -9,6 +9,7 @@ const routes: Routes = [
   {
     path: '', component: ProtectedRootComponent, canActivate: [AuthGuardService], children: [
       {path: 'profile', loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule)},
+      {path: 'participation', loadChildren: () => import('./participation/participation.module').then(m => m.ParticipationModule)},
     ]
   }
 ];

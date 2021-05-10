@@ -38,7 +38,7 @@ export class AuthenticationService extends ApiCommonService {
     localStorage.setItem(this.rememberMeKey, String(rememberMe));
   }
 
-  private getRememberMe(rememberMe: boolean): boolean {
+  public getRememberMe(): boolean {
     return localStorage.getItem(this.rememberMeKey) === 'true';
   }
 

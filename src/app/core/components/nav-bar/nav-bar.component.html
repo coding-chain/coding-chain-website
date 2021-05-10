@@ -2,7 +2,8 @@
   <div class="w-75">
 
     <ng-container *ngIf="user$ | async as user">
-      <!--TODO Admin routes-->
+      <a class="nav-link" data-toggle="tab" id="participationLink" mat-tab-link [routerLink]="['/participation']"
+         routerLinkActive="active">Temporary participation access</a>
     </ng-container>
     <a *ngIf="!(user$ | async) as user" class="nav-link" data-toggle="tab" id="loginLink" mat-tab-link
        [routerLink]="['/login']" routerLinkActive="active">Connexion</a>

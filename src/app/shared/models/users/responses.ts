@@ -5,5 +5,5 @@ export interface ConnectedUserResponse {
 }
 
 export interface UserToken {
-  token: string
+  token: string;
 }

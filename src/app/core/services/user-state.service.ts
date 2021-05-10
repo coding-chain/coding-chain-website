@@ -14,7 +14,7 @@ export class UserStateService{
   }
 
   loadUser(): void{
-    if (!this.user){
+    if (!this.user && this.authService.getRememberMe()){
       this.authService.getMe().subscribe(user => {
         this.user = new ConnectedUser(user);
         this.userSubject$.next(_.clone(user));
