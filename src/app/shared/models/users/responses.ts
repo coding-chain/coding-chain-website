@@ -3,7 +3,7 @@ export interface PublicUser {
   username: string;
   email: string;
   rightIds: string[];
-  teamIds: string[]
+  teamIds: string[];
 }
 
 export interface UserToken {

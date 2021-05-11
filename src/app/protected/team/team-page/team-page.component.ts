@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
+import {PublicUser} from '../../../shared/models/users/responses';
 
 @Component({
   selector: 'app-team-page',
@@ -7,12 +8,26 @@ import {Router} from '@angular/router';
   styles: []
 })
 export class TeamPageComponent implements OnInit {
-  teamName = '';
+  isSearching = true; // todo set default to false after tests
+  searchedTeammates: PublicUser[] = [{username: 'fghjk', email: 'fghjknb', id: 'hj', teamIds: [], rightIds: []}]; // todo remove after tests
+  yourTeammates: PublicUser[] = [{username: 'fghjk', email: 'fghjknb', id: 'hj', teamIds: [], rightIds: []}]; // todo remove after tests
 
-  constructor( private router: Router) {
-    // todo call service
+  constructor(private router: Router) {
   }
 
   ngOnInit(): void {
+    this.fetchYourTeammates();
+  }
+
+  fetchYourTeammates(): void {
+    // todo  fetch  users in this team and put it in yourTeammates
+  }
+
+  addTeammate(id: string): void {
+    // todo
+  }
+
+  removeTeammate(id: string): void {
+    // todo
   }
 }
