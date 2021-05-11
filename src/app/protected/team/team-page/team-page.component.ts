@@ -7,9 +7,10 @@ import {Router} from '@angular/router';
   styles: []
 })
 export class TeamPageComponent implements OnInit {
-
+  teamName = '';
 
   constructor( private router: Router) {
+    // todo call service
   }
 
   ngOnInit(): void {
