@@ -40,6 +40,7 @@ export class TournamentService extends ApiHelperService{
     )
   }
 
+
   public createOne(body: ICreateTournamentCommand): Observable<ITournamentNavigation>{
     return this.createAndGet<ICreateTournamentCommand, HateoasResponse<ITournamentNavigation>>(`${this.apiUrl}`, body)
       .pipe(
@@ -73,4 +74,8 @@ export class TournamentService extends ApiHelperService{
   public getStepsCursor(tournamentId: string, query: GetParams<ITournamentStepNavigation>): PageCursor<ITournamentStepNavigation, ITournamentStepNavigation>{
     return new PageCursor<ITournamentStepNavigation, ITournamentStepNavigation>(this, {url: `${this.apiUrl}/${tournamentId}`, ...query});
   }
+
+
+
+
 }

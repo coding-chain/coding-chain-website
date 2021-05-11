@@ -7,6 +7,7 @@ import {IProgrammingLanguageNavigation} from "../../../shared/models/programming
 import {LanguageService} from "../../../core/services/http/language.service";
 import {tap} from "rxjs/operators";
 import {ITournamentsFilter} from "../../../shared/models/tournaments/filters";
+import {GetParams} from "../../../shared/models/http/get.params";
 
 @Component({
   selector: 'app-tournaments-list',
@@ -32,8 +33,8 @@ export class TournamentsListComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  searchTournaments($filter: ITournamentsFilter) {
-    this.tournamentCursor.update($filter)
+  searchTournaments($filter: GetParams<ITournamentNavigation, ITournamentsFilter>) {
+    this.tournamentCursor.updateFilter($filter)
     this.tournamentCursor.current();
   }
 }

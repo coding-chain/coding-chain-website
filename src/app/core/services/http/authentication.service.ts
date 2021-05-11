@@ -9,20 +9,20 @@ import {PublicUser, UserToken} from "../../../shared/models/users/responses";
 import {RegisterUserCommand} from "../../../shared/models/users/requests";
 import {ConnectedUser} from "../../../shared/models/users/connected-user";
 import {RightService} from "./right.service";
+import {TeamService} from "./team.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService extends ApiHelperService {
 
-  constructor(http: HttpClient, private rightService: RightService) {
-    super(http);
-  }
-
+  protected apiUrl = `${environment.apiUrl}/users`;
   private tokenKey = environment.webStorageTokenKey;
   private rememberMeKey = environment.rememberMeKey;
 
-  protected apiUrl = `${environment.apiUrl}/users`;
+  constructor(http: HttpClient, private readonly _rightService: RightService, private readonly _teamService: TeamService) {
+    super(http);
+  }
 
   public clearLocalUserData(): void {
     localStorage.removeItem(this.tokenKey);
@@ -30,14 +30,6 @@ export class AuthenticationService extends ApiHelperService {
 
   public getToken(): string {
     return localStorage.getItem(this.tokenKey);
-  }
-
-  private setToken(token: string): void {
-    localStorage.setItem(this.tokenKey, token);
-  }
-
-  private setRememberMe(rememberMe: boolean): void {
-    localStorage.setItem(this.rememberMeKey, String(rememberMe));
   }
 
   public getRememberMe(): boolean {
@@ -56,12 +48,19 @@ export class AuthenticationService extends ApiHelperService {
     return this.http.get<PublicUser>(`${this.apiUrl}/me`).pipe(
       switchMap(user => {
         const connectedUser = new ConnectedUser(user);
-        return forkJoin([of(connectedUser), ...user.rightIds.map(id => this.rightService
-          .getById(id)
-          .pipe(
-            tap(r => connectedUser.rights.push(r))
-          ))]);
-      } ),
+        return forkJoin([of(connectedUser),
+          ...user.rightIds.map(id => this._rightService
+            .getById(id)
+            .pipe(
+              tap(r => connectedUser.rights.push(r))
+            )),
+          ...user.teamIds.map(id => this._teamService
+            .getMemberById(id, user.id)
+            .pipe(
+              tap(m => connectedUser.teams.push(m))
+            ))
+        ]);
+      }),
       map((res: [ConnectedUser]) => res[0]),
       catchError(err => EMPTY)
     );
@@ -79,6 +78,14 @@ export class AuthenticationService extends ApiHelperService {
         return this.getMe();
       })
     );
+  }
+
+  private setToken(token: string): void {
+    localStorage.setItem(this.tokenKey, token);
+  }
+
+  private setRememberMe(rememberMe: boolean): void {
+    localStorage.setItem(this.rememberMeKey, String(rememberMe));
   }
 
 

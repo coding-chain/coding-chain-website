@@ -1,21 +1,24 @@
-import * as _ from 'lodash';
-import {RightNavigation} from "../rights/responses";
+import {IRightNavigation} from "../rights/responses";
+import {IMemberNavigation} from "../teams/responses";
 
 export class ConnectedUser {
   id: string;
   username: string;
   email: string;
-  rights: RightNavigation[];
-  teamIds: string[];
+  rights: IRightNavigation[];
+  teams: IMemberNavigation[];
 
   constructor(obj: Partial<ConnectedUser>) {
     this.id = obj.id
     this.username = obj.username
     this.email = obj.email
     this.rights = obj.rights ?? []
-    this.teamIds = obj.teamIds ?? []
+    this.teams = obj.teams ?? []
   }
 
+  isTeamAdmin(teamId: string){
+    return this.teams.some(t => t.teamId === teamId && t.isAdmin);
+  }
   isAdmin(): boolean {
     return this.rights.some(r => r.name.toLowerCase() === 'admin');
   }

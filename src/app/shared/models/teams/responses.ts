@@ -3,7 +3,6 @@ export interface ITeamNavigation {
   name: string;
   membersIds: string[];
 }
-
 export interface IMemberNavigation {
   userId: string;
   teamId: string;

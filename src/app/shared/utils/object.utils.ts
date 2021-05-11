@@ -1,4 +1,4 @@
-import {GramOrderEnum} from '../enums/gram-order.enum';
+import {GramOrderEnum} from '../types/gram-order.enum';
 
 export const isObject = (obj: any): boolean =>  {
   return !!obj && typeof obj === 'object';

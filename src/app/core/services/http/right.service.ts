@@ -7,7 +7,7 @@ import {HateoasResponse} from "../../../shared/models/pagination/hateoas-respons
 import {map} from "rxjs/operators";
 import {GetParams} from "../../../shared/models/http/get.params";
 import {PageCursor} from "../../../shared/models/pagination/page-cursor";
-import {RightNavigation} from "../../../shared/models/rights/responses";
+import {IRightNavigation} from "../../../shared/models/rights/responses";
 
 
 @Injectable({
@@ -21,15 +21,15 @@ export class RightService extends ApiHelperService{
   protected apiUrl = `${environment.apiUrl}/rights`;
 
 
-  public getById(id: string): Observable<RightNavigation | undefined>{
-    return this.http.get<HateoasResponse<RightNavigation>| undefined>(`${this.apiUrl}/${id}`)
+  public getById(id: string): Observable<IRightNavigation | undefined>{
+    return this.http.get<HateoasResponse<IRightNavigation>| undefined>(`${this.apiUrl}/${id}`)
       .pipe(
         map(res => res.result)
       )
   }
 
-  public getCursor(query: GetParams<RightNavigation>): PageCursor<RightNavigation,RightNavigation> {
-    return new PageCursor<RightNavigation, RightNavigation>(
+  public getCursor(query: GetParams<IRightNavigation>): PageCursor<IRightNavigation,IRightNavigation> {
+    return new PageCursor<IRightNavigation, IRightNavigation>(
       this, {url: this.apiUrl, ...query}
     )
   }

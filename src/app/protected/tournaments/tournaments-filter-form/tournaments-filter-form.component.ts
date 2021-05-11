@@ -3,6 +3,9 @@ import {FilterComponentBase} from "../../../shared/components-bases/filter-compo
 import {IProgrammingLanguageNavigation} from "../../../shared/models/programming-languages/responses";
 import {FormBuilder, FormControl} from "@angular/forms";
 import {ITournamentsFilter} from "../../../shared/models/tournaments/filters";
+import {GetParams} from "../../../shared/models/http/get.params";
+import {ITournamentNavigation} from "../../../shared/models/tournaments/responses";
+import {SortOrder} from "../../../shared/types/sort-order";
 
 @Component({
   selector: 'app-tournaments-filter-form',
@@ -10,11 +13,12 @@ import {ITournamentsFilter} from "../../../shared/models/tournaments/filters";
   styles: [
   ]
 })
-export class TournamentsFilterFormComponent extends FilterComponentBase<ITournamentsFilter>  implements OnInit {
+export class TournamentsFilterFormComponent extends FilterComponentBase<GetParams<ITournamentNavigation, ITournamentsFilter>>  implements OnInit {
   @Input() languageId: IProgrammingLanguageNavigation[];
   set tournamentCtrl(ctrl: FormControl){
     this.filterGrp.setControl('name', ctrl);
   }
+  @Input() nameOrder: SortOrder = "desc";
 
   reset(): void {
   }
@@ -32,6 +36,11 @@ export class TournamentsFilterFormComponent extends FilterComponentBase<ITournam
   }
 
   updateForm() {
-    this.filterChanged.emit(this.filterGrp.value);
+
+    this.filterChanged.emit({
+      filterObj: this.filterGrp.value,
+      descOrderColumns: [ this.nameOrder === 'desc' ? 'name' : undefined ],
+      ascOrderColumns: [ this.nameOrder === 'asc' ? 'name' : undefined ]
+    });
   }
 }

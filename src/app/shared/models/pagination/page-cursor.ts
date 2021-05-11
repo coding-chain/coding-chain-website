@@ -22,8 +22,8 @@ export class PageCursor<TResult, TFilter> {
     return new PageCursor(this.pageService, newFilter);
   }
 
-  update(filter:  TFilter){
-    this.filter = {...this.filter, filterObj: filter};
+  updateFilter(filter:  GetParams<TResult, TFilter>){
+    this.filter = {...this.filter, filterObj: filter.filterObj, descOrderColumns: filter.descOrderColumns, ascOrderColumns: filter.ascOrderColumns};
   }
 
   private _availableSizes = [10, 20, 50]

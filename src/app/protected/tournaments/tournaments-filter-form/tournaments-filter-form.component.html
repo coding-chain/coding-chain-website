@@ -1,6 +1,7 @@
-<form (ngSubmit)="updateForm()" [formGroup]="filterGrp">
+<form [formGroup]="filterGrp">
   <app-languages-selector [languages]="languageId" (languagesCtrlReady)="languagesCtrl = $event">
   </app-languages-selector>
   <app-tournament-name-filter-input (ctrlReady)="tournamentCtrl = $event"></app-tournament-name-filter-input>
-  <button  class="ml-2" mat-stroked-button  id="filter-button">Filtrer</button>
+  <app-sort-by-arrows  [order]="nameOrder" (orderChanged)="nameOrder = $event"></app-sort-by-arrows>
+  <button  class="ml-2" mat-stroked-button  id="filter-button" type="submit"  (click)="updateForm()">Filtrer</button>
 </form>
