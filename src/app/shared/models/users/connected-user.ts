@@ -16,7 +16,7 @@ export class ConnectedUser {
     this.teams = obj.teams ?? [];
   }
 
-  isTeamAdmin(teamId: string) {
+  isTeamAdmin(teamId: string): boolean {
     return this.teams.some(t => t.teamId === teamId && t.isAdmin);
   }
 
