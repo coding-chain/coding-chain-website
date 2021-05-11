@@ -1,0 +1,30 @@
+<mat-card  class="w-75 mx-auto mt-5" >
+  <form (ngSubmit)="onSubmitTeam()" [formGroup]="teamForm" class="p-4">
+    <div class="d-flex flex-column" id="team-data">
+      <mat-form-field appearance="outline" class="w-100 mx-auto" id="team-name">
+        <mat-label>Nom de l'équipe*</mat-label>
+        <input [formControl]="teamNameControl" id="team-name-input" matInput type="text">
+      </mat-form-field>
+    </div>
+
+    <div class="d-flex flex-column" id="search-teammate">
+      <mat-form-field appearance="outline" class="w-100 mx-auto">
+        <mat-label>Inviter un coéquipier</mat-label>
+        <input
+          type="text"
+          placeholder="Nom utilisateur"
+          aria-label="Teammate"
+          matInput
+          [formControl]="searchControl"
+          [matAutocomplete]="auto"
+        >
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let name of filteredNameSuggestions | async" [value]="name">
+            {{name}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+
+  </form>
+</mat-card>
