@@ -4,6 +4,8 @@
     <ng-container *ngIf="user$ | async as user">
       <a class="nav-link" data-toggle="tab" id="participationLink" mat-tab-link [routerLink]="['/participation']"
          routerLinkActive="active">Temporary participation access</a>
+      <a class="nav-link" data-toggle="tab" id="tournmanentsLink" mat-tab-link [routerLink]="['/tournaments']"
+         routerLinkActive="active">Tournois</a>
     </ng-container>
     <a *ngIf="!(user$ | async) as user" class="nav-link" data-toggle="tab" id="loginLink" mat-tab-link
        [routerLink]="['/login']" routerLinkActive="active">Connexion</a>

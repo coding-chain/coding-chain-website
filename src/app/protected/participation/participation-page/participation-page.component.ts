@@ -13,7 +13,7 @@ export class ParticipationPageComponent implements OnInit {
 
   ngOnInit(): void {
     var cursor = this.languageService.getCursor({page: 1, size:10})
-    cursor.resultsSubject.subscribe(res => console.log(res));
+    cursor.resultsSubject$.subscribe(res => console.log(res));
     cursor.current();
   }
 }

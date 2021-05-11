@@ -20,7 +20,7 @@ export class HateoasInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       map((event: HttpEvent<any>) => {
 
-        if (event instanceof HttpResponse) {
+        if (event instanceof HttpResponse && event.body) {
           return event.clone({body: this.convertToHateoas(event.body)});
         }
         return event;
@@ -34,8 +34,8 @@ export class HateoasInterceptor implements HttpInterceptor {
   }
 
   convertToHateoas(body: any): HateoasResponse<any> | HateoasPageResponse<any> | any {
-    if (body.links && body.result) {
-      if (body.total !== null && body.total !== undefined) {
+    if (body?.links && body?.result) {
+      if (body?.total !== null && body?.total !== undefined) {
         return new HateoasPageResponse(body)
       }
       return new HateoasResponse(body);

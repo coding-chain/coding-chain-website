@@ -33,7 +33,7 @@ export class TournamentService extends ApiHelperService{
       )
   }
 
-  public getCursor(query: GetParams<ITournamentNavigation>): PageCursor<ITournamentNavigation,ITournamentNavigation> {
+  public getCursor(query?: GetParams<ITournamentNavigation>): PageCursor<ITournamentNavigation,ITournamentNavigation> {
     return new PageCursor<ITournamentNavigation, ITournamentNavigation>(
       this, {url: this.apiUrl, ...query}
     )

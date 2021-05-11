@@ -2,10 +2,12 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ReactiveFormsModule} from '@angular/forms';
 import {AngularMaterialModule} from './angular-material.module';
+import {TotalComponent} from "./components/total/total.component";
+import {PagedListComponent} from "./components/paged-list/paged-list.component";
 
 
 @NgModule({
-  declarations: [],
+  declarations: [TotalComponent, PagedListComponent],
   imports: [
     CommonModule,
     AngularMaterialModule,
@@ -13,7 +15,9 @@ import {AngularMaterialModule} from './angular-material.module';
   ],
   exports: [
     AngularMaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TotalComponent,
+    PagedListComponent
   ]
 })
 export class SharedModule {

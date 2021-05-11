@@ -1,0 +1,7 @@
+<div class="col text-center">
+  <mat-paginator [length]="cursor.totalValues"
+                 [pageSize]="cursor.pageSize"
+                 [pageSizeOptions]="cursor.availableSizes"
+                 (page)="updateCursor($event)">
+  </mat-paginator>
+</div>
