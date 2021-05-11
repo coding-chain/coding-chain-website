@@ -1,0 +1,8 @@
+
+<div *ngFor="let tournament of tournaments$|async" class="row">
+  {{tournament.id}}
+  {{tournament.name}}
+  {{tournament.description}}
+
+</div>
+<app-paged-list [cursor]="tournamentCursor"></app-paged-list>
