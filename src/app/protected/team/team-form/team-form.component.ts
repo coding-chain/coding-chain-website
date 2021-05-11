@@ -1,8 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {map, startWith} from 'rxjs/operators';
-import {Observable} from 'rxjs';
-import {PublicUser} from '../../../shared/models/users/responses';
 
 @Component({
   selector: 'app-team-form',
