@@ -12,6 +12,7 @@ import { TournamentsCreateComponent } from './tournaments-create/tournaments-cre
 import { TournamentsEditNameInputComponent } from './tournaments-edit-name-input/tournaments-edit-name-input.component';
 import { TournamentsEditDescriptionInputComponent } from './tournaments-edit-description-input/tournaments-edit-description-input.component';
 import { TournamentsFilterFormComponent } from './tournaments-filter-form/tournaments-filter-form.component';
+import { TournamentsItemComponent } from './tournaments-item/tournaments-item.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { TournamentsFilterFormComponent } from './tournaments-filter-form/tourna
     TournamentsCreateFormComponent,
     TournamentsEditNameInputComponent,
     TournamentsEditDescriptionInputComponent,
-    TournamentsFilterFormComponent
+    TournamentsFilterFormComponent,
+    TournamentsItemComponent
   ],
   imports: [
     CommonModule,

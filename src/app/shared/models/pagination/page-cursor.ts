@@ -1,8 +1,11 @@
-import {BehaviorSubject} from "rxjs";
-import {ApiHelperService} from "../../../core/services/http/api-helper.service";
+import {BehaviorSubject, Observable} from "rxjs";
+import {ApiHelperService, PageFunction} from "../../../core/services/http/api-helper.service";
 import {GetParams} from "../http/get.params";
 import {HateoasResponse} from "./hateoas-response";
 import * as _ from "lodash";
+import {HateoasPageResponse} from "./hateoas-page-response";
+
+
 
 export class PageCursor<TResult, TFilter> {
   results: TResult[];
@@ -10,16 +13,16 @@ export class PageCursor<TResult, TFilter> {
   hasPrevious: boolean;
 
   public resultsSubject$ = new BehaviorSubject<TResult[]>([]);
-  private pageService: ApiHelperService;
+  private pageSubjectFunction: PageFunction<TResult, TFilter>;
   private filter: GetParams<TResult, TFilter>;
 
-  constructor(pageService: ApiHelperService, filter: GetParams<TResult, TFilter>) {
-    this.pageService = pageService;
+  constructor(pageSubjectFunction: PageFunction<TResult, TFilter>, filter: GetParams<TResult, TFilter>) {
+    this.pageSubjectFunction = pageSubjectFunction;
     this.filter = filter;
   }
   clone(filter:  TFilter): PageCursor<TResult, TFilter>{
     const newFilter = {...this.filter, filterObj: filter};
-    return new PageCursor(this.pageService, newFilter);
+    return new PageCursor(this.pageSubjectFunction, newFilter);
   }
 
   updateFilter(filter:  GetParams<TResult, TFilter>){
@@ -99,7 +102,7 @@ export class PageCursor<TResult, TFilter> {
   }
 
   private sendRequest() {
-    this.pageService.getFiltered<HateoasResponse<TResult>[]>(this.filter as any)
+    this.pageSubjectFunction(this.filter)
       .subscribe((page) => {
         const subResults = page.result.map(subRes => subRes.result);
         this.hasNext = !!page.nextLink();

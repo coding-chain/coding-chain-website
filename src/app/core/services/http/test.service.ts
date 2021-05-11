@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ApiHelperService} from "./api-helper.service";
+import {ApiHelperService, HateoasPageResult} from "./api-helper.service";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../../environments/environment";
 import {Observable} from "rxjs";
@@ -8,6 +8,7 @@ import {map} from "rxjs/operators";
 import {PageCursor} from "../../../shared/models/pagination/page-cursor";
 import {ITestNavigation} from "../../../shared/models/tests/responses";
 import {GetParams} from "../../../shared/models/http/get.params";
+import {ITeamNavigation} from "../../../shared/models/teams/responses";
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +16,15 @@ import {GetParams} from "../../../shared/models/http/get.params";
 export class TestService extends ApiHelperService{
   constructor(http: HttpClient) {
     super(http);
+    this.getTestNavigationFiltered = this.getTestNavigationFiltered.bind(this);
+
   }
 
   protected apiUrl = `${environment.apiUrl}/tests`;
 
+  public getTestNavigationFiltered(obj: GetParams<ITestNavigation>):Observable<HateoasPageResult<ITestNavigation>> {
+    return this.getFiltered(obj);
+  }
   public getById(id: string): Observable<ITestNavigation | undefined> {
     return this.http.get<HateoasResponse<ITestNavigation> | undefined>(`${this.apiUrl}/${id}`)
       .pipe(
@@ -28,7 +34,7 @@ export class TestService extends ApiHelperService{
 
   public getCursor(query: GetParams<ITestNavigation>): PageCursor<ITestNavigation,ITestNavigation> {
     return new PageCursor<ITestNavigation, ITestNavigation>(
-      this, {url: this.apiUrl, ...query}
+      this.getTestNavigationFiltered, {url: this.apiUrl, ...query}
     )
   }
 }

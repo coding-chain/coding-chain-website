@@ -1,7 +1,10 @@
-<form [formGroup]="filterGrp">
-  <app-languages-selector [languages]="languageId" (languagesCtrlReady)="languagesCtrl = $event">
-  </app-languages-selector>
-  <app-tournament-name-filter-input (ctrlReady)="tournamentCtrl = $event"></app-tournament-name-filter-input>
-  <app-sort-by-arrows  [order]="nameOrder" (orderChanged)="nameOrder = $event"></app-sort-by-arrows>
-  <button  class="ml-2" mat-stroked-button  id="filter-button" type="submit"  (click)="updateForm()">Filtrer</button>
+<form [formGroup]="filterGrp" class="row align-items-center">
+    <app-languages-selector   class="col-3"[languages]="languageId" (languagesCtrlReady)="languagesCtrl = $event">
+    </app-languages-selector>
+    <app-tournament-name-filter-input class="col-3" (ctrlReady)="tournamentCtrl = $event"></app-tournament-name-filter-input>
+    <app-sort-by-arrows  class="col-3" [order]="nameOrder" (orderChanged)="nameOrder = $event"></app-sort-by-arrows>
+    <app-tournaments-in-team-filter-input [inMyTeam]="false" (inMyTeamCtrlReady)="inMyTeamCtrl = $event"></app-tournaments-in-team-filter-input>
+  <div class="col-3">
+    <button  class="ml-2" mat-stroked-button  id="filter-button" type="submit"  (click)="updateForm()">Filtrer</button>
+  </div>
 </form>

@@ -8,6 +8,9 @@ import {GetParams} from "../../../shared/models/http/get.params";
 import {HateoasPageResponse} from "../../../shared/models/pagination/hateoas-page-response";
 import {Observable} from "rxjs";
 
+export type HateoasPageResult<TResult> = HateoasPageResponse<HateoasResponse<TResult>[]>;
+export type PageFunction<TResult, TFilter> = (obj: GetParams<TResult, TFilter>) =>  Observable<HateoasPageResult<TResult>>
+
 @Injectable({
   providedIn: 'root'
 })
@@ -16,12 +19,13 @@ export abstract class ApiHelperService {
   protected abstract apiUrl = environment.apiUrl;
 
   constructor(protected readonly http: HttpClient) {
+    this.getFiltered = this.getFiltered.bind(this);
   }
 
 
-  public getFiltered<TResult, TTarget = TResult, TFilterTarget = TResult>(obj: GetParams<TTarget, TFilterTarget>): Observable<HateoasPageResponse<TResult>> {
+  public getFiltered<TResult, TTarget = TResult, TFilterTarget = TResult>(obj: GetParams<TTarget, TFilterTarget>): Observable<HateoasPageResult<TResult>> {
     const url = UrlUtils.convertGetParamsToUrl(obj);
-    return this.http.get<HateoasPageResponse<TResult>>(url);
+    return this.http.get<HateoasPageResult<TResult>>(url);
   }
 
   public getAllFiltered<TResult, TTarget = TResult, TFilterTarget = TResult>(obj: GetParams<TTarget, TFilterTarget>): Observable<TResult[]> {

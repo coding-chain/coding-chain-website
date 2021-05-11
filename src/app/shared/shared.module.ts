@@ -7,10 +7,11 @@ import {PagedListComponent} from "./components/paged-list/paged-list.component";
 import { LanguagesSelectorComponent } from './components/languages-selector/languages-selector.component';
 import { TournamentNameFilterInputComponent } from './components/tournament-name-filter-input/tournament-name-filter-input.component';
 import { SortByArrowsComponent } from './components/sort-by-arrows/sort-by-arrows.component';
+import { TournamentsInTeamFilterInputComponent } from './components/tournaments-in-team-filter-input/tournaments-in-team-filter-input.component';
 
 
 @NgModule({
-  declarations: [TotalComponent, PagedListComponent, LanguagesSelectorComponent, TournamentNameFilterInputComponent, SortByArrowsComponent],
+  declarations: [TotalComponent, PagedListComponent, LanguagesSelectorComponent, TournamentNameFilterInputComponent, SortByArrowsComponent, TournamentsInTeamFilterInputComponent],
     imports: [
         CommonModule,
         AngularMaterialModule,
@@ -24,7 +25,8 @@ import { SortByArrowsComponent } from './components/sort-by-arrows/sort-by-arrow
         PagedListComponent,
         LanguagesSelectorComponent,
         TournamentNameFilterInputComponent,
-        SortByArrowsComponent
+        SortByArrowsComponent,
+        TournamentsInTeamFilterInputComponent
     ]
 })
 export class SharedModule {

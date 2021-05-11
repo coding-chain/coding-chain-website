@@ -13,4 +13,5 @@ export interface ITournamentNavigation {
   startDate: Date;
   endDate?: Date;
   stepsIds: string[];
+  participationsIds: string[];
 }

@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {IProgrammingLanguageNavigation} from "../../../shared/models/programming-languages/responses";
-import {ApiHelperService} from "./api-helper.service";
+import {ApiHelperService, HateoasPageResult} from "./api-helper.service";
 import {HateoasResponse} from "../../../shared/models/pagination/hateoas-response";
 import {map} from "rxjs/operators";
 import {Observable} from "rxjs";
@@ -8,6 +8,8 @@ import {PageCursor} from "../../../shared/models/pagination/page-cursor";
 import {environment} from "../../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {GetParams} from "../../../shared/models/http/get.params";
+import {ITournamentNavigation} from "../../../shared/models/tournaments/responses";
+import {ITournamentsFilter} from "../../../shared/models/tournaments/filters";
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +17,7 @@ import {GetParams} from "../../../shared/models/http/get.params";
 export class LanguageService extends ApiHelperService{
   constructor(http: HttpClient) {
     super(http);
+    this.getLanguageNavigationFiltered = this.getLanguageNavigationFiltered.bind(this);
   }
 
   protected apiUrl = `${environment.apiUrl}/languages`;
@@ -27,9 +30,13 @@ export class LanguageService extends ApiHelperService{
       )
   }
 
+  public getLanguageNavigationFiltered(obj: GetParams<IProgrammingLanguageNavigation>):Observable<HateoasPageResult<IProgrammingLanguageNavigation>> {
+    return this.getFiltered(obj);
+  }
+
   public getCursor(query: GetParams<IProgrammingLanguageNavigation>): PageCursor<IProgrammingLanguageNavigation,IProgrammingLanguageNavigation> {
     return new PageCursor<IProgrammingLanguageNavigation, IProgrammingLanguageNavigation>(
-      this, {url: this.apiUrl, ...query}
+      this.getLanguageNavigationFiltered, {url: this.apiUrl, ...query}
     )
   }
 

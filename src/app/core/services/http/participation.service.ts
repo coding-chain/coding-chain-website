@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {environment} from 'src/environments/environment';
-import {ApiHelperService} from './api-helper.service';
+import {ApiHelperService, HateoasPageResult} from './api-helper.service';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from "rxjs";
 import {IProgrammingLanguageNavigation} from "../../../shared/models/programming-languages/responses";
@@ -20,8 +20,12 @@ export class ParticipationService extends ApiHelperService {
 
   constructor(http: HttpClient) {
     super(http);
+    this.getParticipationNavigationFiltered = this.getParticipationNavigationFiltered.bind(this);
   }
 
+  public getParticipationNavigationFiltered(obj: GetParams<IParticipationNavigation>):Observable<HateoasPageResult<IParticipationNavigation>> {
+    return this.getFiltered(obj);
+  }
   public getById(id: string): Observable<IParticipationNavigation | undefined> {
     return this.http.get<HateoasResponse<IParticipationNavigation> | undefined>(`${this.apiUrl}/${id}`)
       .pipe(
@@ -31,7 +35,7 @@ export class ParticipationService extends ApiHelperService {
 
   public getCursor(query: GetParams<IParticipationNavigation>): PageCursor<IParticipationNavigation,IParticipationNavigation> {
     return new PageCursor<IParticipationNavigation, IParticipationNavigation>(
-      this, {url: this.apiUrl, ...query}
+      this.getParticipationNavigationFiltered, {url: this.apiUrl, ...query}
     )
   }
 
