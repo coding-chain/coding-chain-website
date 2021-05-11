@@ -10,8 +10,8 @@ export class TournamentsEditNameInputComponent implements OnInit {
 
   @Output() nameCtrlReady = new EventEmitter<FormControl>();
   nameCtrl: FormControl
-  readonly maxNameLength = 50
-  readonly minNameLength = 5
+  @Input() maxNameLength = 50
+  @Input() minNameLength = 5
 
   constructor(private fb: FormBuilder) {
     this.nameCtrl = fb.control('', [Validators.minLength(this.minNameLength), Validators.maxLength(this.maxNameLength)])

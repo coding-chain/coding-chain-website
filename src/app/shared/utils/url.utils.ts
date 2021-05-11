@@ -9,8 +9,8 @@ import {GetParams} from "../models/http/get.params";
 export class UrlUtils{
 
   static getFilterQueryFromObj<T>(obj: T): KeyValue<string, any>[]{
-    let filterObj = ObjectUtils.setKeysTextBorder(obj, 'FilterComponentBase', GramOrderEnum.SUFFIX);
-    filterObj = ObjectUtils.changeKeysCase(filterObj, Case.snake);
+    let filterObj = ObjectUtils.setKeysTextBorder(obj, 'Filter', GramOrderEnum.SUFFIX);
+    filterObj = ObjectUtils.changeKeysCase(filterObj, Case.camel);
     return UrlUtils.transformObjToParams(filterObj);
   }
 

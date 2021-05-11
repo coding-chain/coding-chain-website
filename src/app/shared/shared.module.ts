@@ -1,23 +1,28 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AngularMaterialModule} from './angular-material.module';
 import {TotalComponent} from "./components/total/total.component";
 import {PagedListComponent} from "./components/paged-list/paged-list.component";
+import { LanguagesSelectorComponent } from './components/languages-selector/languages-selector.component';
+import { TournamentNameFilterInputComponent } from './components/tournament-name-filter-input/tournament-name-filter-input.component';
 
 
 @NgModule({
-  declarations: [TotalComponent, PagedListComponent],
-  imports: [
-    CommonModule,
-    AngularMaterialModule,
-    ReactiveFormsModule
-  ],
+  declarations: [TotalComponent, PagedListComponent, LanguagesSelectorComponent, TournamentNameFilterInputComponent],
+    imports: [
+        CommonModule,
+        AngularMaterialModule,
+        ReactiveFormsModule,
+        FormsModule
+    ],
   exports: [
     AngularMaterialModule,
     ReactiveFormsModule,
     TotalComponent,
-    PagedListComponent
+    PagedListComponent,
+    LanguagesSelectorComponent,
+    TournamentNameFilterInputComponent
   ]
 })
 export class SharedModule {

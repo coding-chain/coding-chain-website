@@ -9,7 +9,6 @@ import {PublicUser, UserToken} from "../../../shared/models/users/responses";
 import {RegisterUserCommand} from "../../../shared/models/users/requests";
 import {ConnectedUser} from "../../../shared/models/users/connected-user";
 import {RightService} from "./right.service";
-import {RightNavigation} from "../../../shared/models/rights/responses";
 
 @Injectable({
   providedIn: 'root'

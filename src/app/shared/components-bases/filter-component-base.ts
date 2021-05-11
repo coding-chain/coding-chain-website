@@ -1,6 +1,7 @@
 import {FormGroup} from '@angular/forms';
-import {EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 
+@Component({template:''})
 export abstract class FilterComponentBase<T> {
   filterGrp: FormGroup;
 

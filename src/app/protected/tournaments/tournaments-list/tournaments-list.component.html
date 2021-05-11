@@ -1,4 +1,4 @@
-
+<app-tournaments-filter-form [languageId]="languages$ | async" (filterChanged)="searchTournaments($event)"></app-tournaments-filter-form>
 <div *ngFor="let tournament of tournaments$|async" class="row">
   {{tournament.id}}
   {{tournament.name}}

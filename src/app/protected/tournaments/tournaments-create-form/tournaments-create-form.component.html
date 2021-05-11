@@ -1,7 +1,7 @@
 <form (ngSubmit)="createTournament()" [formGroup]="tournamentGrp" class="my-2">
   <div class=" d-flex  flex-column" >
-    <app-tournaments-edit-name-input (nameCtrlReady)="setNameCtrl($event)"></app-tournaments-edit-name-input>
-    <app-tournaments-edit-description-input (descriptionCtrlReady)="setDescriptionCtrl($event)"></app-tournaments-edit-description-input>
+    <app-tournaments-edit-name-input (nameCtrlReady)="nameCtrl= $event"></app-tournaments-edit-name-input>
+    <app-tournaments-edit-description-input (descriptionCtrlReady)="descriptionCtrl = $event"></app-tournaments-edit-description-input>
     <button [disabled]="tournamentGrp.invalid || tournamentGrp.pristine" class="ml-2" id="sign-in-button" mat-stroked-button type="submit">Créer</button>
   </div>
 </form>

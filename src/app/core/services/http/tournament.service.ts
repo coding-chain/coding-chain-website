@@ -14,6 +14,7 @@ import {
   IUpdateTournamentCommand
 } from "../../../shared/models/tournaments/commands";
 import {IUpdateStepCommand} from "../../../shared/models/steps/commands";
+import {ITournamentsFilter} from "../../../shared/models/tournaments/filters";
 
 @Injectable({
   providedIn: 'root'
@@ -33,8 +34,8 @@ export class TournamentService extends ApiHelperService{
       )
   }
 
-  public getCursor(query?: GetParams<ITournamentNavigation>): PageCursor<ITournamentNavigation,ITournamentNavigation> {
-    return new PageCursor<ITournamentNavigation, ITournamentNavigation>(
+  public getCursor(query?: GetParams<ITournamentNavigation, ITournamentsFilter>): PageCursor<ITournamentNavigation, ITournamentsFilter> {
+    return new PageCursor<ITournamentNavigation,  ITournamentsFilter>(
       this, {url: this.apiUrl, ...query}
     )
   }

@@ -29,11 +29,11 @@ export class TournamentsCreateFormComponent implements OnInit {
     this.creationSubmitted.emit(this.tournamentGrp.value)
   }
 
-  setNameCtrl(nameCtrl$: FormControl) {
+  set nameCtrl(nameCtrl$: FormControl) {
     this.tournamentGrp.setControl('name', nameCtrl$);
   }
 
-  setDescriptionCtrl(descriptionCtrl$: FormControl) {
+  set descriptionCtrl(descriptionCtrl$: FormControl) {
     this.tournamentGrp.setControl('description', descriptionCtrl$);
   }
 }

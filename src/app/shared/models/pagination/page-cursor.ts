@@ -1,4 +1,3 @@
-import {PaginationQuery} from "../http/pagination-query";
 import {BehaviorSubject} from "rxjs";
 import {ApiHelperService} from "../../../core/services/http/api-helper.service";
 import {GetParams} from "../http/get.params";
@@ -17,6 +16,14 @@ export class PageCursor<TResult, TFilter> {
   constructor(pageService: ApiHelperService, filter: GetParams<TResult, TFilter>) {
     this.pageService = pageService;
     this.filter = filter;
+  }
+  clone(filter:  TFilter): PageCursor<TResult, TFilter>{
+    const newFilter = {...this.filter, filterObj: filter};
+    return new PageCursor(this.pageService, newFilter);
+  }
+
+  update(filter:  TFilter){
+    this.filter = {...this.filter, filterObj: filter};
   }
 
   private _availableSizes = [10, 20, 50]

@@ -32,4 +32,11 @@ export class LanguageService extends ApiHelperService{
       this, {url: this.apiUrl, ...query}
     )
   }
+
+  public getAll(): Observable<IProgrammingLanguageNavigation[]> {
+    return this.fetchAll<IProgrammingLanguageNavigation>({url: this.apiUrl})
+      .pipe(
+        map(languages => languages.map(l => l.result))
+      );
+  }
 }

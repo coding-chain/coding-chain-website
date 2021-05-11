@@ -29,11 +29,11 @@ export abstract class ApiHelperService {
     return this.http.get<HateoasPageResponse<HateoasResponse<TResult>[]>>(url).pipe(map(res => res.result.map(subRes => subRes.result)));
   }
 
-  public fetchAll<TResult, P = TResult, F = TResult>(obj: GetParams<P, F>, acc: TResult[] = []): Observable<TResult[]> {
+  public fetchAll<TResult, P = TResult, F = TResult>(obj: GetParams<P, F>, acc: HateoasResponse<TResult>[] = []): Observable<HateoasResponse<TResult>[]> {
     const url = UrlUtils.convertGetParamsToUrl(obj);
     return new Observable(subscriber => this.http.get<HateoasPageResponse<HateoasResponse<TResult>[]>>(url).subscribe(value => {
       const nextLink = value.links.find(l => l.rel === 'next');
-      acc.push(...value.result.map(res => res.result));
+      acc.push(...value.result);
       if (nextLink) {
         this.fetchAll({url: nextLink.href}, acc).subscribe(() => subscriber.next(acc));
       } else {
