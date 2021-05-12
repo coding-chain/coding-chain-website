@@ -9,7 +9,17 @@ import {HateoasPageResponse} from "../../../shared/models/pagination/hateoas-pag
 import {Observable} from "rxjs";
 
 export type HateoasPageResult<TResult> = HateoasPageResponse<HateoasResponse<TResult>[]>;
-export type PageFunction<TResult, TFilter> = (obj: GetParams<TResult, TFilter>) =>  Observable<HateoasPageResult<TResult>>
+export type PageFunction<TResult, TFilter> = (obj: GetParams<TResult, TFilter>) => Observable<HateoasPageResult<TResult>>
+
+export interface ResultMapping<TSource, TTarget> {
+  source: TSource,
+  target?: TTarget
+}
+
+export interface HateoasResultMapping<TSource, TTarget> extends ResultMapping<HateoasResponse<TSource>,HateoasResponse<TTarget> > {
+}
+
+export interface ForkJoinRes<TId, TResult>{id: TId, res: TResult};
 
 @Injectable({
   providedIn: 'root'
@@ -54,7 +64,7 @@ export abstract class ApiHelperService {
 
   public createAndGet<TBody, TResult>(url: string, body: TBody): Observable<TResult> {
     return this.createAndLocate(url, body).pipe(
-      switchMap(location =>  this.http.get<TResult>(location) )
+      switchMap(location => this.http.get<TResult>(location))
     )
   }
 

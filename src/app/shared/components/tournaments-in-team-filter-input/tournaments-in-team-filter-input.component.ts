@@ -9,7 +9,8 @@ import {FormBuilder, FormControl} from "@angular/forms";
 })
 export class TournamentsInTeamFilterInputComponent implements OnInit {
 
-  constructor(private  readonly _fb:FormBuilder) {
+  constructor(fb:FormBuilder) {
+    this._inMyTeamCtrl = fb.control(null);
   }
   _inMyTeamCtrl: FormControl;
 
@@ -19,7 +20,6 @@ export class TournamentsInTeamFilterInputComponent implements OnInit {
   @Output() inMyTeamCtrlReady = new EventEmitter<FormControl>();
 
   ngOnInit(): void {
-    this._inMyTeamCtrl = this._fb.control(null);
     this.inMyTeamCtrlReady.emit(this._inMyTeamCtrl);
   }
 }

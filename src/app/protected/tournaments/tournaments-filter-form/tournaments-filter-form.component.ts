@@ -7,14 +7,14 @@ import {GetParams} from "../../../shared/models/http/get.params";
 import {ITournamentNavigation} from "../../../shared/models/tournaments/responses";
 import {SortOrder} from "../../../shared/types/sort-order";
 import {map} from "rxjs/operators";
-import {TournamentResume} from "../../../shared/models/tournaments/tournament-resume";
+import {ITournamentResume} from "../../../shared/models/tournaments/tournament-resume";
 
 @Component({
   selector: 'app-tournaments-filter-form',
   templateUrl: './tournaments-filter-form.component.html',
   styles: []
 })
-export class TournamentsFilterFormComponent extends FilterComponentBase<GetParams<TournamentResume, ITournamentsFilter>> implements OnInit {
+export class TournamentsFilterFormComponent extends FilterComponentBase<GetParams<ITournamentResume, ITournamentsFilter>> implements OnInit {
   @Input() languageId: IProgrammingLanguageNavigation[];
 
   @Input() nameOrder: SortOrder = "desc";

@@ -9,7 +9,7 @@ import {ITournamentsFilter} from "../../../shared/models/tournaments/filters";
 import {GetParams} from "../../../shared/models/http/get.params";
 import {UserStateService} from "../../../core/services/user-state.service";
 import {ConnectedUser} from "../../../shared/models/users/connected-user";
-import {TournamentResume} from "../../../shared/models/tournaments/tournament-resume";
+import {ITournamentResume} from "../../../shared/models/tournaments/tournament-resume";
 
 @Component({
   selector: 'app-tournaments-list',
@@ -17,11 +17,11 @@ import {TournamentResume} from "../../../shared/models/tournaments/tournament-re
   styles: []
 })
 export class TournamentsListComponent implements OnInit {
-  tournamentCursor: PageCursor<TournamentResume, ITournamentsFilter>;
-  tournaments$ = new BehaviorSubject<TournamentResume[]>([])
+  tournamentCursor: PageCursor<ITournamentResume, ITournamentsFilter>;
+  tournaments$ = new BehaviorSubject<ITournamentResume[]>([])
   languages$: Observable<IProgrammingLanguageNavigation[]>;
   currentUser$: Observable<ConnectedUser>;
-  private _tournaments: TournamentResume[];
+  private _tournaments: ITournamentResume[];
 
   constructor(private readonly _tournamentService: TournamentService, private readonly _languageService: LanguageService, private readonly _userStateService: UserStateService) {
     this.tournamentCursor = this._tournamentService.getTournamentResumeCursor()
@@ -37,7 +37,7 @@ export class TournamentsListComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  searchTournaments($filter: GetParams<TournamentResume, ITournamentsFilter>) {
+  searchTournaments($filter: GetParams<ITournamentResume, ITournamentsFilter>) {
     this.tournamentCursor.updateFilter($filter)
     this.tournamentCursor.current();
   }

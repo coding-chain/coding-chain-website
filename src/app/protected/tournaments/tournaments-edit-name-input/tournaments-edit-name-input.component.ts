@@ -8,6 +8,9 @@ import {Form, FormBuilder, FormControl, Validators} from "@angular/forms";
 })
 export class TournamentsEditNameInputComponent implements OnInit {
 
+  @Input() set name(name: string){
+    this.nameCtrl.setValue(name);
+  }
   @Output() nameCtrlReady = new EventEmitter<FormControl>();
   nameCtrl: FormControl
   @Input() maxNameLength = 50

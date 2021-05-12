@@ -9,6 +9,9 @@ import {FormBuilder, FormControl, Validators} from "@angular/forms";
 })
 export class TournamentsEditDescriptionInputComponent implements OnInit {
 
+  @Input() set description(description: string){
+    this.descriptionCtrl.setValue(description);
+  }
   @Output() descriptionCtrlReady = new EventEmitter<FormControl>();
   descriptionCtrl: FormControl
   @Input() maxDescriptionLength = 500

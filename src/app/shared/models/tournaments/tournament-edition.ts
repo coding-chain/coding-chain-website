@@ -1,19 +1,21 @@
-import {IProgrammingLanguageNavigation} from "../programming-languages/responses";
 import {IParticipationNavigation} from "../participations/responses";
+import {ITournamentResumeStep} from "./tournament-resume";
+import {TournamentService} from "../../../core/services/http/tournament.service";
 import {ITournamentNavigation, ITournamentStepNavigation} from './responses';
+import {IProgrammingLanguageNavigation} from '../programming-languages/responses';
+import {ITestNavigation} from '../tests/responses';
 
-export interface ITournamentResume extends ITournamentNavigation{
+export interface ITournamentEdition{
   id: string;
   name: string;
   description:string;
   isPublished: boolean;
   startDate: Date;
   endDate?: Date;
-  steps: ITournamentResumeStep[];
-  participations: IParticipationNavigation[];
+  steps: ITournamentEditionStep[];
 }
 
-export interface ITournamentResumeStep extends ITournamentStepNavigation {
+export interface ITournamentEditionStep extends ITournamentStepNavigation{
   id: string;
   isOptional: boolean;
   order: number;
@@ -24,6 +26,5 @@ export interface ITournamentResumeStep extends ITournamentStepNavigation {
   maxFunctionsCount?: number
   score: number;
   difficulty: number;
+  tests: ITestNavigation[]
 }
-
-

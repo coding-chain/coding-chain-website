@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {LanguageService} from "../../../core/services/http/language.service";
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-participation-page',
@@ -7,13 +8,17 @@ import {LanguageService} from "../../../core/services/http/language.service";
   styles: [
   ]
 })
-export class ParticipationPageComponent implements OnInit {
+export class ParticipationPageComponent implements OnInit, OnDestroy {
+  ngOnDestroy(): void {
+    this._participationSub.unsubscribe();
+  }
+  private _participationSub: Subscription;
 
   constructor(private readonly languageService: LanguageService) { }
 
   ngOnInit(): void {
     var cursor = this.languageService.getCursor({page: 1, size:10})
-    cursor.resultsSubject$.subscribe(res => console.log(res));
+    this._participationSub = cursor.resultsSubject$.subscribe(res => console.log(res));
     cursor.current();
   }
 }
