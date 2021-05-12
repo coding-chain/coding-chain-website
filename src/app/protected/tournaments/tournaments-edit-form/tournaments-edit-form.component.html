@@ -1,2 +1,4 @@
-<app-tournaments-edit-name-input [name]="tournament.name" (nameCtrlReady)="nameCtrl=$event"></app-tournaments-edit-name-input>
-<app-tournaments-edit-description-input [description]="tournament.description" (descriptionCtrlReady)="descriptionCtrl = $event"></app-tournaments-edit-description-input>
+<app-tournaments-edit-name-input (nameCtrlReady)="nameCtrl=$event"
+                                 [name]="tournament.name"></app-tournaments-edit-name-input>
+<app-tournaments-edit-description-input (descriptionCtrlReady)="descriptionCtrl = $event"
+                                        [description]="tournament.description"></app-tournaments-edit-description-input>

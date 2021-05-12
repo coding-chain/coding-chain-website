@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {SortOrder} from "../../types/sort-order";
+import {SortOrder} from '../../types/sort-order';
 
 @Component({
   selector: 'app-sort-by-arrows',
@@ -19,8 +19,11 @@ export class SortByArrowsComponent implements OnInit {
   }
 
   switchOrder() {
-    if (this.order === 'asc') this.order = 'desc';
-    else this.order = 'asc';
+    if (this.order === 'asc') {
+      this.order = 'desc';
+    } else {
+      this.order = 'asc';
+    }
     this.orderChanged.emit(this.order);
   }
 }

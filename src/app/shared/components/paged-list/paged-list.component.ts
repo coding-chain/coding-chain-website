@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {PageCursor} from "../../models/pagination/page-cursor";
-import {PageEvent} from "@angular/material/paginator";
+import {PageCursor} from '../../models/pagination/page-cursor';
+import {PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-paged-list',
@@ -17,12 +17,13 @@ export class PagedListComponent implements OnInit {
   disabled = false;
 
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
 
-  changePage(page: number){
+  changePage(page: number) {
     this.cursor?.toPage(page);
   }
 

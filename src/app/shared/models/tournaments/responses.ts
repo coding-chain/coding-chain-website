@@ -1,6 +1,6 @@
-import {IStepNavigation} from "../steps/responses";
+import {IStepNavigation} from '../steps/responses';
 
-export interface ITournamentStepNavigation extends IStepNavigation{
+export interface ITournamentStepNavigation extends IStepNavigation {
   stepId: string;
   tournamentId: string;
   isOptional: boolean;
@@ -11,7 +11,7 @@ export interface ITournamentStepNavigation extends IStepNavigation{
 export interface ITournamentNavigation {
   id: string;
   name: string;
-  description:string;
+  description: string;
   isPublished: boolean;
   startDate: Date;
   endDate?: Date;

@@ -1,4 +1,4 @@
-export  interface IParticipationNavigation {
+export interface IParticipationNavigation {
   id: string;
   teamId: string;
   tournamentId: string;

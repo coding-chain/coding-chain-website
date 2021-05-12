@@ -1,11 +1,11 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {ProfileRootComponent} from './profile-root/profile-root.component';
 import {ProfileEditComponent} from './profile-edit/profile-edit.component';
 
 const routes: Routes = [
 
-  { path: ':id', pathMatch: 'full', redirectTo: ':id/edit'},
+  {path: ':id', pathMatch: 'full', redirectTo: ':id/edit'},
   {
     path: ':id', component: ProfileRootComponent, children: [
       {path: 'edit', component: ProfileEditComponent}
@@ -17,4 +17,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ProfileRoutingModule { }
+export class ProfileRoutingModule {
+}

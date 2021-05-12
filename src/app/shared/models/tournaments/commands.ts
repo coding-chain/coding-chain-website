@@ -1,4 +1,4 @@
-export interface ICreateTournamentCommand{
+export interface ICreateTournamentCommand {
   name: string;
   description: string;
 }
@@ -11,11 +11,12 @@ export interface IUpdateTournamentCommand {
   endDate?: Date;
 }
 
-export interface ITournamentStep{
+export interface ITournamentStep {
   stepId: string;
   isOptional: boolean;
   order: number;
 }
-export interface ISetTournamentStepsCommand{
+
+export interface ISetTournamentStepsCommand {
   steps: ITournamentStep[];
 }

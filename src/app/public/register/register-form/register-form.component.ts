@@ -1,6 +1,6 @@
-import {Component, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {eqCtrlsValidator, eqValidator} from '../../../shared/validators/value.validators';
+import {eqCtrlsValidator} from '../../../shared/validators/value.validators';
 import {RegisterUser} from '../../../shared/models/users/register-user';
 
 @Component({

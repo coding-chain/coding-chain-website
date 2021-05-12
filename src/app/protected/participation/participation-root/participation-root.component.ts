@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-participation-root',
   templateUrl: './participation-root.component.html',
-  styles: [
-  ]
+  styles: []
 })
 export class ParticipationRootComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }

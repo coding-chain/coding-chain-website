@@ -8,9 +8,9 @@ describe('PagedListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PagedListComponent ]
+      declarations: [PagedListComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

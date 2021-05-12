@@ -1,8 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ICreateTournamentCommand} from "../../../shared/models/tournaments/commands";
-import {TournamentService} from "../../../core/services/http/tournament.service";
-import Swal from "sweetalert2";
-import {TournamentsCreateFormComponent} from "../tournaments-create-form/tournaments-create-form.component";
+import {ICreateTournamentCommand} from '../../../shared/models/tournaments/commands';
+import {TournamentService} from '../../../core/services/http/tournament.service';
+import Swal from 'sweetalert2';
+import {TournamentsCreateFormComponent} from '../tournaments-create-form/tournaments-create-form.component';
 
 @Component({
   selector: 'app-tournaments-create',
@@ -12,6 +12,7 @@ import {TournamentsCreateFormComponent} from "../tournaments-create-form/tournam
 export class TournamentsCreateComponent implements OnInit {
 
   @ViewChild(TournamentsCreateFormComponent) form: TournamentsCreateFormComponent;
+
   constructor(private readonly tournamentService: TournamentService) {
   }
 
@@ -25,7 +26,7 @@ export class TournamentsCreateComponent implements OnInit {
           icon: 'success',
           title: 'Succès',
           text: 'Tournois créé'
-        })
+        });
         this.form.reset();
       },
       err => Swal.fire({

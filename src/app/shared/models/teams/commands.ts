@@ -1,12 +1,12 @@
-export interface ICreateTeamCommand{
+export interface ICreateTeamCommand {
   name: string;
 }
 
-export interface IRenameTeamCommand{
+export interface IRenameTeamCommand {
   name: string;
 }
 
-export interface IAddMemberToTeamCommand{
+export interface IAddMemberToTeamCommand {
   memberId: string;
 }
 

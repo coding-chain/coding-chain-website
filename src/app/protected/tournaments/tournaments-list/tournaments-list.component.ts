@@ -1,15 +1,15 @@
 import {Component, OnInit} from '@angular/core';
-import {TournamentService} from "../../../core/services/http/tournament.service";
-import {PageCursor} from "../../../shared/models/pagination/page-cursor";
-import {BehaviorSubject, Observable} from "rxjs";
-import {IProgrammingLanguageNavigation} from "../../../shared/models/programming-languages/responses";
-import {LanguageService} from "../../../core/services/http/language.service";
-import {tap} from "rxjs/operators";
-import {ITournamentsFilter} from "../../../shared/models/tournaments/filters";
-import {GetParams} from "../../../shared/models/http/get.params";
-import {UserStateService} from "../../../core/services/user-state.service";
-import {ConnectedUser} from "../../../shared/models/users/connected-user";
-import {ITournamentResume} from "../../../shared/models/tournaments/tournament-resume";
+import {TournamentService} from '../../../core/services/http/tournament.service';
+import {PageCursor} from '../../../shared/models/pagination/page-cursor';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {IProgrammingLanguageNavigation} from '../../../shared/models/programming-languages/responses';
+import {LanguageService} from '../../../core/services/http/language.service';
+import {tap} from 'rxjs/operators';
+import {ITournamentsFilter} from '../../../shared/models/tournaments/filters';
+import {GetParams} from '../../../shared/models/http/get.params';
+import {UserStateService} from '../../../core/services/user-state.service';
+import {ConnectedUser} from '../../../shared/models/users/connected-user';
+import {ITournamentResume} from '../../../shared/models/tournaments/tournament-resume';
 
 @Component({
   selector: 'app-tournaments-list',
@@ -18,15 +18,15 @@ import {ITournamentResume} from "../../../shared/models/tournaments/tournament-r
 })
 export class TournamentsListComponent implements OnInit {
   tournamentCursor: PageCursor<ITournamentResume, ITournamentsFilter>;
-  tournaments$ = new BehaviorSubject<ITournamentResume[]>([])
+  tournaments$ = new BehaviorSubject<ITournamentResume[]>([]);
   languages$: Observable<IProgrammingLanguageNavigation[]>;
   currentUser$: Observable<ConnectedUser>;
   private _tournaments: ITournamentResume[];
 
   constructor(private readonly _tournamentService: TournamentService, private readonly _languageService: LanguageService, private readonly _userStateService: UserStateService) {
-    this.tournamentCursor = this._tournamentService.getTournamentResumeCursor()
+    this.tournamentCursor = this._tournamentService.getTournamentResumeCursor();
     this.tournamentCursor.resultsSubject$.subscribe(tournaments => {
-      this.tournaments$.next(tournaments)
+      this.tournaments$.next(tournaments);
       this._tournaments = tournaments;
     });
     this.tournamentCursor.current();
@@ -38,7 +38,7 @@ export class TournamentsListComponent implements OnInit {
   }
 
   searchTournaments($filter: GetParams<ITournamentResume, ITournamentsFilter>) {
-    this.tournamentCursor.updateFilter($filter)
+    this.tournamentCursor.updateFilter($filter);
     this.tournamentCursor.current();
   }
 }

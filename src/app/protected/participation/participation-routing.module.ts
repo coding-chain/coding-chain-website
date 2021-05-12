@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {ParticipationRootComponent} from "./participation-root/participation-root.component";
-import {ParticipationPageComponent} from "./participation-page/participation-page.component";
+import {ParticipationRootComponent} from './participation-root/participation-root.component';
+import {ParticipationPageComponent} from './participation-page/participation-page.component';
 
 const routes: Routes = [
   {

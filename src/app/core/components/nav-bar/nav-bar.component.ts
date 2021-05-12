@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {UserStateService} from '../../services/user-state.service';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {PublicUser} from '../../../shared/models/users/responses';
+import {BehaviorSubject} from 'rxjs';
 import {ConnectedUser} from '../../../shared/models/users/connected-user';
 import {AuthenticationService} from '../../services/http/authentication.service';
 

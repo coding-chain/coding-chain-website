@@ -14,7 +14,7 @@ export function eqCtrlValidator(otherCtrl: AbstractControl): ValidatorFn {
 
 export function eqCtrlsValidator(ctrls: AbstractControl[]): ValidatorFn {
   return (ctrl: AbstractControl): ValidationErrors | null => {
-    return ctrls.every(subCtrl => subCtrl.value === ctrls[0].value) ?   null: {eqValidatorErr: true};
+    return ctrls.every(subCtrl => subCtrl.value === ctrls[0].value) ? null : {eqValidatorErr: true};
   };
 }
 

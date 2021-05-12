@@ -1,9 +1,9 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
-import { ProfileRoutingModule } from './profile-routing.module';
-import { ProfileRootComponent } from './profile-root/profile-root.component';
-import { ProfileEditComponent } from './profile-edit/profile-edit.component';
+import {ProfileRoutingModule} from './profile-routing.module';
+import {ProfileRootComponent} from './profile-root/profile-root.component';
+import {ProfileEditComponent} from './profile-edit/profile-edit.component';
 
 
 @NgModule({
@@ -16,4 +16,5 @@ import { ProfileEditComponent } from './profile-edit/profile-edit.component';
     ProfileRoutingModule
   ]
 })
-export class ProfileModule { }
+export class ProfileModule {
+}

@@ -7,7 +7,7 @@ export interface IStepNavigation {
   maxFunctionsCount?: number
   score: number;
   difficulty: number;
-  headerCode?:string;
+  headerCode?: string;
   testIds: string[];
   tournamentIds: string[];
   participationIds: string[];

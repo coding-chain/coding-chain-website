@@ -1,6 +1,6 @@
 export interface ITournamentsFilter {
-    languageId: string;
-    name: string;
-    participantId: string;
+  languageId: string;
+  name: string;
+  participantId: string;
 }
 

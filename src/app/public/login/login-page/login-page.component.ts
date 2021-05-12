@@ -4,7 +4,7 @@ import {AuthenticationService} from '../../../core/services/http/authentication.
 import {LoginUser} from '../../../shared/models/users/login-user';
 import Swal from 'sweetalert2';
 import {UserStateService} from 'src/app/core/services/user-state.service';
-import { ConnectedUser } from 'src/app/shared/models/users/connected-user';
+import {ConnectedUser} from 'src/app/shared/models/users/connected-user';
 
 @Component({
   selector: 'app-login-page',

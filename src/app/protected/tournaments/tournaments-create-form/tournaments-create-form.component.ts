@@ -1,6 +1,6 @@
-import {Component, OnInit, Output, EventEmitter} from '@angular/core';
-import {ICreateTournamentCommand} from "../../../shared/models/tournaments/commands";
-import {FormBuilder, FormControl, FormGroup, MinLengthValidator, Validators} from "@angular/forms";
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {ICreateTournamentCommand} from '../../../shared/models/tournaments/commands';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-tournaments-create-form',
@@ -14,19 +14,7 @@ export class TournamentsCreateFormComponent implements OnInit {
   tournamentGrp: FormGroup;
 
   constructor(fb: FormBuilder) {
-    this.tournamentGrp = fb.group({})
-  }
-
-  ngOnInit(): void {
-
-  }
-
-  reset(){
-    this.tournamentGrp.reset();
-  }
-
-  createTournament() {
-    this.creationSubmitted.emit(this.tournamentGrp.value)
+    this.tournamentGrp = fb.group({});
   }
 
   set nameCtrl(nameCtrl$: FormControl) {
@@ -35,5 +23,17 @@ export class TournamentsCreateFormComponent implements OnInit {
 
   set descriptionCtrl(descriptionCtrl$: FormControl) {
     this.tournamentGrp.setControl('description', descriptionCtrl$);
+  }
+
+  ngOnInit(): void {
+
+  }
+
+  reset() {
+    this.tournamentGrp.reset();
+  }
+
+  createTournament() {
+    this.creationSubmitted.emit(this.tournamentGrp.value);
   }
 }

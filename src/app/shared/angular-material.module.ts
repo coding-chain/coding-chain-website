@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 import {MatTabsModule} from '@angular/material/tabs';
-import { MatButtonModule} from '@angular/material/button';
+import {MatButtonModule} from '@angular/material/button';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -41,7 +41,6 @@ import {MatBadgeModule} from '@angular/material/badge';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatDividerModule} from '@angular/material/divider';
-
 
 
 @NgModule({
@@ -136,4 +135,5 @@ import {MatDividerModule} from '@angular/material/divider';
     ScrollingModule
   ]
 })
-export class AngularMaterialModule { }
+export class AngularMaterialModule {
+}

@@ -1,10 +1,12 @@
 <form [formGroup]="filterGrp" class="row align-items-center">
-    <app-languages-selector   class="col-3"[languages]="languageId" (languagesCtrlReady)="languagesCtrl = $event">
-    </app-languages-selector>
-    <app-tournament-name-filter-input class="col-3" (ctrlReady)="tournamentCtrl = $event"></app-tournament-name-filter-input>
-    <app-sort-by-arrows  class="col-3" [order]="nameOrder" (orderChanged)="nameOrder = $event"></app-sort-by-arrows>
-    <app-tournaments-in-team-filter-input [inMyTeam]="false" (inMyTeamCtrlReady)="inMyTeamCtrl = $event"></app-tournaments-in-team-filter-input>
+  <app-languages-selector (languagesCtrlReady)="languagesCtrl = $event" [languages]="languageId" class="col-3">
+  </app-languages-selector>
+  <app-tournament-name-filter-input (ctrlReady)="tournamentCtrl = $event"
+                                    class="col-3"></app-tournament-name-filter-input>
+  <app-sort-by-arrows (orderChanged)="nameOrder = $event" [order]="nameOrder" class="col-3"></app-sort-by-arrows>
+  <app-tournaments-in-team-filter-input (inMyTeamCtrlReady)="inMyTeamCtrl = $event"
+                                        [inMyTeam]="false"></app-tournaments-in-team-filter-input>
   <div class="col-3">
-    <button  class="ml-2" mat-stroked-button  id="filter-button" type="submit"  (click)="updateForm()">Filtrer</button>
+    <button (click)="updateForm()" class="ml-2" id="filter-button" mat-stroked-button type="submit">Filtrer</button>
   </div>
 </form>

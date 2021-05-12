@@ -1,8 +1,7 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ProtectedRootComponent } from './protected-root/protected-root.component';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {ProtectedRootComponent} from './protected-root/protected-root.component';
 import {ProtectedRoutingModule} from './protected-routing.module';
-
 
 
 @NgModule({
@@ -14,4 +13,5 @@ import {ProtectedRoutingModule} from './protected-routing.module';
     ProtectedRoutingModule
   ]
 })
-export class ProtectedModule { }
+export class ProtectedModule {
+}

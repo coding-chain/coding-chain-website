@@ -2,16 +2,16 @@
   <div class="w-75">
 
     <ng-container *ngIf="user$ | async as user">
-      <a class="nav-link" data-toggle="tab" id="participationLink" mat-tab-link [routerLink]="['/participation']"
+      <a [routerLink]="['/participation']" class="nav-link" data-toggle="tab" id="participationLink" mat-tab-link
          routerLinkActive="active">Temporary participation access</a>
-      <a class="nav-link" data-toggle="tab" id="tournmanentsLink" mat-tab-link [routerLink]="['/tournaments']"
+      <a [routerLink]="['/tournaments']" class="nav-link" data-toggle="tab" id="tournmanentsLink" mat-tab-link
          routerLinkActive="active">Tournois</a>
     </ng-container>
-    <a *ngIf="!(user$ | async) as user" class="nav-link" data-toggle="tab" id="loginLink" mat-tab-link
-       [routerLink]="['/login']" routerLinkActive="active">Connexion</a>
+    <a *ngIf="!(user$ | async) as user" [routerLink]="['/login']" class="nav-link" data-toggle="tab" id="loginLink"
+       mat-tab-link routerLinkActive="active">Connexion</a>
 
-    <a class="nav-link" data-toggle="tab" id="homeLink" mat-tab-link [routerLink]="['/home']" routerLinkActive="active">Accueil</a>
-    <a class="nav-link" data-toggle="tab" id="contactLink" mat-tab-link [routerLink]="['/contact']"
+    <a [routerLink]="['/home']" class="nav-link" data-toggle="tab" id="homeLink" mat-tab-link routerLinkActive="active">Accueil</a>
+    <a [routerLink]="['/contact']" class="nav-link" data-toggle="tab" id="contactLink" mat-tab-link
        routerLinkActive="active">Contact</a>
   </div>
   <div class="d-flex w-25 justify-content-end">

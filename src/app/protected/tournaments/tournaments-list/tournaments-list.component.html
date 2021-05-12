@@ -1,6 +1,7 @@
-<app-tournaments-filter-form class="col my-3" [languageId]="languages$ | async"
-                             (filterChanged)="searchTournaments($event)"
-                             [currentUserId]="(currentUser$ | async).id"></app-tournaments-filter-form>
-<app-tournaments-item *ngFor="let tournament of tournaments$|async" class="row my-2" [tournament]="tournament" [currentUser]="currentUser$ | async">
+<app-tournaments-filter-form (filterChanged)="searchTournaments($event)" [currentUserId]="(currentUser$ | async).id"
+                             [languageId]="languages$ | async"
+                             class="col my-3"></app-tournaments-filter-form>
+<app-tournaments-item *ngFor="let tournament of tournaments$|async" [currentUser]="currentUser$ | async" [tournament]="tournament"
+                      class="row my-2">
 </app-tournaments-item>
 <app-paged-list [cursor]="tournamentCursor"></app-paged-list>

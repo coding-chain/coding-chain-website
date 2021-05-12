@@ -1,7 +1,7 @@
 import {FormGroup} from '@angular/forms';
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 
-@Component({template:''})
+@Component({template: ''})
 export abstract class FilterComponentBase<T> {
   filterGrp: FormGroup;
 
@@ -14,10 +14,10 @@ export abstract class FilterComponentBase<T> {
   @Output()
   filterIsReset = new EventEmitter<boolean>();
 
-  protected setFilterValue<K extends keyof T>(key: keyof T , val: T[K]){
+  abstract reset(): void;
+
+  protected setFilterValue<K extends keyof T>(key: keyof T, val: T[K]) {
     this.filter[key] = val;
   }
-
-  abstract reset(): void;
 
 }

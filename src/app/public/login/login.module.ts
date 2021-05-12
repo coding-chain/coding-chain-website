@@ -1,10 +1,10 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
-import { LoginRoutingModule } from './login-routing.module';
-import { LoginRootComponent } from './login-root/login-root.component';
-import { LoginPageComponent } from './login-page/login-page.component';
-import { LoginFormComponent } from './login-form/login-form.component';
+import {LoginRoutingModule} from './login-routing.module';
+import {LoginRootComponent} from './login-root/login-root.component';
+import {LoginPageComponent} from './login-page/login-page.component';
+import {LoginFormComponent} from './login-form/login-form.component';
 import {SharedModule} from '../../shared/shared.module';
 
 
@@ -20,4 +20,5 @@ import {SharedModule} from '../../shared/shared.module';
     SharedModule
   ]
 })
-export class LoginModule { }
+export class LoginModule {
+}

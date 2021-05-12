@@ -1,16 +1,9 @@
-import {Injectable} from "@angular/core";
-import {
-  HttpErrorResponse,
-  HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest,
-  HttpResponse
-} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {map, tap} from "rxjs/operators";
-import {HateoasResponse} from "../../../shared/models/pagination/hateoas-response";
-import {HateoasPageResponse} from "../../../shared/models/pagination/hateoas-page-response";
+import {Injectable} from '@angular/core';
+import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {HateoasResponse} from '../../../shared/models/pagination/hateoas-response';
+import {HateoasPageResponse} from '../../../shared/models/pagination/hateoas-page-response';
 
 @Injectable()
 export class HateoasInterceptor implements HttpInterceptor {
@@ -36,14 +29,12 @@ export class HateoasInterceptor implements HttpInterceptor {
   convertToHateoas(body: any): HateoasResponse<any> | HateoasPageResponse<any> | any {
     if (body?.links && body?.result) {
       if (body?.total !== null && body?.total !== undefined) {
-        return new HateoasPageResponse(body)
+        return new HateoasPageResponse(body);
       }
       return new HateoasResponse(body);
     }
     return body;
   }
-
-
 
 
 }

@@ -5,11 +5,11 @@ import {EMPTY, forkJoin, Observable, of} from 'rxjs';
 import {ApiHelperService} from './api-helper.service';
 import {catchError, map, switchMap, tap} from 'rxjs/operators';
 import {LoginUser} from '../../../shared/models/users/login-user';
-import {PublicUser, UserToken} from "../../../shared/models/users/responses";
-import {RegisterUserCommand} from "../../../shared/models/users/requests";
-import {ConnectedUser} from "../../../shared/models/users/connected-user";
-import {RightService} from "./right.service";
-import {TeamService} from "./team.service";
+import {PublicUser, UserToken} from '../../../shared/models/users/responses';
+import {RegisterUserCommand} from '../../../shared/models/users/requests';
+import {ConnectedUser} from '../../../shared/models/users/connected-user';
+import {RightService} from './right.service';
+import {TeamService} from './team.service';
 
 @Injectable({
   providedIn: 'root'

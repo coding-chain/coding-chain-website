@@ -10,8 +10,7 @@ import {SharedModule} from '../shared/shared.module';
 import {AuthenticationService} from './services/http/authentication.service';
 import {UserStateService} from './services/user-state.service';
 import {MatButtonModule} from '@angular/material/button';
-import {HateoasResponse} from "../shared/models/pagination/hateoas-response";
-import {HateoasInterceptor} from "./commons/interceptors/hateoas.interceptor";
+import {HateoasInterceptor} from './commons/interceptors/hateoas.interceptor';
 
 
 @NgModule({

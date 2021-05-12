@@ -5,7 +5,7 @@
   <form (ngSubmit)="attemptLogin()" [formGroup]="userLoginForm" class="my-2">
     <div class=" d-flex  flex-column" id="user-data">
       <mat-form-field appearance="outline" class="w-100 mx-auto">
-        <mat-label >Email</mat-label>
+        <mat-label>Email</mat-label>
         <input [formControl]="emailCtrl" id="email" matInput type="text">
         <mat-error *ngIf="emailCtrl.hasError('email') && !emailCtrl.hasError('required')">
           Rentrer un email valide
@@ -15,8 +15,8 @@
         </mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline" class="w-100 mx-auto">
-        <mat-label >Mot de passe</mat-label>
-        <input  [formControl]="userPwdCtrl" id="password" autocomplete="current-password" matInput type="password">
+        <mat-label>Mot de passe</mat-label>
+        <input [formControl]="userPwdCtrl" autocomplete="current-password" id="password" matInput type="password">
         <mat-hint><a class="mat-accent" routerLink="/recovery">Mot de passe oublié ?</a></mat-hint>
         <mat-error *ngIf="userPwdCtrl.hasError('required')">
           Le mot de passe est <strong>nécessaire</strong>
@@ -32,7 +32,7 @@
     </div>
   </form>
   <div class="d-flex  justify-content-center mt-3">
-    <button color="accent" mat-button [routerLink]="['/register']">Créer un compte</button>
+    <button [routerLink]="['/register']" color="accent" mat-button>Créer un compte</button>
   </div>
 </mat-card>
 

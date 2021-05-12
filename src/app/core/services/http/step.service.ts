@@ -8,10 +8,8 @@ import {map} from 'rxjs/operators';
 import {PageCursor} from '../../../shared/models/pagination/page-cursor';
 import {IStepNavigation} from '../../../shared/models/steps/responses';
 import {GetParams} from '../../../shared/models/http/get.params';
-import {ICreateTeamCommand} from '../../../shared/models/teams/commands';
 import {IAddTestCommand, ICreateStepCommand, IUpdateStepCommand} from '../../../shared/models/steps/commands';
 import {ITestNavigation} from '../../../shared/models/tests/responses';
-import {IRightNavigation} from '../../../shared/models/rights/responses';
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +35,7 @@ export class StepService extends ApiHelperService {
   }
 
   public getAllTests(id: string): Observable<ITestNavigation[]> {
-    return this.fetchAll<ITestNavigation>({url: `${this.apiUrl}/tests`}).pipe(
+    return this.fetchAll<ITestNavigation>({url: `${this.apiUrl}/${id}/tests`}).pipe(
       map(tests => tests.map(t => t.result))
     );
   }
@@ -75,3 +73,5 @@ export class StepService extends ApiHelperService {
   }
 
 }
+
+

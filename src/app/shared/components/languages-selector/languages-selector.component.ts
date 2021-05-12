@@ -1,5 +1,5 @@
-import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
-import {FormBuilder, FormControl} from "@angular/forms";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FormBuilder, FormControl} from '@angular/forms';
 
 export interface ISelectableLanguage {
   id: string;
@@ -19,7 +19,7 @@ export class LanguagesSelectorComponent implements OnInit {
 
   languageCtrl: FormControl;
 
-  constructor(private readonly  _fb: FormBuilder) {
+  constructor(private readonly _fb: FormBuilder) {
   }
 
   ngOnInit(): void {

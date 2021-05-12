@@ -15,12 +15,13 @@ export class TotalComponent implements OnInit {
 
 
   @Input()
-  cnt: number
+  cnt: number;
 
   @Input()
   cntTipMsg: string;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }

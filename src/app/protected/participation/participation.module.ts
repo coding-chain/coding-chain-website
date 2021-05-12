@@ -1,9 +1,9 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
-import { ParticipationRoutingModule } from './participation-routing.module';
-import { ParticipationRootComponent } from './participation-root/participation-root.component';
-import { ParticipationPageComponent } from './participation-page/participation-page.component';
+import {ParticipationRoutingModule} from './participation-routing.module';
+import {ParticipationRootComponent} from './participation-root/participation-root.component';
+import {ParticipationPageComponent} from './participation-page/participation-page.component';
 
 
 @NgModule({
@@ -16,4 +16,5 @@ import { ParticipationPageComponent } from './participation-page/participation-p
     ParticipationRoutingModule
   ]
 })
-export class ParticipationModule { }
+export class ParticipationModule {
+}

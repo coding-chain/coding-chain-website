@@ -1,7 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Subscription} from 'rxjs';
-import {TournamentService} from '../../../core/services/http/tournament.service';
+import {Component, Input, OnInit} from '@angular/core';
 import {ITournamentEdition} from '../../../shared/models/tournaments/tournament-edition';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 
@@ -12,22 +9,27 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 })
 export class TournamentsEditFormComponent implements OnInit {
 
+  @Input() tournament: ITournamentEdition;
+  formGroup: FormGroup;
+
   constructor(fb: FormBuilder) {
     this.formGroup = fb.group({});
   }
-  @Input() tournament: ITournamentEdition;
-  formGroup: FormGroup;
+
   private _descriptionCtrl: FormControl;
+
+  set descriptionCtrl(ctrl: FormControl) {
+    this._descriptionCtrl = ctrl;
+    this.formGroup.setControl('description', this._descriptionCtrl);
+  }
+
   private _nameCtrl: FormControl;
 
   set nameCtrl(ctrl: FormControl) {
     this._nameCtrl = ctrl;
     this.formGroup.setControl('name', this._nameCtrl);
   }
-  set descriptionCtrl(ctrl: FormControl) {
-    this._descriptionCtrl = ctrl;
-    this.formGroup.setControl('description', this._descriptionCtrl);
-  }
+
   ngOnInit(): void {
   }
 

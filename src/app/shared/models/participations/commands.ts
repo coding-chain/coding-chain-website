@@ -1,4 +1,4 @@
-export interface ICreateParticipationCommand{
+export interface ICreateParticipationCommand {
   tournamentId: string;
   stepId: string;
   teamId: string;

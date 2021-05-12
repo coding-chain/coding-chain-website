@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {NavigationEnd, NavigationStart, Router} from '@angular/router';
 import {UserStateService} from './core/services/user-state.service';
 
@@ -9,6 +9,7 @@ import {UserStateService} from './core/services/user-state.service';
 })
 export class AppComponent {
   loading: boolean;
+
   constructor(private readonly router: Router, private readonly userStateService: UserStateService) {
     this.userStateService.loadUser();
     this.loading = false;

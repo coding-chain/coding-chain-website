@@ -1,4 +1,4 @@
-<button mat-icon-button (click)="switchOrder()">
+<button (click)="switchOrder()" mat-icon-button>
   <mat-icon *ngIf="order == 'desc'">arrow_downward</mat-icon>
   <mat-icon *ngIf="order == 'asc'">arrow_upward</mat-icon>
 </button>

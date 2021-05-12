@@ -13,8 +13,10 @@ export class RegisterPageComponent implements OnInit {
 
   constructor(private authService: AuthenticationService, private router: Router) {
   }
+
   ngOnInit(): void {
   }
+
   createUser(user: RegisterUser): void {
     this.authService.register(user).subscribe(
       value => this.router.navigate(['/home']),

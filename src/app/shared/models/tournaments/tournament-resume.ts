@@ -1,11 +1,11 @@
-import {IProgrammingLanguageNavigation} from "../programming-languages/responses";
-import {IParticipationNavigation} from "../participations/responses";
+import {IProgrammingLanguageNavigation} from '../programming-languages/responses';
+import {IParticipationNavigation} from '../participations/responses';
 import {ITournamentNavigation, ITournamentStepNavigation} from './responses';
 
-export interface ITournamentResume extends ITournamentNavigation{
+export interface ITournamentResume extends ITournamentNavigation {
   id: string;
   name: string;
-  description:string;
+  description: string;
   isPublished: boolean;
   startDate: Date;
   endDate?: Date;

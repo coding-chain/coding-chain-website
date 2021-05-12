@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 
@@ -8,19 +8,20 @@ import {switchMap} from 'rxjs/operators';
 })
 export class ImageService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   getData(url: string): Observable<string> {
-    return this.http.get(url, { responseType: 'blob' })
+    return this.http.get(url, {responseType: 'blob'})
       .pipe(
         switchMap(response => this.readFile(response))
       );
   }
 
-  saveFile(url: string, file: File ): Observable<any>{
+  saveFile(url: string, file: File): Observable<any> {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post(url, formData );
+    return this.http.post(url, formData);
   }
 
   private readFile(blob: Blob): Observable<string> {

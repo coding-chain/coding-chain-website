@@ -4,8 +4,8 @@ import {QueryEnum} from '../types/query.enum';
 import {ObjectUtils} from './object.utils';
 import {GramOrderEnum} from '../types/gram-order.enum';
 import * as Case from 'case';
-import {GetParams} from "../models/http/get.params";
-import * as _ from "lodash";
+import {GetParams} from '../models/http/get.params';
+import * as _ from 'lodash';
 
 export class UrlUtils {
 
@@ -17,14 +17,14 @@ export class UrlUtils {
   }
 
   static getQueryFromArr<T>(arr: T[], suffix: string, order: QueryEnum): KeyValue<string, any>[] {
-    return _.compact(arr)?.map(col => ({key: Case.camel(`${col}${suffix}`), value: Case.camel(order)})) ?? []
+    return _.compact(arr)?.map(col => ({key: Case.camel(`${col}${suffix}`), value: Case.camel(order)})) ?? [];
   }
 
   static getPagination(obj: GetParams<any>): KeyValue<string, any>[] {
     return [
       {key: Case.camel(QueryEnum.PAGE), value: obj.page},
       {key: Case.camel(QueryEnum.SIZE), value: obj.size}
-    ]
+    ];
   }
 
   static getUrlWithQueries(baseUrl: string, ...params: KeyValue<string, any>[]): URL {

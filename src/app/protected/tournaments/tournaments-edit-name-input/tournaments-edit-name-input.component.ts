@@ -1,5 +1,5 @@
-import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
-import {Form, FormBuilder, FormControl, Validators} from "@angular/forms";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FormBuilder, FormControl, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-tournaments-edit-name-input',
@@ -8,16 +8,17 @@ import {Form, FormBuilder, FormControl, Validators} from "@angular/forms";
 })
 export class TournamentsEditNameInputComponent implements OnInit {
 
-  @Input() set name(name: string){
-    this.nameCtrl.setValue(name);
-  }
   @Output() nameCtrlReady = new EventEmitter<FormControl>();
-  nameCtrl: FormControl
-  @Input() maxNameLength = 50
-  @Input() minNameLength = 5
+  nameCtrl: FormControl;
+  @Input() maxNameLength = 50;
+  @Input() minNameLength = 5;
 
   constructor(private fb: FormBuilder) {
-    this.nameCtrl = fb.control('', [Validators.minLength(this.minNameLength), Validators.maxLength(this.maxNameLength)])
+    this.nameCtrl = fb.control('', [Validators.minLength(this.minNameLength), Validators.maxLength(this.maxNameLength)]);
+  }
+
+  @Input() set name(name: string) {
+    this.nameCtrl.setValue(name);
   }
 
   ngOnInit(): void {

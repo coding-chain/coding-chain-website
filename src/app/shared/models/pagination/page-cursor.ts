@@ -1,10 +1,7 @@
-import {BehaviorSubject, Observable} from "rxjs";
-import {ApiHelperService, PageFunction} from "../../../core/services/http/api-helper.service";
-import {GetParams} from "../http/get.params";
-import {HateoasResponse} from "./hateoas-response";
-import * as _ from "lodash";
-import {HateoasPageResponse} from "./hateoas-page-response";
-
+import {BehaviorSubject} from 'rxjs';
+import {PageFunction} from '../../../core/services/http/api-helper.service';
+import {GetParams} from '../http/get.params';
+import * as _ from 'lodash';
 
 
 export class PageCursor<TResult, TFilter> {
@@ -20,19 +17,11 @@ export class PageCursor<TResult, TFilter> {
     this.pageSubjectFunction = pageSubjectFunction;
     this.filter = filter;
   }
-  clone(filter:  TFilter): PageCursor<TResult, TFilter>{
-    const newFilter = {...this.filter, filterObj: filter};
-    return new PageCursor(this.pageSubjectFunction, newFilter);
-  }
 
-  updateFilter(filter:  GetParams<TResult, TFilter>){
-    this.filter = {...this.filter, filterObj: filter.filterObj, descOrderColumns: filter.descOrderColumns, ascOrderColumns: filter.ascOrderColumns};
-  }
-
-  private _availableSizes = [10, 20, 50]
+  private _availableSizes = [10, 20, 50];
 
   get availableSizes(): number[] {
-    return this._availableSizes.slice()
+    return this._availableSizes.slice();
   }
 
   set availableSizes(sizes: number[]) {
@@ -62,11 +51,27 @@ export class PageCursor<TResult, TFilter> {
     }
   }
 
+  clone(filter: TFilter): PageCursor<TResult, TFilter> {
+    const newFilter = {...this.filter, filterObj: filter};
+    return new PageCursor(this.pageSubjectFunction, newFilter);
+  }
+
+  updateFilter(filter: GetParams<TResult, TFilter>) {
+    this.filter = {
+      ...this.filter,
+      filterObj: filter.filterObj,
+      descOrderColumns: filter.descOrderColumns,
+      ascOrderColumns: filter.ascOrderColumns
+    };
+  }
+
   setPageSizeAndPage(pageSize: number, page: number) {
-    if (page > this._totalPages || page < 1) return;
+    if (page > this._totalPages || page < 1) {
+      return;
+    }
     const pageChanged = this.filter.page !== page;
     const sizeChanged = pageSize !== this.filter.size;
-    if (pageChanged || sizeChanged){
+    if (pageChanged || sizeChanged) {
       this.filter.page = page;
       this.filter.size = pageSize;
       this.sendRequest();
@@ -96,8 +101,10 @@ export class PageCursor<TResult, TFilter> {
   }
 
   toPage(page: number) {
-    if (page > this._totalPages || page < 1 || this.filter.page == page) return;
-    this.filter.page = page
+    if (page > this._totalPages || page < 1 || this.filter.page == page) {
+      return;
+    }
+    this.filter.page = page;
     this.sendRequest();
   }
 
@@ -109,7 +116,7 @@ export class PageCursor<TResult, TFilter> {
         this.hasPrevious = !!page.previousLink();
         this._totalValues = page.total;
         this.setTotalPagesFromTotalValuesCount(page.total);
-        this.resultsSubject$.next(subResults)
+        this.resultsSubject$.next(subResults);
       });
   }
 

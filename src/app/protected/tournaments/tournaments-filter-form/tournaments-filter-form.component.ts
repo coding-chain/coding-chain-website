@@ -1,13 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FilterComponentBase} from "../../../shared/components-bases/filter-component-base";
-import {IProgrammingLanguageNavigation} from "../../../shared/models/programming-languages/responses";
-import {Form, FormBuilder, FormControl} from "@angular/forms";
-import {ITournamentsFilter} from "../../../shared/models/tournaments/filters";
-import {GetParams} from "../../../shared/models/http/get.params";
-import {ITournamentNavigation} from "../../../shared/models/tournaments/responses";
-import {SortOrder} from "../../../shared/types/sort-order";
-import {map} from "rxjs/operators";
-import {ITournamentResume} from "../../../shared/models/tournaments/tournament-resume";
+import {FilterComponentBase} from '../../../shared/components-bases/filter-component-base';
+import {IProgrammingLanguageNavigation} from '../../../shared/models/programming-languages/responses';
+import {FormBuilder, FormControl} from '@angular/forms';
+import {ITournamentsFilter} from '../../../shared/models/tournaments/filters';
+import {GetParams} from '../../../shared/models/http/get.params';
+import {SortOrder} from '../../../shared/types/sort-order';
+import {ITournamentResume} from '../../../shared/models/tournaments/tournament-resume';
 
 @Component({
   selector: 'app-tournaments-filter-form',
@@ -17,7 +15,7 @@ import {ITournamentResume} from "../../../shared/models/tournaments/tournament-r
 export class TournamentsFilterFormComponent extends FilterComponentBase<GetParams<ITournamentResume, ITournamentsFilter>> implements OnInit {
   @Input() languageId: IProgrammingLanguageNavigation[];
 
-  @Input() nameOrder: SortOrder = "desc";
+  @Input() nameOrder: SortOrder = 'desc';
   @Input() currentUserId: string;
   _languageCtrl: FormControl;
   _nameCtrl: FormControl;
@@ -31,7 +29,7 @@ export class TournamentsFilterFormComponent extends FilterComponentBase<GetParam
 
   set inMyTeamCtrl(ctrl: FormControl) {
     this._inMyTeamCtrl = ctrl;
-    this.filterGrp.setControl('inMyTeam', ctrl)
+    this.filterGrp.setControl('inMyTeam', ctrl);
   }
 
   set languagesCtrl(ctrl: FormControl) {

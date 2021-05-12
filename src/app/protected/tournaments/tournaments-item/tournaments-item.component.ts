@@ -1,13 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ConnectedUser} from "../../../shared/models/users/connected-user";
-import {ITournamentNavigation} from "../../../shared/models/tournaments/responses";
-import {ITournamentResume} from "../../../shared/models/tournaments/tournament-resume";
+import {ConnectedUser} from '../../../shared/models/users/connected-user';
+import {ITournamentResume} from '../../../shared/models/tournaments/tournament-resume';
 
 @Component({
   selector: 'app-tournaments-item',
   templateUrl: './tournaments-item.component.html',
-  styles: [
-  ]
+  styles: []
 })
 export class TournamentsItemComponent implements OnInit {
 
@@ -15,7 +13,8 @@ export class TournamentsItemComponent implements OnInit {
   @Input() tournament: ITournamentResume;
 
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
