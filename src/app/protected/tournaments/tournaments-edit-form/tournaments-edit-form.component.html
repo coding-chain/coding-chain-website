@@ -1,4 +1,15 @@
-<app-tournaments-edit-name-input (nameCtrlReady)="nameCtrl=$event"
-                                 [name]="tournament.name"></app-tournaments-edit-name-input>
-<app-tournaments-edit-description-input (descriptionCtrlReady)="descriptionCtrl = $event"
-                                        [description]="tournament.description"></app-tournaments-edit-description-input>
+<div class="row align-items-center justify-content-around">
+  <div class="col-3">
+    <app-tournaments-edit-name-input  (nameCtrlReady)="nameCtrl=$event"
+                                      [name]="tournament.name"></app-tournaments-edit-name-input>
+  </div>
+
+  <div class="col-6">
+    <app-tournaments-edit-description-input  (descriptionCtrlReady)="descriptionCtrl = $event"
+                                             [description]="tournament.description"></app-tournaments-edit-description-input>
+  </div>
+
+    <button mat-stroked-button [disabled]="formGroup.invalid">Sauvegarder</button>
+</div>
+  <app-tournaments-edit-steps-list [steps]="tournament.steps" [languages]="languages"></app-tournaments-edit-steps-list>
+

@@ -1,15 +1,16 @@
 import {Component, OnInit} from '@angular/core';
 import {TournamentService} from '../../../core/services/http/tournament.service';
 import {PageCursor} from '../../../shared/models/pagination/page-cursor';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, forkJoin, Observable, of} from 'rxjs';
 import {IProgrammingLanguageNavigation} from '../../../shared/models/programming-languages/responses';
 import {LanguageService} from '../../../core/services/http/language.service';
-import {tap} from 'rxjs/operators';
+import {map, switchMap, tap} from 'rxjs/operators';
 import {ITournamentsFilter} from '../../../shared/models/tournaments/filters';
 import {GetParams} from '../../../shared/models/http/get.params';
 import {UserStateService} from '../../../core/services/user-state.service';
 import {ConnectedUser} from '../../../shared/models/users/connected-user';
 import {ITournamentResume} from '../../../shared/models/tournaments/tournament-resume';
+
 
 @Component({
   selector: 'app-tournaments-list',
@@ -23,6 +24,7 @@ export class TournamentsListComponent implements OnInit {
   currentUser$: Observable<ConnectedUser>;
   private _tournaments: ITournamentResume[];
 
+
   constructor(private readonly _tournamentService: TournamentService, private readonly _languageService: LanguageService, private readonly _userStateService: UserStateService) {
     this.tournamentCursor = this._tournamentService.getTournamentResumeCursor();
     this.tournamentCursor.resultsSubject$.subscribe(tournaments => {
@@ -33,6 +35,7 @@ export class TournamentsListComponent implements OnInit {
     this.languages$ = this._languageService.getAll().pipe(tap(res => console.log(res)));
     this.currentUser$ = this._userStateService.userSubject$;
   }
+
 
   ngOnInit(): void {
   }

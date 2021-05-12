@@ -1,1 +1,1 @@
-<app-tournaments-edit-form [tournament]="tournament$| async"></app-tournaments-edit-form>
+<app-tournaments-edit-form *ngIf="tournament$ | async as tournament" [tournament]="tournament" [languages] = "languages$ | async"></app-tournaments-edit-form>

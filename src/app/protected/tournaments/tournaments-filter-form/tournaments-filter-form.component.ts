@@ -13,33 +13,25 @@ import {ITournamentResume} from '../../../shared/models/tournaments/tournament-r
   styles: []
 })
 export class TournamentsFilterFormComponent extends FilterComponentBase<GetParams<ITournamentResume, ITournamentsFilter>> implements OnInit {
-  @Input() languageId: IProgrammingLanguageNavigation[];
+  @Input() languages: IProgrammingLanguageNavigation[];
 
   @Input() nameOrder: SortOrder = 'desc';
   @Input() currentUserId: string;
-  _languageCtrl: FormControl;
-  _nameCtrl: FormControl;
+
+  languageCtrl: FormControl;
+  nameCtrl: FormControl;
+  inMyTeamCtrl: FormControl;
 
   constructor(fb: FormBuilder) {
     super();
-    this.filterGrp = fb.group({});
-  }
-
-  _inMyTeamCtrl: FormControl;
-
-  set inMyTeamCtrl(ctrl: FormControl) {
-    this._inMyTeamCtrl = ctrl;
-    this.filterGrp.setControl('inMyTeam', ctrl);
-  }
-
-  set languagesCtrl(ctrl: FormControl) {
-    this._languageCtrl = ctrl;
-    this.filterGrp.setControl('languageId', ctrl);
-  }
-
-  set tournamentCtrl(ctrl: FormControl) {
-    this._nameCtrl = ctrl;
-    this.filterGrp.setControl('name', ctrl);
+    this.languageCtrl = fb.control(null);
+    this.nameCtrl = fb.control(null);
+    this.inMyTeamCtrl = fb.control(null);
+    this.filterGrp = fb.group({
+      inMyTeam: this.inMyTeamCtrl,
+      languageId: this.languageCtrl,
+      name: this.nameCtrl,
+    });
   }
 
   reset(): void {
@@ -49,12 +41,11 @@ export class TournamentsFilterFormComponent extends FilterComponentBase<GetParam
   }
 
   updateForm() {
-
     this.filterChanged.emit({
       filterObj: {
-        languageId: this._languageCtrl.value,
-        participantId: this._inMyTeamCtrl.value ? this.currentUserId : null,
-        name: this._nameCtrl.value
+        languageId: this.languageCtrl.value,
+        participantId: this.inMyTeamCtrl.value ? this.currentUserId : null,
+        name: this.nameCtrl.value
       },
       descOrderColumns: [this.nameOrder === 'desc' ? 'name' : undefined],
       ascOrderColumns: [this.nameOrder === 'asc' ? 'name' : undefined]

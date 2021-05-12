@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ITournamentEdition} from '../../../shared/models/tournaments/tournament-edition';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {IProgrammingLanguageNavigation} from '../../../shared/models/programming-languages/responses';
 
 @Component({
   selector: 'app-tournaments-edit-form',
@@ -10,6 +11,8 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 export class TournamentsEditFormComponent implements OnInit {
 
   @Input() tournament: ITournamentEdition;
+  @Input() languages: IProgrammingLanguageNavigation[] = [];
+
   formGroup: FormGroup;
 
   constructor(fb: FormBuilder) {

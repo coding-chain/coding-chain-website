@@ -2,9 +2,9 @@ import {Injectable} from '@angular/core';
 import {ApiHelperService, HateoasPageResult} from './api-helper.service';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
-import {EMPTY, forkJoin, Observable, of} from 'rxjs';
+import {combineLatest, EMPTY, forkJoin, Observable, of} from 'rxjs';
 import {HateoasResponse} from '../../../shared/models/pagination/hateoas-response';
-import {catchError, map, switchMap} from 'rxjs/operators';
+import {catchError, map, switchMap, tap} from 'rxjs/operators';
 import {PageCursor} from '../../../shared/models/pagination/page-cursor';
 import {ITournamentNavigation, ITournamentStepNavigation} from '../../../shared/models/tournaments/responses';
 import {GetParams} from '../../../shared/models/http/get.params';
@@ -114,13 +114,11 @@ export class TournamentService extends ApiHelperService {
     return this.getById(id).pipe(
       switchMap(t => {
         return this._languageService.getAll().pipe(
-          switchMap(languages =>
-            forkJoin([of(languages), this.getTournamentStepEditions(t.id, t.stepsIds)])
-          ),
-          map((res: [IProgrammingLanguageNavigation[], ITournamentEditionStep[]]) => {
+          switchMap(languages => combineLatest([of(languages), this.getTournamentStepEditions(t.id)])),
+          map((res: [IProgrammingLanguageNavigation[],ITournamentEditionStep[]]) => {
             const tournament: ITournamentEdition = {...t, steps: []};
             const languages = res[0] as IProgrammingLanguageNavigation[];
-            const steps = _.flatMap(res[1].slice(1)) as ITournamentEditionStep[];
+            const steps = res[1] as ITournamentEditionStep[];
             tournament.steps = steps.map(step => ({language: languages.find(l => step.languageId == l.id), ...step}));
             return tournament;
           })
@@ -129,10 +127,16 @@ export class TournamentService extends ApiHelperService {
     );
   }
 
-  private getTournamentStepEditions(tournamentId: string, stepIds: string[]) {
-    return this.getTournamentSteps(tournamentId, stepIds).pipe(
+  public getAllTournamentsSteps(tournamentId: string): Observable<ITournamentStepNavigation[]> {
+    return this.fetchAll<ITournamentStepNavigation>({url: `${this.apiUrl}/${tournamentId}/steps`}).pipe(
+      map(res => res.map(res => res.result))
+    );
+  }
+
+  private getTournamentStepEditions(tournamentId: string): Observable<ITournamentEditionStep[]> {
+    return this.getAllTournamentsSteps(tournamentId).pipe(
       switchMap(steps => {
-        return forkJoin([of(steps), this.setStepEditionTests(steps.map(s => s.stepId))]);
+        return forkJoin([of(steps), this.getStepEditionsTest(steps.map(s => s.stepId))]);
       }),
       map((res: [ITournamentStepNavigation[], ITestNavigation[]]) => {
         const steps = res[0] as ITournamentStepNavigation[];
@@ -145,7 +149,7 @@ export class TournamentService extends ApiHelperService {
     );
   }
 
-  private setStepEditionTests(stepIds: string[]): Observable<ITestNavigation[]> {
+  private getStepEditionsTest(stepIds: string[]): Observable<ITestNavigation[]> {
     if (stepIds?.length > 0) {
       forkJoin(...stepIds.map(stepId => this._stepService.getAllTests(stepId)));
     }
@@ -185,12 +189,18 @@ export class TournamentService extends ApiHelperService {
   }
 
   private getTournamentsWithSteps(tournaments: ITournamentResume[], languages: IProgrammingLanguageNavigation[]) {
-    const steps$ = tournaments.map(tournament => this.getTournamentSteps(tournament.id, tournament.stepsIds));
+    const steps$ = tournaments
+      .map(tournament => {
+        if (tournament.stepsIds?.length > 0) {
+          this.getAllTournamentsSteps(tournament.id);
+        }
+        return of([]);
+      });
     return forkJoin([of(tournaments), of(languages), ...steps$]);
   }
 
 
-  private getTournamentSteps(tournamentId: string, stepIds: string[]): Observable<ITournamentStepNavigation[]> {
+  private getTournamentStepsByIds(tournamentId: string, stepIds: string[]): Observable<ITournamentStepNavigation[]> {
     if (stepIds?.length > 0) {
       return forkJoin([...stepIds.map(stepId => this.getTournamentStep(tournamentId, stepId))]);
     }
