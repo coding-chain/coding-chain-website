@@ -7,7 +7,8 @@ const routes: Routes = [
 
   {
     path: '', component: TeamRootComponent, children: [
-      {path: '', component: TeamPageComponent}
+      {path: '', component: TeamPageComponent},
+      {path: ':id', component: TeamPageComponent}
     ]
   }
 ];
