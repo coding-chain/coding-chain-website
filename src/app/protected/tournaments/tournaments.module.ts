@@ -15,9 +15,7 @@ import {TournamentsFilterFormComponent} from './tournaments-filter-form/tourname
 import {TournamentsItemComponent} from './tournaments-item/tournaments-item.component';
 import {TournamentsEditFormComponent} from './tournaments-edit-form/tournaments-edit-form.component';
 import { TournamentsEditStepsListComponent } from './tournaments-edit-steps-list/tournaments-edit-steps-list.component';
-import { StepsEditItemComponent } from './steps-edit-item/steps-edit-item.component';
-import { StepsEditDetailDialogComponent } from './steps-edit-detail-dialog/steps-edit-detail-dialog.component';
-import { StepsEditTestsDialogComponent } from './steps-edit-tests-dialog/steps-edit-tests-dialog.component';
+import {StepsModule} from '../steps/steps.module';
 
 
 @NgModule({
@@ -33,19 +31,13 @@ import { StepsEditTestsDialogComponent } from './steps-edit-tests-dialog/steps-e
     TournamentsFilterFormComponent,
     TournamentsItemComponent,
     TournamentsEditFormComponent,
-    TournamentsEditStepsListComponent,
-    StepsEditItemComponent,
-    StepsEditDetailDialogComponent,
-    StepsEditTestsDialogComponent
+    TournamentsEditStepsListComponent
   ],
   imports: [
     CommonModule,
     TournamentsRoutingModule,
-    SharedModule
-  ],
-  entryComponents:[
-    StepsEditDetailDialogComponent,
-    StepsEditTestsDialogComponent
+    SharedModule,
+    StepsModule
   ]
 })
 export class TournamentsModule {

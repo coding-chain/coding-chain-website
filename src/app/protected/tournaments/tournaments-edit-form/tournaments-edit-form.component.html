@@ -1,19 +1,64 @@
 <div class="row align-items-center justify-content-around">
-  <div class="col-3">
-    <app-tournaments-edit-name-input (nameCtrlReady)="nameCtrl=$event"
-                                     [name]="tournament.name"></app-tournaments-edit-name-input>
-  </div>
+  <div class="col-5">
+    <div class="row">
+      <div class="col">
+        <app-tournaments-edit-name-input (nameCtrlReady)="nameCtrl=$event"
+                                         [name]="_tournament.name"></app-tournaments-edit-name-input>
 
-  <div class="col-6">
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-6 text-center">
+        <mat-form-field>
+          <mat-label>Date début du tournois</mat-label>
+          <input matInput type="date" [formControl]="startDateCtrl">
+        </mat-form-field>
+        <mat-error *ngIf="startDateCtrl.hasError('minDateError')">
+          La date de début du tournois doit être supérieure à maintenant
+        </mat-error>
+      </div>
+      <div class="col-6 text-center">
+        <mat-form-field>
+          <mat-label>Date fin du tournois</mat-label>
+          <input matInput type="date" [formControl]="endDateCtrl">
+        </mat-form-field>
+        <mat-error *ngIf="formGroup.hasError('noStartDate')">
+          Le tournois doit avoir une date de début
+        </mat-error>
+      </div>
+
+      <mat-error *ngIf="formGroup.hasError('startDateLower')" class="col text-center">
+        La date de début de tournois doit être inférieure à la date de fin
+      </mat-error>
+    </div>
+
+    <!--&lt;!&ndash;        <mat-error *ngIf="endDateCtrl?.errors?.maxDateError">La date est supérieure au {{maxEndDate | date: 'shortDate'}}</mat-error>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;        <mat-error *ngIf="dateGrp?.errors?.noStartDate">Une date de début doit être spécifiée.</mat-error>&ndash;&gt;-->
+    <!--&lt;!&ndash;        <mat-error *ngIf="dateGrp?.errors?.startDateLower">La date de début doit être inférieure à la date de fin</mat-error>&ndash;&gt;-->
+
+  </div>
+  <div class="col-5">
     <app-tournaments-edit-description-input (descriptionCtrlReady)="descriptionCtrl = $event"
-                                            [description]="tournament.description"></app-tournaments-edit-description-input>
+                                            [description]="_tournament.description"></app-tournaments-edit-description-input>
   </div>
+  <div class="col-2 align-self-stretch">
+    <div class="d-flex h-100 justify-content-around flex-column">
+        <button mat-stroked-button [disabled]="!(isValid | async)">Sauvegarder</button>
+        <mat-slide-toggle class="mx-auto"
+          [formControl]="isPublishedCtrl" [matTooltip]="isPublishedCtrl.value ? 'Publié' : 'Non publié'">
+        </mat-slide-toggle>
+    </div>
 
-  <button mat-stroked-button [disabled]="!(isValid | async)">Sauvegarder</button>
+    </div>
+
 </div>
 <mat-divider class="py-2">
 </mat-divider>
-<button mat-stroked-button [disabled]="!(isValid | async)" class="w-100 py-1 my-2" (click)="addStep()" >Ajouter une étape</button>
-<app-tournaments-edit-steps-list [steps]="tournament.steps" [languages]="languages"
+<button mat-stroked-button [disabled]="!(isValid | async)" class="w-100 py-1 my-2" (click)="addStep()">Ajouter une
+  étape
+</button>
+<app-tournaments-edit-steps-list [steps]="_tournament.steps" [languages]="languages"
                                  (stepsArrReady)="onStepsArrReady($event)"></app-tournaments-edit-steps-list>
 

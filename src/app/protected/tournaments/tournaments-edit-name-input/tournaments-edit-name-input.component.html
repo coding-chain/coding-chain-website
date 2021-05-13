@@ -1,6 +1,7 @@
 <mat-form-field appearance="outline" class="w-100 mx-auto">
   <mat-label>Nom</mat-label>
   <input [formControl]="nameCtrl" matInput type="text">
+  <mat-hint align="end">{{nameCtrl.value?.length}} / {{maxNameLength}}</mat-hint>
   <mat-error *ngIf="nameCtrl.hasError('minlength') ||nameCtrl.hasError('required')">
     Le nom du tournois doit faire au moins {{minNameLength}} caractères
   </mat-error>

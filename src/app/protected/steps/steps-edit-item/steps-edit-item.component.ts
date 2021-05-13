@@ -1,11 +1,11 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ITournamentEditionStep} from '../../../shared/models/tournaments/tournament-edition';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {gtCtrlValidator, ltCtrlValidator} from '../../../shared/validators/number.validators';
-import {IProgrammingLanguageNavigation} from '../../../shared/models/programming-languages/responses';
 import {MatDialog} from '@angular/material/dialog';
 import {StepsEditDetailDialogComponent} from '../steps-edit-detail-dialog/steps-edit-detail-dialog.component';
 import {StepsEditTestsDialogComponent} from '../steps-edit-tests-dialog/steps-edit-tests-dialog.component';
+import {IProgrammingLanguageNavigation} from '../../../shared/models/programming-languages/responses';
+import {gtCtrlValidator, ltCtrlValidator} from '../../../shared/validators/number.validators';
+import {ITournamentEditionStep} from '../../../shared/models/tournaments/tournament-edition';
 import {dialogSize} from '../../../shared/utils/dialogs';
 
 

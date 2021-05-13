@@ -1,0 +1,15 @@
+<h1 mat-dialog-title>Edition des tests</h1>
+<div mat-dialog-content>
+  <ngb-carousel>
+    <ng-template *ngFor = "let testsSlide of testsMatrix">
+      <app-steps-test-edit-item *ngFor="let test of testsSlide">
+
+      </app-steps-test-edit-item>
+    </ng-template>
+  </ngb-carousel>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button [disabled]="formArray.invalid" (click)="onSaveClicked()">Sauvegarder</button>
+  <button mat-button mat-dialog-close>Annuler</button>
+</div>

@@ -5,7 +5,7 @@
         <div class="row">
           <h3 class="col-1">{{_step.order}}</h3>
           <div class="col-10">
-<!--            <h2>{{_step.name}}</h2>-->
+            <!--            <h2>{{_step.name}}</h2>-->
             <mat-form-field appearance="outline" class="w-100">
               <mat-label>Nom</mat-label>
               <input [formControl]="nameCtrl" matInput type="text">
@@ -48,8 +48,9 @@
         </mat-error>
       </mat-form-field>
       <div class="col-1 text-center">
-        <button mat-button color="primary" [matBadge]="_step.tests?.length" matBadgePosition="after"
-                matBadgeColor="accent" (click)="openTestsDialog()" >Tests</button>
+        <button mat-stroked-button color="primary" [matBadge]="_step.tests?.length" matBadgePosition="after"
+                matBadgeColor="accent" (click)="openTestsDialog()">Tests
+        </button>
       </div>
       <div class="col-1  align-items-center">
         <div class="row justify-content-center">
@@ -70,13 +71,7 @@
             <mat-icon>clear</mat-icon>
           </button>
         </div>
-
       </div>
-    </div>
-
-
-<!--    </div>-->
-    <div>
     </div>
   </mat-card-content>
 </mat-card>

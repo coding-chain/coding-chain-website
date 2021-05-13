@@ -1,8 +1,8 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {ITournamentEditionStep} from '../../../shared/models/tournaments/tournament-edition';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import * as _ from 'lodash';
+import {ITournamentEditionStep} from '../../../shared/models/tournaments/tournament-edition';
 
 @Component({
   selector: 'app-steps-edit-detail-dialog',

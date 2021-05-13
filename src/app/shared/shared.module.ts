@@ -5,6 +5,7 @@ import {AngularMaterialModule} from './angular-material.module';
 import {TotalComponent} from './components/total/total.component';
 import {PagedListComponent} from './components/paged-list/paged-list.component';
 import {SortByArrowsComponent} from './components/sort-by-arrows/sort-by-arrows.component';
+import {BootstrapModule} from './bootstrap.module';
 
 
 @NgModule({
@@ -12,6 +13,7 @@ import {SortByArrowsComponent} from './components/sort-by-arrows/sort-by-arrows.
   imports: [
     CommonModule,
     AngularMaterialModule,
+    BootstrapModule,
     ReactiveFormsModule,
     FormsModule,
   ],
@@ -20,7 +22,7 @@ import {SortByArrowsComponent} from './components/sort-by-arrows/sort-by-arrows.
     ReactiveFormsModule,
     TotalComponent,
     PagedListComponent,
-    SortByArrowsComponent
+    SortByArrowsComponent, BootstrapModule
   ]
 })
 export class SharedModule {

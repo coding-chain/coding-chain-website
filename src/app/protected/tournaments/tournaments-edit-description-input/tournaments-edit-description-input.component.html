@@ -4,4 +4,5 @@
   <mat-error *ngIf="descriptionCtrl.hasError('maxlength')">
     La description du tournois doit faire au maximum {{maxDescriptionLength}}
   </mat-error>
+  <mat-hint align="end">{{descriptionCtrl.value?.length}} / {{maxDescriptionLength}}</mat-hint>
 </mat-form-field>
