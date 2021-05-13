@@ -1,6 +1,6 @@
 <div class="w-75 mx-auto mt-5 d-flex flex-row">
   <mat-card class="w-100 d-flex flex-column mr-5">
-    <app-team-form></app-team-form>
+    <app-team-form [teamId]="teamId"></app-team-form>
     <app-team-teammate *ngIf="isSearching" [teammates]="searchedTeammates" [action]="addTeammate"
                        [isDelete]="false"></app-team-teammate>
   </mat-card>
