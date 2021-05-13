@@ -13,8 +13,7 @@ export class TournamentsCreateFormComponent implements OnInit {
 
   tournamentGrp: FormGroup;
 
-  constructor(fb: FormBuilder) {
-    this.tournamentGrp = fb.group({});
+  constructor(private readonly _fb: FormBuilder) {
   }
 
   set nameCtrl(nameCtrl$: FormControl) {
@@ -26,7 +25,7 @@ export class TournamentsCreateFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.tournamentGrp = this._fb.group({});
   }
 
   reset() {

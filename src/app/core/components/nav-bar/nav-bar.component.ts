@@ -13,10 +13,10 @@ export class NavBarComponent implements OnInit {
   user$: BehaviorSubject<ConnectedUser>;
 
   constructor(private userStateService: UserStateService, private authService: AuthenticationService) {
-    this.user$ = userStateService.userSubject$;
   }
 
   ngOnInit(): void {
+    this.user$ = this.userStateService.userSubject$;
   }
 
   onLogout(): void {

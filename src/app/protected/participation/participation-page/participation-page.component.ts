@@ -18,7 +18,7 @@ export class ParticipationPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    var cursor = this.languageService.getCursor({page: 1, size: 10});
+    const cursor = this.languageService.getCursor({page: 1, size: 10});
     this._participationSub = cursor.resultsSubject$.subscribe(res => console.log(res));
     cursor.current();
   }

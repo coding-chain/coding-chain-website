@@ -13,21 +13,25 @@ import {toMatrix} from '../../../shared/utils/array.utils';
 export class StepsEditTestsDialogComponent implements OnInit {
   formArray: FormArray;
   private _tests: ITestNavigation[];
-
-  get testsMatrix(): ITestNavigation[][]{
-    return toMatrix(this._tests, 3);
-  }
-
+  testsMatrix: ITestNavigation[][] = [];
   constructor(public dialogRef: MatDialogRef<StepsEditTestsDialogComponent>,
               @Inject(MAT_DIALOG_DATA) tests: ITestNavigation[],
               private readonly _fb: FormBuilder) {
-    this._tests = _.cloneDeep(tests);
+    this._tests = [{} as ITestNavigation, {} as ITestNavigation, {} as ITestNavigation, {} as ITestNavigation];
+    // this._tests = _.cloneDeep(tests);
   }
 
+
   ngOnInit(): void {
+    this.testsMatrix = toMatrix(this._tests, 3);
+    this.formArray = this._fb.array([]);
   }
 
   onSaveClicked(): void {
     this.dialogRef.close(this._tests);
+  }
+
+  addTestGrp($formGrp: FormGroup, i: number) {
+    this.formArray.insert(i, $formGrp)
   }
 }

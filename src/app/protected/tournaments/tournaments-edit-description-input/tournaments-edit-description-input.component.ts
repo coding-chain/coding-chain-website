@@ -13,14 +13,12 @@ export class TournamentsEditDescriptionInputComponent implements OnInit {
   @Input() maxDescriptionLength = 500;
 
   constructor(private fb: FormBuilder) {
-    this.descriptionCtrl = fb.control('', [Validators.maxLength(this.maxDescriptionLength)]);
   }
 
-  @Input() set description(description: string) {
-    this.descriptionCtrl.setValue(description);
-  }
+  @Input()  description: string;
 
   ngOnInit(): void {
+    this.descriptionCtrl = this.fb.control(this.description, [Validators.maxLength(this.maxDescriptionLength)]);
     this.descriptionCtrlReady.emit(this.descriptionCtrl);
   }
 

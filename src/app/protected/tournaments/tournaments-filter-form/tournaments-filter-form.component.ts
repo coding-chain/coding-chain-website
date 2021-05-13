@@ -22,22 +22,23 @@ export class TournamentsFilterFormComponent extends FilterComponentBase<GetParam
   nameCtrl: FormControl;
   inMyTeamCtrl: FormControl;
 
-  constructor(fb: FormBuilder) {
+  constructor(private fb: FormBuilder) {
     super();
-    this.languageCtrl = fb.control(null);
-    this.nameCtrl = fb.control(null);
-    this.inMyTeamCtrl = fb.control(null);
-    this.filterGrp = fb.group({
-      inMyTeam: this.inMyTeamCtrl,
-      languageId: this.languageCtrl,
-      name: this.nameCtrl,
-    });
+
   }
 
   reset(): void {
   }
 
   ngOnInit(): void {
+    this.languageCtrl = this.fb.control(null);
+    this.nameCtrl = this.fb.control(null);
+    this.inMyTeamCtrl = this.fb.control(null);
+    this.filterGrp = this.fb.group({
+      inMyTeam: this.inMyTeamCtrl,
+      languageId: this.languageCtrl,
+      name: this.nameCtrl,
+    });
   }
 
   updateForm() {

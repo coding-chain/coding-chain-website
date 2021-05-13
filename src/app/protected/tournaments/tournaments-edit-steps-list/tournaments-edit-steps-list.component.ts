@@ -16,11 +16,11 @@ export class TournamentsEditStepsListComponent implements OnInit {
   @Output() stepsArrReady = new EventEmitter<FormArray>();
   private _stepsArr: FormArray;
 
-  constructor(fb: FormBuilder) {
-    this._stepsArr = fb.array([]);
+  constructor(private fb: FormBuilder) {
   }
 
   ngOnInit(): void {
+    this._stepsArr = this.fb.array([]);
     this.stepsArrReady.emit(this._stepsArr);
   }
 

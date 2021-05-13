@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {ITournamentEdition, ITournamentEditionStep} from '../../../shared/models/tournaments/tournament-edition';
 import {FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {IProgrammingLanguageNavigation} from '../../../shared/models/programming-languages/responses';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 import {minDate, validateDateBetween} from '../../../shared/validators/date.validators';
 import {map} from 'rxjs/operators';
 
@@ -13,43 +13,19 @@ import {map} from 'rxjs/operators';
 })
 export class TournamentsEditFormComponent implements OnInit {
 
-  @Input() set tournament(tournament: ITournamentEdition){
-    this._tournament = tournament;
-    this.startDateCtrl.setValue(tournament.startDate)
-    this.endDateCtrl.setValue(tournament.endDate)
-    this.isPublishedCtrl.setValue(tournament.isPublished);
-    if(tournament.isPublished && tournament.endDate.getTime() > Date.now())
-      this.isPublishedCtrl.disable();
+  @Input() tournament: ITournamentEdition;
 
-  }
+
   @Input() languages: IProgrammingLanguageNavigation[] = [];
 
-  _tournament: ITournamentEdition;
   formGroup: FormGroup;
-  isValid = new BehaviorSubject<boolean>(true);
+  isInvalid$ = new BehaviorSubject(true);
   startDateCtrl: FormControl;
   endDateCtrl: FormControl;
   isPublishedCtrl: FormControl;
 
-  constructor(fb: FormBuilder) {
-    this.startDateCtrl = fb.control(null, [minDate(new Date())]);
-    this.endDateCtrl = fb.control(null);
-    this.isPublishedCtrl = fb.control(null);
-    this.startDateCtrl.valueChanges.pipe(
-      map(textDate => {
-        console.log(textDate);
-        if (textDate) {
-          return new Date(textDate);
-        }
-      })
-    );
-    this.formGroup = fb.group({
-      startDate: this.startDateCtrl,
-      endDate: this.endDateCtrl
-    }, {validators: validateDateBetween(this.startDateCtrl, this.endDateCtrl)});
-    this.formGroup.valueChanges.subscribe((res: ITournamentEdition) => {
-      this.isValid.next(this.formGroup.valid);
-    });
+  constructor(private fb: FormBuilder) {
+
   }
 
   private _descriptionCtrl: FormControl;
@@ -68,6 +44,26 @@ export class TournamentsEditFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.tournament.isPublished && this.tournament.endDate.getTime() > Date.now()) {
+      this.isPublishedCtrl.disable();
+    }
+    this.startDateCtrl = this.fb.control(this.tournament.startDate, [minDate(new Date())]);
+    this.endDateCtrl = this.fb.control(this.tournament.endDate);
+    this.isPublishedCtrl = this.fb.control(this.tournament.isPublished);
+    this.startDateCtrl.valueChanges.pipe(
+      map(textDate => {
+        if (textDate) {
+          return new Date(textDate);
+        }
+      })
+    );
+    this.formGroup = this.fb.group({
+      startDate: this.startDateCtrl,
+      endDate: this.endDateCtrl
+    }, {validators: validateDateBetween(this.startDateCtrl, this.endDateCtrl)});
+    this.formGroup.valueChanges.subscribe((res: ITournamentEdition) => {
+      this.isInvalid$.next(this.formGroup.invalid);
+    });
   }
 
   onStepsArrReady(stepsArray: FormArray) {
@@ -76,6 +72,6 @@ export class TournamentsEditFormComponent implements OnInit {
 
   addStep() {
     this.tournament.steps.push({language: {}, order: this.tournament.steps.length + 1, tests: []} as ITournamentEditionStep);
-    this.isValid.next(false);
+    this.isInvalid$.next(false);
   }
 }

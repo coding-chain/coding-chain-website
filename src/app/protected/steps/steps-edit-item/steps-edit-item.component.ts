@@ -7,6 +7,7 @@ import {IProgrammingLanguageNavigation} from '../../../shared/models/programming
 import {gtCtrlValidator, ltCtrlValidator} from '../../../shared/validators/number.validators';
 import {ITournamentEditionStep} from '../../../shared/models/tournaments/tournament-edition';
 import {dialogSize} from '../../../shared/utils/dialogs';
+import {ITestNavigation} from '../../../shared/models/tests/responses';
 
 
 @Component({
@@ -30,50 +31,16 @@ export class StepsEditItemComponent implements OnInit {
   private stepGrp: FormGroup;
 
   constructor(private _fb: FormBuilder, public dialog: MatDialog) {
-    this.nameCtrl = this._fb.control('', [Validators.required, Validators.minLength(this.minNameLength), Validators.maxLength(this.maxNameLength)]);
-    this.isOptionalCtrl = this._fb.control(true);
-    this.maxFunctionsCntCtrl = this._fb.control(true);
-    this.minFunctionsCntCtrl = this._fb.control(true);
-    this.minFunctionsCntCtrl.setValidators([gtCtrlValidator(this.maxFunctionsCntCtrl), Validators.min(0)]);
-    this.maxFunctionsCntCtrl.setValidators([ltCtrlValidator(this.minFunctionsCntCtrl), Validators.min(0)]);
-    this.languagesCtrl = this._fb.control([], [Validators.required]);
 
-    this.stepGrp = this._fb.group({
-      name: this.nameCtrl,
-      description: this.descriptionCtrl,
-      isOptional: this.isOptionalCtrl,
-      languageId: this.languagesCtrl,
-      minFunctionsCount: this.minFunctionsCntCtrl,
-      maxFunctionsCount: this.maxFunctionsCntCtrl
-    });
   }
 
-  _step: ITournamentEditionStep;
+  @Input() step: ITournamentEditionStep;
 
-  @Input() set step(step: ITournamentEditionStep) {
-    this._step = step;
-    this.nameCtrl.setValue(step.name);
-    this.isOptionalCtrl.setValue(step.isOptional);
-    this.minFunctionsCntCtrl.setValue(step.minFunctionsCount);
-    this.maxFunctionsCntCtrl.setValue(step.maxFunctionsCount);
-    if (step?.language?.id) {
-      this.languagesCtrl.setValue(step.language.id);
-    }
-    this.nameCtrl.markAsTouched();
-    this.languagesCtrl.markAsTouched();
-    this.stepGrp.valueChanges.subscribe((val: ITournamentEditionStep) => {
-      this._step.name = val?.name;
-      this._step.isOptional = val?.isOptional;
-      this._step.minFunctionsCount = val?.minFunctionsCount;
-      this._step.maxFunctionsCount = val?.maxFunctionsCount;
-      this._step.languageId = val?.languageId;
-    });
-  }
 
   openDetailDialog(): void {
     const dialogRef = this.dialog.open(StepsEditDetailDialogComponent, {
       width: dialogSize('m'),
-      data: this._step
+      data: this.step
     });
 
     dialogRef.afterClosed().subscribe((result: (ITournamentEditionStep | undefined)) => {
@@ -86,18 +53,34 @@ export class StepsEditItemComponent implements OnInit {
   openTestsDialog(): void {
     const dialogRef = this.dialog.open(StepsEditTestsDialogComponent, {
       width: dialogSize('xl'),
-      data: this._step
+      data: this.step.tests
     });
 
-    dialogRef.afterClosed().subscribe((result: (ITournamentEditionStep | undefined)) => {
+    dialogRef.afterClosed().subscribe((result: (ITestNavigation[] | undefined)) => {
       if (result) {
-        this.step.description = result.description;
+        this.step.tests = result;
       }
     });
   }
 
 
   ngOnInit(): void {
+    this.nameCtrl = this._fb.control(this.step.name, [Validators.required, Validators.minLength(this.minNameLength), Validators.maxLength(this.maxNameLength)]);
+    this.isOptionalCtrl = this._fb.control(this.step.isOptional);
+    this.maxFunctionsCntCtrl = this._fb.control(this.step.maxFunctionsCount);
+    this.minFunctionsCntCtrl = this._fb.control(this.step.minFunctionsCount);
+    this.minFunctionsCntCtrl.setValidators([gtCtrlValidator(this.maxFunctionsCntCtrl), Validators.min(0)]);
+    this.maxFunctionsCntCtrl.setValidators([ltCtrlValidator(this.minFunctionsCntCtrl), Validators.min(0)]);
+    this.languagesCtrl = this._fb.control(this.step.language.id, [Validators.required]);
+
+    this.stepGrp = this._fb.group({
+      name: this.nameCtrl,
+      description: this.descriptionCtrl,
+      isOptional: this.isOptionalCtrl,
+      languageId: this.languagesCtrl,
+      minFunctionsCount: this.minFunctionsCntCtrl,
+      maxFunctionsCount: this.maxFunctionsCntCtrl
+    });
     this.formGroupReady.emit(this.stepGrp);
   }
 

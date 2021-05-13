@@ -1,10 +1,14 @@
 <h1 mat-dialog-title>Edition des tests</h1>
 <div mat-dialog-content>
-  <ngb-carousel>
-    <ng-template *ngFor = "let testsSlide of testsMatrix">
-      <app-steps-test-edit-item *ngFor="let test of testsSlide">
+  <ngb-carousel #carousel [pauseOnHover]="true" [showNavigationArrows]="false"
+                [showNavigationIndicators]="true">
+    <ng-template *ngFor = "let testsSlide of testsMatrix" ngbSlide>
+      <div class="row">
+        <app-steps-test-edit-item *ngFor="let test of testsSlide; let i = index" [test]="test" (testGrpReady)="addTestGrp($event, i)">
 
-      </app-steps-test-edit-item>
+        </app-steps-test-edit-item>
+      </div>
+
     </ng-template>
   </ngb-carousel>
 </div>

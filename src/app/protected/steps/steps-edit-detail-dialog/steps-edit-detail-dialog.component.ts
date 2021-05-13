@@ -21,10 +21,6 @@ export class StepsEditDetailDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA)  step: ITournamentEditionStep,
     private readonly _fb: FormBuilder) {
     this.step = _.clone(step);
-    this.descriptionCtrl = this._fb.control(step.description, [Validators.maxLength(this.maxDescriptionLength)])
-    this.formGroup = this._fb.group({
-      description: this.descriptionCtrl
-    })
   }
 
   onSaveClicked(): void {
@@ -32,6 +28,10 @@ export class StepsEditDetailDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.descriptionCtrl = this._fb.control(this.step.description, [Validators.maxLength(this.maxDescriptionLength)])
+    this.formGroup = this._fb.group({
+      description: this.descriptionCtrl
+    })
   }
 
 }

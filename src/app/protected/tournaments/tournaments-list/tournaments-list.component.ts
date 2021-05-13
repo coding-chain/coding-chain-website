@@ -26,6 +26,11 @@ export class TournamentsListComponent implements OnInit {
 
 
   constructor(private readonly _tournamentService: TournamentService, private readonly _languageService: LanguageService, private readonly _userStateService: UserStateService) {
+
+  }
+
+
+  ngOnInit(): void {
     this.tournamentCursor = this._tournamentService.getTournamentResumeCursor();
     this.tournamentCursor.resultsSubject$.subscribe(tournaments => {
       this.tournaments$.next(tournaments);
@@ -34,10 +39,6 @@ export class TournamentsListComponent implements OnInit {
     this.tournamentCursor.current();
     this.languages$ = this._languageService.getAll().pipe(tap(res => console.log(res)));
     this.currentUser$ = this._userStateService.userSubject$;
-  }
-
-
-  ngOnInit(): void {
   }
 
   searchTournaments($filter: GetParams<ITournamentResume, ITournamentsFilter>) {

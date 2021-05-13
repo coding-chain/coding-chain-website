@@ -12,15 +12,16 @@ export class TournamentsRootComponent implements OnInit {
   canCreateTournament$ = new BehaviorSubject<boolean>(false);
 
   constructor(private userStateService: UserStateService) {
+
+  }
+
+  ngOnInit(): void {
     this.userStateService.userSubject$.subscribe(user => {
       if (!user) {
         return;
       }
       this.canCreateTournament$.next(user.isAdmin() || user.isCreator());
     });
-  }
-
-  ngOnInit(): void {
   }
 
 }
