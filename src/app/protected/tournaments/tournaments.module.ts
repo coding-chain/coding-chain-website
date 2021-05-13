@@ -17,6 +17,7 @@ import {TournamentsEditFormComponent} from './tournaments-edit-form/tournaments-
 import { TournamentsEditStepsListComponent } from './tournaments-edit-steps-list/tournaments-edit-steps-list.component';
 import { StepsEditItemComponent } from './steps-edit-item/steps-edit-item.component';
 import { StepsEditDetailDialogComponent } from './steps-edit-detail-dialog/steps-edit-detail-dialog.component';
+import { StepsEditTestsDialogComponent } from './steps-edit-tests-dialog/steps-edit-tests-dialog.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { StepsEditDetailDialogComponent } from './steps-edit-detail-dialog/steps
     TournamentsEditFormComponent,
     TournamentsEditStepsListComponent,
     StepsEditItemComponent,
-    StepsEditDetailDialogComponent
+    StepsEditDetailDialogComponent,
+    StepsEditTestsDialogComponent
   ],
   imports: [
     CommonModule,
@@ -42,7 +44,8 @@ import { StepsEditDetailDialogComponent } from './steps-edit-detail-dialog/steps
     SharedModule
   ],
   entryComponents:[
-    StepsEditDetailDialogComponent
+    StepsEditDetailDialogComponent,
+    StepsEditTestsDialogComponent
   ]
 })
 export class TournamentsModule {

@@ -1,1 +1,17 @@
-<p>steps-edit-detail-dialog works!</p>
+
+  <h1 mat-dialog-title>{{step.name}}</h1>
+  <div mat-dialog-content>
+    <div class="row  align-items-center">
+      <mat-form-field appearance="outline" class="w-100 mx-auto">
+        <mat-label>Description</mat-label>
+        <textarea [formControl]="descriptionCtrl" matInput type="text"></textarea>
+        <mat-error *ngIf="descriptionCtrl.hasError('maxlength')">
+          La description de l'étape doit faire au maximum {{maxDescriptionLength}}
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button [disabled]="formGroup.invalid" (click)="onSaveClicked()">Sauvegarder</button>
+    <button mat-button mat-dialog-close>Annuler</button>
+  </div>

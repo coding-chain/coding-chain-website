@@ -1,7 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ITournamentEdition} from '../../../shared/models/tournaments/tournament-edition';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {ITournamentEdition, ITournamentEditionStep} from '../../../shared/models/tournaments/tournament-edition';
+import {FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {IProgrammingLanguageNavigation} from '../../../shared/models/programming-languages/responses';
+import {BehaviorSubject} from 'rxjs';
 
 @Component({
   selector: 'app-tournaments-edit-form',
@@ -14,9 +15,13 @@ export class TournamentsEditFormComponent implements OnInit {
   @Input() languages: IProgrammingLanguageNavigation[] = [];
 
   formGroup: FormGroup;
+  isValid = new BehaviorSubject<boolean>(true);
 
   constructor(fb: FormBuilder) {
     this.formGroup = fb.group({});
+    this.formGroup.valueChanges.subscribe(res => {
+      this.isValid.next(this.formGroup.valid);
+    });
   }
 
   private _descriptionCtrl: FormControl;
@@ -36,4 +41,12 @@ export class TournamentsEditFormComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  onStepsArrReady(stepsArray: FormArray) {
+    this.formGroup.setControl('steps', stepsArray);
+  }
+
+  addStep() {
+    this.tournament.steps.push({language: {}, order: this.tournament.steps.length + 1, tests: []} as ITournamentEditionStep);
+    this.isValid.next(false);
+  }
 }

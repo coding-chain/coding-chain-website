@@ -1,8 +1,13 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ITournamentEditionStep} from '../../../shared/models/tournaments/tournament-edition';
-import {Form, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {geCtrlValidator, gtCtrlValidator, ltCtrlValidator} from '../../../shared/validators/number.validators';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {gtCtrlValidator, ltCtrlValidator} from '../../../shared/validators/number.validators';
 import {IProgrammingLanguageNavigation} from '../../../shared/models/programming-languages/responses';
+import {MatDialog} from '@angular/material/dialog';
+import {StepsEditDetailDialogComponent} from '../steps-edit-detail-dialog/steps-edit-detail-dialog.component';
+import {StepsEditTestsDialogComponent} from '../steps-edit-tests-dialog/steps-edit-tests-dialog.component';
+import {dialogSize} from '../../../shared/utils/dialogs';
+
 
 @Component({
   selector: 'app-steps-edit-item',
@@ -10,42 +15,11 @@ import {IProgrammingLanguageNavigation} from '../../../shared/models/programming
   styles: []
 })
 export class StepsEditItemComponent implements OnInit {
-  _step: ITournamentEditionStep;
   @Input() maxNameLength = 50;
   @Input() minNameLength = 5;
-  @Input() maxDescriptionLength = 500;
   @Input() languages: IProgrammingLanguageNavigation[] = [];
-
-  @Input() set step(step: ITournamentEditionStep){
-    this._step = step;
-    this.nameCtrl.setValue(step.name);
-    this.descriptionCtrl.setValue(step.description);
-    this.isOptionalCtrl.setValue(step.isOptional);
-    this.minFunctionsCntCtrl.setValue(step.minFunctionsCount);
-    this.maxFunctionsCntCtrl.setValue(step.maxFunctionsCount);
-    this.languagesCtrl.setValue(step.language.id);
-  }
-  private stepGrp: FormGroup;
-
-  constructor(private _fb: FormBuilder) {
-    this.descriptionCtrl = this._fb.control('', [Validators.maxLength(this.maxDescriptionLength)]);
-    this.nameCtrl = this._fb.control('', [Validators.minLength(this.minNameLength), Validators.maxLength(this.maxNameLength)]);
-    this.isOptionalCtrl = this._fb.control(true);
-    this.maxFunctionsCntCtrl = this._fb.control(true);
-    this.minFunctionsCntCtrl = this._fb.control(true);
-    this.minFunctionsCntCtrl.setValidators([gtCtrlValidator(this.maxFunctionsCntCtrl), Validators.min(0)]);
-    this.maxFunctionsCntCtrl.setValidators([ltCtrlValidator(this.minFunctionsCntCtrl), Validators.min(0)]);
-    this.languagesCtrl = this._fb.control([]);
-
-    this.stepGrp = this._fb.group({
-      name: this.nameCtrl,
-      description: this.descriptionCtrl,
-      isOptional: this.isOptionalCtrl,
-      language: this.languagesCtrl,
-      minFunctionsCount: this.minFunctionsCntCtrl,
-      maxFunctionsCount: this.maxFunctionsCntCtrl
-    });
-  }
+  @Output() formGroupReady = new EventEmitter<FormGroup>();
+  @Output() stepDeleted = new EventEmitter();
 
   nameCtrl: FormControl;
   descriptionCtrl: FormControl;
@@ -53,10 +27,81 @@ export class StepsEditItemComponent implements OnInit {
   maxFunctionsCntCtrl: FormControl;
   minFunctionsCntCtrl: FormControl;
   languagesCtrl: FormControl;
+  private stepGrp: FormGroup;
+
+  constructor(private _fb: FormBuilder, public dialog: MatDialog) {
+    this.nameCtrl = this._fb.control('', [Validators.required, Validators.minLength(this.minNameLength), Validators.maxLength(this.maxNameLength)]);
+    this.isOptionalCtrl = this._fb.control(true);
+    this.maxFunctionsCntCtrl = this._fb.control(true);
+    this.minFunctionsCntCtrl = this._fb.control(true);
+    this.minFunctionsCntCtrl.setValidators([gtCtrlValidator(this.maxFunctionsCntCtrl), Validators.min(0)]);
+    this.maxFunctionsCntCtrl.setValidators([ltCtrlValidator(this.minFunctionsCntCtrl), Validators.min(0)]);
+    this.languagesCtrl = this._fb.control([], [Validators.required]);
+
+    this.stepGrp = this._fb.group({
+      name: this.nameCtrl,
+      description: this.descriptionCtrl,
+      isOptional: this.isOptionalCtrl,
+      languageId: this.languagesCtrl,
+      minFunctionsCount: this.minFunctionsCntCtrl,
+      maxFunctionsCount: this.maxFunctionsCntCtrl
+    });
+  }
+
+  _step: ITournamentEditionStep;
+
+  @Input() set step(step: ITournamentEditionStep) {
+    this._step = step;
+    this.nameCtrl.setValue(step.name);
+    this.isOptionalCtrl.setValue(step.isOptional);
+    this.minFunctionsCntCtrl.setValue(step.minFunctionsCount);
+    this.maxFunctionsCntCtrl.setValue(step.maxFunctionsCount);
+    if (step?.language?.id) {
+      this.languagesCtrl.setValue(step.language.id);
+    }
+    this.nameCtrl.markAsTouched();
+    this.languagesCtrl.markAsTouched();
+    this.stepGrp.valueChanges.subscribe((val: ITournamentEditionStep) => {
+      this._step.name = val?.name;
+      this._step.isOptional = val?.isOptional;
+      this._step.minFunctionsCount = val?.minFunctionsCount;
+      this._step.maxFunctionsCount = val?.maxFunctionsCount;
+      this._step.languageId = val?.languageId;
+    });
+  }
+
+  openDetailDialog(): void {
+    const dialogRef = this.dialog.open(StepsEditDetailDialogComponent, {
+      width: dialogSize('m'),
+      data: this._step
+    });
+
+    dialogRef.afterClosed().subscribe((result: (ITournamentEditionStep | undefined)) => {
+      if (result) {
+        this.step.description = result.description;
+      }
+    });
+  }
+
+  openTestsDialog(): void {
+    const dialogRef = this.dialog.open(StepsEditTestsDialogComponent, {
+      width: dialogSize('xl'),
+      data: this._step
+    });
+
+    dialogRef.afterClosed().subscribe((result: (ITournamentEditionStep | undefined)) => {
+      if (result) {
+        this.step.description = result.description;
+      }
+    });
+  }
 
 
   ngOnInit(): void {
-    console.log(this.step);
+    this.formGroupReady.emit(this.stepGrp);
   }
 
+  delete() {
+    this.stepDeleted.emit();
+  }
 }

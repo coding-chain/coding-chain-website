@@ -14,7 +14,7 @@ export class TournamentsEditNameInputComponent implements OnInit {
   @Input() minNameLength = 5;
 
   constructor(private fb: FormBuilder) {
-    this.nameCtrl = fb.control('', [Validators.minLength(this.minNameLength), Validators.maxLength(this.maxNameLength)]);
+    this.nameCtrl = fb.control('', [Validators.required, Validators.minLength(this.minNameLength), Validators.maxLength(this.maxNameLength)]);
   }
 
   @Input() set name(name: string) {

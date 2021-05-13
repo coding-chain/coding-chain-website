@@ -1,15 +1,19 @@
 <div class="row align-items-center justify-content-around">
   <div class="col-3">
-    <app-tournaments-edit-name-input  (nameCtrlReady)="nameCtrl=$event"
-                                      [name]="tournament.name"></app-tournaments-edit-name-input>
+    <app-tournaments-edit-name-input (nameCtrlReady)="nameCtrl=$event"
+                                     [name]="tournament.name"></app-tournaments-edit-name-input>
   </div>
 
   <div class="col-6">
-    <app-tournaments-edit-description-input  (descriptionCtrlReady)="descriptionCtrl = $event"
-                                             [description]="tournament.description"></app-tournaments-edit-description-input>
+    <app-tournaments-edit-description-input (descriptionCtrlReady)="descriptionCtrl = $event"
+                                            [description]="tournament.description"></app-tournaments-edit-description-input>
   </div>
 
-    <button mat-stroked-button [disabled]="formGroup.invalid">Sauvegarder</button>
+  <button mat-stroked-button [disabled]="!(isValid | async)">Sauvegarder</button>
 </div>
-  <app-tournaments-edit-steps-list [steps]="tournament.steps" [languages]="languages"></app-tournaments-edit-steps-list>
+<mat-divider class="py-2">
+</mat-divider>
+<button mat-stroked-button [disabled]="!(isValid | async)" class="w-100 py-1 my-2" (click)="addStep()" >Ajouter une étape</button>
+<app-tournaments-edit-steps-list [steps]="tournament.steps" [languages]="languages"
+                                 (stepsArrReady)="onStepsArrReady($event)"></app-tournaments-edit-steps-list>
 

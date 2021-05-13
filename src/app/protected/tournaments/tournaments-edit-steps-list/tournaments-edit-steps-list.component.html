@@ -1,6 +1,6 @@
-<div cdkDropList  (cdkDropListDropped)="drop($event)">
-  <mat-divider class="py-2">
-  </mat-divider>
-  <app-steps-edit-item [languages]="languages" *ngFor="let step of steps" [step]="step" cdkDrag >
+<div cdkDropList (cdkDropListDropped)="drop($event)">
+
+  <app-steps-edit-item [languages]="languages" *ngFor="let step of steps; let i = index" [step]="step" cdkDrag
+                       (formGroupReady)="addStepFormGrp($event, i)" (stepDeleted)="deleteStep(i)">
   </app-steps-edit-item>
 </div>
