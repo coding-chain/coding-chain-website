@@ -69,7 +69,6 @@ export class StepsEditItemComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.step.isPublished = true;
     this.step.difficulty ??=1;
     this.nameCtrl = this._fb.control(this.step.name, [Validators.required, Validators.minLength(this.minNameLength), Validators.maxLength(this.maxNameLength)]);
     this.isOptionalCtrl = this._fb.control(this.step.isOptional);

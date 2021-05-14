@@ -55,7 +55,6 @@ export class TournamentsEditFormComponent implements OnInit {
     this.formGroup.valueChanges.pipe(delay(100)).subscribe((res: ITournamentEdition) => {
       this.isInvalid$.next(this.formGroup.invalid);
     });
-    this.tournament.isPublished = true;
     if (this.tournament.isPublished) {
       this.formGroup.disable();
       this.isPublishedCtrl.disable();
@@ -69,6 +68,6 @@ export class TournamentsEditFormComponent implements OnInit {
   }
 
   openSearchStepDialog() {
-    
+
   }
 }
