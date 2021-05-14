@@ -9,6 +9,8 @@ import {map} from 'rxjs/operators';
 import {PageCursor} from '../../../shared/models/pagination/page-cursor';
 import {GetParams} from '../../../shared/models/http/get.params';
 import {IAddMemberToTeamCommand, ICreateTeamCommand, IRenameTeamCommand} from '../../../shared/models/teams/commands';
+import {ICreateTournamentCommand} from '../../../shared/models/tournaments/commands';
+import {ITournamentNavigation} from '../../../shared/models/tournaments/responses';
 
 @Injectable({
   providedIn: 'root'
@@ -36,7 +38,9 @@ export class TeamService extends ApiHelperService {
   }
 
   public createOne(body: ICreateTeamCommand): Observable<ITeamNavigation> {
-    return this.createAndGet(this.apiUrl, body);
+    return this.createAndGet<ICreateTeamCommand, HateoasResponse<ITeamNavigation>>(this.apiUrl, body).pipe(
+      map(res => res.result)
+    );
   }
 
   public addMember(body: IAddMemberToTeamCommand): Observable<IMemberNavigation> {

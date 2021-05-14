@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {TeamService} from '../../../core/services/http/team.service';
 import Swal from 'sweetalert2';
 
@@ -9,18 +9,25 @@ import Swal from 'sweetalert2';
   templateUrl: './team-form.component.html',
 })
 export class TeamFormComponent implements OnInit {
-  @Input() teamId;
+  @Input() set team(team) {
+    if (team) {
+      this.teamNameControl.setValue(team.name);
+    }
+  }
+
   teamForm: FormGroup;
   teamNameControl: FormControl;
   searchControl: FormControl;
 
   // todo use snackbar for ok or ko messages
 
-  constructor(private route: ActivatedRoute, private formBuilder: FormBuilder, private teamService: TeamService) {
+  constructor(private route: ActivatedRoute, private router: Router,
+              private formBuilder: FormBuilder, private teamService: TeamService) {
   }
 
   initForm(): void {
-    this.teamNameControl = this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]);
+    this.teamNameControl = this.formBuilder.control('',
+      [Validators.required, Validators.minLength(3), Validators.maxLength(20)]);
     this.searchControl = this.formBuilder.control('');
     this.teamForm = this.formBuilder.group({
         teamName: this.teamNameControl,
@@ -31,7 +38,6 @@ export class TeamFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-
   }
 
   searchTeammate(input: string): void {
@@ -39,18 +45,18 @@ export class TeamFormComponent implements OnInit {
   }
 
   saveTeamName(input: string): void {
-    if (this.teamId !== null) {
-      this.teamService.renameTeam(this.teamId, {name: input}).subscribe(team => {
+    if (this.team !== null) {
+      this.teamService.renameTeam(this.team.id, {name: input}).subscribe(team => {
         // todo success or failure
       });
     } else {
-      this.teamService.createOne({name: input}).subscribe(team => {
-          console.log(team);
-          // todo redirect to same url with id into it
+      this.teamService.createOne({name: input}).subscribe(response => {
           Swal.fire({
             icon: 'success',
             title: 'Succès',
             text: 'Team créée '
+          }).then(res => {
+            this.router.navigate(['/team', {teamId: response.id}]);
           });
         },
         err => {
