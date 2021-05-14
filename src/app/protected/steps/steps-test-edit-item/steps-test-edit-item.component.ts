@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ITestNavigation} from '../../../shared/models/tests/responses';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {ITestEdition} from '../../../shared/models/tests/test-edition';
 
 @Component({
   selector: 'app-steps-test-edit-item',
@@ -9,18 +9,18 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 })
 export class StepsTestEditItemComponent implements OnInit {
 
-  @Input() test: ITestNavigation;
-  @Output() testGrpReady = new EventEmitter<FormGroup>();
+  @Input() test: ITestEdition;
 
-  _testGrp: FormGroup;
+  @Input() testGrp: FormGroup;
+  scoreCtrl: FormControl;
 
   constructor(private _fb: FormBuilder) {
 
   }
 
   ngOnInit(): void {
-    this._testGrp = this._fb.group({});
-    this.testGrpReady.emit(this._testGrp);
+    this.scoreCtrl = this._fb.control(this.test.score, [Validators.min(0)]);
+    this.testGrp.setControl('score', this.scoreCtrl);
   }
 
 }

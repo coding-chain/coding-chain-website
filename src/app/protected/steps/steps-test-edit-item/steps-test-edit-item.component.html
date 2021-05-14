@@ -1,1 +1,17 @@
-<p>steps-test-edit-item works!</p>
+<mat-card>
+  <mat-card-content>
+    <div class="row">
+      <div class="col text-center">
+        <mat-form-field appearance="outline">
+          <mat-label>Score</mat-label>
+          <input [formControl]="scoreCtrl" matInput type="number">
+          <mat-error *ngIf="scoreCtrl.hasError('min')">
+            Score min > 0
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+    </div>
+
+  </mat-card-content>
+</mat-card>

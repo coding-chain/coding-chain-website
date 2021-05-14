@@ -1,6 +1,8 @@
 <div cdkDropList (cdkDropListDropped)="drop($event)">
+  <div class="my-2" *ngFor="let step of steps; let i = index" >
+    <app-steps-edit-item   [stepGrp]="getStepForm( i)" [step]="step" cdkDrag [languages]="languages"
+                          (stepDeleted)="deleteStep(i)">
+    </app-steps-edit-item>
+  </div>
 
-  <app-steps-edit-item [languages]="languages" *ngFor="let step of steps; let i = index" [step]="step" cdkDrag
-                       (formGroupReady)="addStepFormGrp($event, i)" (stepDeleted)="deleteStep(i)">
-  </app-steps-edit-item>
 </div>

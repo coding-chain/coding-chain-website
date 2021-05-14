@@ -5,3 +5,4 @@ export interface ITestNavigation {
   inputGenerator: string;
   score: number;
 }
+

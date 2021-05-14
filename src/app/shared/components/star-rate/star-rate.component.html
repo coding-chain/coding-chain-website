@@ -1,0 +1,4 @@
+<button mat-icon-button [disabled]="disabled" *ngFor="let star of rateArr; let i = index"
+          [color]="i < rateValue ? 'primary' : 'accent'" (click)="setRate(i)" >
+  <mat-icon>star_rate</mat-icon>
+</button>

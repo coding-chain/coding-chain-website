@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
 
 @Component({
@@ -8,18 +8,15 @@ import {FormBuilder, FormControl, Validators} from '@angular/forms';
 })
 export class TournamentsEditDescriptionInputComponent implements OnInit {
 
-  @Output() descriptionCtrlReady = new EventEmitter<FormControl>();
-  descriptionCtrl: FormControl;
+  @Input() descriptionCtrl: FormControl;
   @Input() maxDescriptionLength = 500;
+  @Input() description: string;
 
   constructor(private fb: FormBuilder) {
   }
 
-  @Input()  description: string;
-
   ngOnInit(): void {
-    this.descriptionCtrl = this.fb.control(this.description, [Validators.maxLength(this.maxDescriptionLength)]);
-    this.descriptionCtrlReady.emit(this.descriptionCtrl);
+    this.descriptionCtrl.setValidators([Validators.maxLength(this.maxDescriptionLength)]);
   }
 
 }

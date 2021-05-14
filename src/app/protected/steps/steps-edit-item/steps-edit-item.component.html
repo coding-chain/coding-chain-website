@@ -1,4 +1,4 @@
-<mat-card *ngIf="step">
+<mat-card *ngIf="step" class="p-1">
   <mat-card-content>
     <div class="row justify-content-between align-items-center">
       <div class="col-3">
@@ -27,24 +27,14 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field appearance="outline" class="col-2">
-        <mat-label>Fonctions min</mat-label>
-        <input [formControl]="minFunctionsCntCtrl" matInput type="number">
-        <mat-error *ngIf="minFunctionsCntCtrl.hasError('gtCtrlError')">
-          Nb fonctions min < Nb fonctions max
-        </mat-error>
-        <mat-error *ngIf="minFunctionsCntCtrl.hasError('min')">
-          Nb fonctions min >= 0
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="outline" class="col-2">
-        <mat-label>Fonctions max</mat-label>
-        <input [formControl]="maxFunctionsCntCtrl" matInput type="number">
-        <mat-error *ngIf="maxFunctionsCntCtrl.hasError('ltCtrlError')">
-          Nb fonctions max > Nb fonctions min
-        </mat-error>
-        <mat-error *ngIf="maxFunctionsCntCtrl.hasError('min')">
-          Nb fonctions min >= 0
+      <div class="col-2 text-center" matTooltip="Difficulté">
+        <app-star-rate [(rate)]="step.difficulty" [maxRate]="5" [disabled]="step.isPublished"></app-star-rate>
+      </div>
+      <mat-form-field appearance="outline" class="col-1">
+        <mat-label>Score</mat-label>
+        <input [formControl]="scoreCtrl" matInput type="number">
+        <mat-error *ngIf="scoreCtrl.hasError('min')">
+          Score min > 0
         </mat-error>
       </mat-form-field>
       <div class="col-1 text-center">
@@ -59,18 +49,15 @@
           </mat-slide-toggle>
         </div>
       </div>
-
-      <div class="col-1">
-        <div class="row  justify-content-center">
-          <button mat-icon-button color="primary" (click)="openDetailDialog()" matTooltip="Détail">
-            <mat-icon>zoom_in</mat-icon>
-          </button>
-        </div>
-        <div class="row  justify-content-center">
-          <button mat-icon-button color="warn" (click)="delete()" matTooltip="Supprimer">
-            <mat-icon>clear</mat-icon>
-          </button>
-        </div>
+      <div class="col-1 text-center">
+        <button mat-icon-button color="primary" (click)="openDetailDialog()" matTooltip="Détail">
+          <mat-icon>zoom_in</mat-icon>
+        </button>
+      </div>
+      <div class="col-1 text-center">
+        <button mat-icon-button color="warn" (click)="delete()" matTooltip="Supprimer">
+          <mat-icon>clear</mat-icon>
+        </button>
       </div>
     </div>
   </mat-card-content>

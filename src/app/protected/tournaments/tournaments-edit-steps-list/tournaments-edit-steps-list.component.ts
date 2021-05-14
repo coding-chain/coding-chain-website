@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ITournamentEditionStep} from '../../../shared/models/tournaments/tournament-edition';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {IProgrammingLanguageNavigation} from '../../../shared/models/programming-languages/responses';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {Form, FormArray, FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-tournaments-edit-steps-list',
@@ -13,15 +13,18 @@ export class TournamentsEditStepsListComponent implements OnInit {
 
   @Input() steps: ITournamentEditionStep[] = [];
   @Input() languages: IProgrammingLanguageNavigation[] = [];
-  @Output() stepsArrReady = new EventEmitter<FormArray>();
-  private _stepsArr: FormArray;
-
+  @Input() stepsArray: FormArray;
   constructor(private fb: FormBuilder) {
   }
 
   ngOnInit(): void {
-    this._stepsArr = this.fb.array([]);
-    this.stepsArrReady.emit(this._stepsArr);
+
+  }
+
+  getStepForm(i: number): FormGroup{
+    const newStepGrp =  this.fb.group({});
+    this.stepsArray.setControl(i, newStepGrp)
+    return newStepGrp
   }
 
   drop($event: CdkDragDrop<any, any>) {
@@ -30,12 +33,12 @@ export class TournamentsEditStepsListComponent implements OnInit {
   }
 
   addStepFormGrp($formGrp: FormGroup, i: number) {
-    this._stepsArr.insert(i,$formGrp);
+    this.stepsArray.insert(i,$formGrp);
   }
 
   deleteStep(i: number) {
     this.steps.splice(i,1);
-    this._stepsArr.removeAt(i);
+    this.stepsArray.removeAt(i);
     this.reorderSteps();
   }
 

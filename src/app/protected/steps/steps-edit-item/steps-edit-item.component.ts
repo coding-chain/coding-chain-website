@@ -18,17 +18,19 @@ import {ITestNavigation} from '../../../shared/models/tests/responses';
 export class StepsEditItemComponent implements OnInit {
   @Input() maxNameLength = 50;
   @Input() minNameLength = 5;
+  @Input() minDifficulty = 1;
+  @Input() maxDifficulty = 10;
+
   @Input() languages: IProgrammingLanguageNavigation[] = [];
-  @Output() formGroupReady = new EventEmitter<FormGroup>();
   @Output() stepDeleted = new EventEmitter();
 
   nameCtrl: FormControl;
   descriptionCtrl: FormControl;
   isOptionalCtrl: FormControl;
-  maxFunctionsCntCtrl: FormControl;
-  minFunctionsCntCtrl: FormControl;
   languagesCtrl: FormControl;
-  private stepGrp: FormGroup;
+  scoreCtrl: FormControl;
+
+  @Input() stepGrp: FormGroup;
 
   constructor(private _fb: FormBuilder, public dialog: MatDialog) {
 
@@ -46,6 +48,8 @@ export class StepsEditItemComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: (ITournamentEditionStep | undefined)) => {
       if (result) {
         this.step.description = result.description;
+        this.step.minFunctionsCount = result.minFunctionsCount;
+        this.step.maxFunctionsCount = result.maxFunctionsCount;
       }
     });
   }
@@ -53,7 +57,7 @@ export class StepsEditItemComponent implements OnInit {
   openTestsDialog(): void {
     const dialogRef = this.dialog.open(StepsEditTestsDialogComponent, {
       width: dialogSize('xl'),
-      data: this.step.tests
+      data: this.step
     });
 
     dialogRef.afterClosed().subscribe((result: (ITestNavigation[] | undefined)) => {
@@ -65,23 +69,24 @@ export class StepsEditItemComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.step.isPublished = true;
+    this.step.difficulty ??=1;
     this.nameCtrl = this._fb.control(this.step.name, [Validators.required, Validators.minLength(this.minNameLength), Validators.maxLength(this.maxNameLength)]);
     this.isOptionalCtrl = this._fb.control(this.step.isOptional);
-    this.maxFunctionsCntCtrl = this._fb.control(this.step.maxFunctionsCount);
-    this.minFunctionsCntCtrl = this._fb.control(this.step.minFunctionsCount);
-    this.minFunctionsCntCtrl.setValidators([gtCtrlValidator(this.maxFunctionsCntCtrl), Validators.min(0)]);
-    this.maxFunctionsCntCtrl.setValidators([ltCtrlValidator(this.minFunctionsCntCtrl), Validators.min(0)]);
     this.languagesCtrl = this._fb.control(this.step.language.id, [Validators.required]);
+    this.scoreCtrl = this._fb.control(this.step.score ?? 0, [Validators.min(0)]);
 
-    this.stepGrp = this._fb.group({
-      name: this.nameCtrl,
-      description: this.descriptionCtrl,
-      isOptional: this.isOptionalCtrl,
-      languageId: this.languagesCtrl,
-      minFunctionsCount: this.minFunctionsCntCtrl,
-      maxFunctionsCount: this.maxFunctionsCntCtrl
-    });
-    this.formGroupReady.emit(this.stepGrp);
+    this.stepGrp.setControl('name', this.nameCtrl);
+    this.stepGrp.setControl('description', this.descriptionCtrl);
+    this.stepGrp.setControl('isOptional', this.isOptionalCtrl);
+    this.stepGrp.setControl('languageId', this.languagesCtrl);
+    this.stepGrp.setControl('score', this.scoreCtrl);
+    if(this.step.isPublished){
+      this.stepGrp.disable();
+      this.isOptionalCtrl.enable();
+    }
+
+    this.stepGrp.valueChanges.subscribe(res => console.log(this.step));
   }
 
   delete() {
