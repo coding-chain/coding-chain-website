@@ -11,7 +11,7 @@ import {TeamService} from '../../../core/services/http/team.service';
 export class TeamPageComponent implements OnInit {
   isSearching = true; // todo set default to false after tests
   searchedTeammates: PublicUser[] = [{username: 'fghjk', email: 'fghjknb', id: 'hj', teamIds: [], rightIds: []}]; // todo remove after tests
-  yourTeammates: PublicUser[] = [{username: 'fghjk', email: 'fghjknb', id: 'hj', teamIds: [], rightIds: []}]; // todo remove after tests
+  yourTeammates: PublicUser[] = [{username: 'fghjk', email: 'fghjknb', id: 'hj', teamIds: [], rightIds: ['1']}]; // todo remove after tests
   teamId;
 
   constructor(private route: ActivatedRoute, private teamService: TeamService) {
@@ -28,6 +28,10 @@ export class TeamPageComponent implements OnInit {
   }
 
   addTeammate(id: string): void {
+    // todo
+  }
+
+  manageStatus(id: string): void {
     // todo
   }
 

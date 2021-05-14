@@ -6,7 +6,8 @@ import {PublicUser} from '../../../shared/models/users/responses';
   templateUrl: './team-teammate.component.html',
 })
 export class TeamTeammateComponent implements OnInit {
-  @Input() action: (id) => void;
+  @Input() addOrDelete: (id) => void;
+  @Input() manageStatus: (id) => void;
   @Input() teammates: PublicUser[];
   @Input() isDelete;
   icon;
@@ -20,7 +21,7 @@ export class TeamTeammateComponent implements OnInit {
   ngOnInit(): void {
     this.icon = this.isDelete ? 'delete' : 'add';
     this.iconColor = this.isDelete ? 'warn' : 'primary';
-
+    this.displayedColumns = this.manageStatus ? ['username', 'email', 'action', 'status'] : ['username', 'email', 'action'];
   }
 
 }
