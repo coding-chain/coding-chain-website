@@ -10,6 +10,7 @@ import {IStepNavigation} from '../../../shared/models/steps/responses';
 import {GetParams} from '../../../shared/models/http/get.params';
 import {IAddTestCommand, ICreateStepCommand, IUpdateStepCommand} from '../../../shared/models/steps/commands';
 import {ITestNavigation} from '../../../shared/models/tests/responses';
+import {IStepsFilter} from '../../../shared/models/steps/filters';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class StepService extends ApiHelperService {
 
   }
 
-  public getStepNavigationFiltered(obj: GetParams<IStepNavigation>): Observable<HateoasPageResult<IStepNavigation>> {
+  public getStepNavigationFiltered(obj: GetParams<IStepNavigation, IStepsFilter>): Observable<HateoasPageResult<IStepNavigation>> {
     return this.getFiltered(obj);
   }
 
@@ -40,8 +41,8 @@ export class StepService extends ApiHelperService {
     );
   }
 
-  public getCursor(query: GetParams<IStepNavigation>): PageCursor<IStepNavigation, IStepNavigation> {
-    return new PageCursor<IStepNavigation, IStepNavigation>(
+  public getCursor(query: GetParams<IStepNavigation, IStepsFilter>): PageCursor<IStepNavigation, IStepsFilter> {
+    return new PageCursor<IStepNavigation, IStepsFilter>(
       this.getStepNavigationFiltered, {url: this.apiUrl, ...query}
     );
   }

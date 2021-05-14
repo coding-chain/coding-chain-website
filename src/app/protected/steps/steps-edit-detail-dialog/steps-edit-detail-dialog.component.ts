@@ -11,13 +11,10 @@ import {gtCtrlValidator, ltCtrlValidator} from '../../../shared/validators/numbe
   styles: []
 })
 export class StepsEditDetailDialogComponent implements OnInit {
-  descriptionCtrl: FormControl;
 
   maxDescriptionLength = 500;
   formGroup: FormGroup;
   step: ITournamentEditionStep;
-  maxFunctionsCntCtrl: FormControl;
-  minFunctionsCntCtrl: FormControl;
 
   constructor(
     public dialogRef: MatDialogRef<StepsEditDetailDialogComponent>,
@@ -27,23 +24,14 @@ export class StepsEditDetailDialogComponent implements OnInit {
   }
 
   onSaveClicked(): void {
-    this.step.description = this.descriptionCtrl.value;
-    this.step.minFunctionsCount = this.minFunctionsCntCtrl.value;
-    this.step.maxFunctionsCount = this.maxFunctionsCntCtrl.value;
+    this.step.description = this.formGroup.value.description;
+    this.step.minFunctionsCount = this.formGroup.value.minFunctions;
+    this.step.maxFunctionsCount = this.formGroup.value.maxFunctions;
     this.dialogRef.close(this.step);
   }
 
   ngOnInit(): void {
-    this.maxFunctionsCntCtrl = this._fb.control(this.step.maxFunctionsCount);
-    this.minFunctionsCntCtrl = this._fb.control(this.step.minFunctionsCount);
-    this.minFunctionsCntCtrl.setValidators([gtCtrlValidator(this.maxFunctionsCntCtrl), Validators.min(0)]);
-    this.maxFunctionsCntCtrl.setValidators([ltCtrlValidator(this.minFunctionsCntCtrl), Validators.min(0)]);
-    this.descriptionCtrl = this._fb.control(this.step.description, [Validators.maxLength(this.maxDescriptionLength)])
-    this.formGroup = this._fb.group({
-      maxFunctions: this.maxFunctionsCntCtrl,
-      minFunctions: this.minFunctionsCntCtrl,
-      description: this.descriptionCtrl
-    })
+    this.formGroup = this._fb.group({});
     if(this.step.isPublished)
       this.formGroup.disable();
   }

@@ -1,3 +1,5 @@
+import {IProgrammingLanguageNavigation} from '../programming-languages/responses';
+
 export interface ITestNavigation {
   id: string;
   stepId: string;
@@ -5,4 +7,3 @@ export interface ITestNavigation {
   inputGenerator: string;
   score: number;
 }
-

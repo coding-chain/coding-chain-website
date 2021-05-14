@@ -1,0 +1,33 @@
+<div>
+  <div class="row">
+    <button *ngIf="testsMatrix.length" mat-stroked-button class="w-100" (click)="addTest()">
+      Ajouter un test <mat-icon>add</mat-icon>
+    </button>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-1 d-flex align-items-center ">
+      <button mat-icon-button color="primary" (click)="carousel.prev()" matTooltip="Tests précédents"><mat-icon>chevron_left</mat-icon></button>
+    </div>
+    <div class="col-10 text-center">
+      <button *ngIf="!testsMatrix.length" mat-stroked-button class="mx-auto" (click)="addTest()">
+        Ajouter un test <mat-icon>add</mat-icon>
+      </button>
+      <ngb-carousel #carousel [pauseOnHover]="true" [showNavigationArrows]="false"
+                    [showNavigationIndicators]="true" class="w-100">
+        <ng-template *ngFor="let testsSlide of testsMatrix; let i=index" ngbSlide>
+          <div class="row m-3">
+            <app-steps-test-edit-item class="col-3" *ngFor="let test of testsSlide; let j = index" [test]="test"
+                                      [testGrp]="getTestForm(i,j)">
+            </app-steps-test-edit-item>
+          </div>
+
+        </ng-template>
+      </ngb-carousel>
+    </div>
+    <div class="col-1 d-flex align-items-center ">
+      <button mat-icon-button class="my-auto" (click)="carousel.next()" matTooltip="Tests suivants"><mat-icon>chevron_right</mat-icon></button>
+
+    </div>
+  </div>
+</div>
+

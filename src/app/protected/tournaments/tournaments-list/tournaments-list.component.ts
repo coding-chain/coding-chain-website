@@ -22,8 +22,6 @@ export class TournamentsListComponent implements OnInit {
   tournaments$ = new BehaviorSubject<ITournamentResume[]>([]);
   languages$: Observable<IProgrammingLanguageNavigation[]>;
   currentUser$: Observable<ConnectedUser>;
-  private _tournaments: ITournamentResume[];
-
 
   constructor(private readonly _tournamentService: TournamentService, private readonly _languageService: LanguageService, private readonly _userStateService: UserStateService) {
 
@@ -34,7 +32,6 @@ export class TournamentsListComponent implements OnInit {
     this.tournamentCursor = this._tournamentService.getTournamentResumeCursor();
     this.tournamentCursor.resultsSubject$.subscribe(tournaments => {
       this.tournaments$.next(tournaments);
-      this._tournaments = tournaments;
     });
     this.tournamentCursor.current();
     this.languages$ = this._languageService.getAll().pipe(tap(res => console.log(res)));

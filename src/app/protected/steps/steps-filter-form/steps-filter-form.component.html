@@ -1,0 +1,25 @@
+<div class="row align-items-center">
+  <mat-form-field appearance="fill" class="col-3 mx-auto">
+    <mat-label>Langage de programmation</mat-label>
+    <mat-select [formControl]="languageCtrl">
+      <mat-option>--</mat-option>
+      <mat-option *ngFor="let language of languages" [value]="language.id">
+        {{language.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="col-3 mx-auto">
+    <mat-label>Nom de l'étape</mat-label>
+    <input [formControl]="nameCtrl" matInput type="text">
+  </mat-form-field>
+  <app-sort-by-arrows (orderChanged)="nameOrder = $event" [order]="nameOrder" class="col-1"></app-sort-by-arrows>
+  <mat-radio-group class="d-flex flex-column" aria-label="Select an option" [(ngModel)]="filter.filterObj.isPublished">
+    <mat-radio-button [value]="true">Publiées</mat-radio-button>
+    <mat-radio-button [value]="false">Non publiées</mat-radio-button>
+    <mat-radio-button [value]="null">Toutes</mat-radio-button>
+  </mat-radio-group>
+
+  <div class="col-2">
+    <button (click)="updateForm()" class="ml-2" id="filter-button" mat-stroked-button >Filtrer</button>
+  </div>
+</div>

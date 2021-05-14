@@ -12,21 +12,21 @@ export class StarRateComponent implements OnInit {
 
   @Output()
   rateChange = new EventEmitter<number>();
-  rateValue : number;
-  @Input() disabled  = true;
+  rateValue: number;
+  @Input() disabled = true;
+  rateArr = [];
+
+  constructor() {
+  }
 
   @Input()
-  get rate(){
+  get rate() {
     return this.rateValue;
   }
 
-  set rate(val:number) {
+  set rate(val: number) {
     this.rateValue = val ?? 0;
     this.rateChange.emit(this.rateValue);
-  }
-
-  rateArr = []
-  constructor() {
   }
 
   ngOnInit(): void {
@@ -34,8 +34,12 @@ export class StarRateComponent implements OnInit {
   }
 
   setRate(i: number) {
-    this.rate = i + 1 ;
+    if (i + 1 == this.rate) {
+      this.rate = i ;
+    } else {
+      this.rate = i + 1;
+    }
     this.rateArr = new Array(this.maxRate);
-
   }
+
 }

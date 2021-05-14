@@ -1,0 +1,4 @@
+<app-steps-filter-form (filterChanged)="searchSteps($event)" [languages]="languages$ | async" class="col my-3 "></app-steps-filter-form>
+<app-steps-item *ngFor="let step of steps$|async" [step]="step" class="row my-2">
+</app-steps-item>
+<app-paged-list [cursor]="stepsCursor"></app-paged-list>

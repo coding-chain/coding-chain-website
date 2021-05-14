@@ -5,6 +5,10 @@ import {IProgrammingLanguageNavigation} from '../../../shared/models/programming
 import {BehaviorSubject} from 'rxjs';
 import {minDate, validateDateBetween} from '../../../shared/validators/date.validators';
 import {delay, map} from 'rxjs/operators';
+import {dialogSize} from '../../../shared/utils/dialogs';
+import {IStepsTransferDialogData, StepsTransferDialogComponent} from '../../steps/steps-list-dialog/steps-transfer-dialog.component';
+import {MatDialog} from '@angular/material/dialog';
+import {IStepNavigation} from '../../../shared/models/steps/responses';
 
 @Component({
   selector: 'app-tournaments-edit-form',
@@ -27,7 +31,7 @@ export class TournamentsEditFormComponent implements OnInit {
   descriptionCtrl: FormControl;
   stepsArray: FormArray;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, public dialog: MatDialog) {
 
   }
 
@@ -67,7 +71,26 @@ export class TournamentsEditFormComponent implements OnInit {
     this.isInvalid$.next(false);
   }
 
-  openSearchStepDialog() {
+  openStepsListDialog(): void {
 
+    const dialogRef = this.dialog.open(StepsTransferDialogComponent, {
+      width: dialogSize('xl'),
+      data: {currentSteps: this.tournament.steps.filter(s => !!s.id), languages: this.languages} as IStepsTransferDialogData
+    });
+
+    dialogRef.afterClosed().subscribe((selectedSteps: IStepNavigation[]) => {
+      selectedSteps.forEach(selectedStep => {
+        if (!this.tournament.steps.some(step => step.id == selectedStep.id)) {
+          this.tournament.steps.unshift({
+            isOptional: true,
+            order: 0,
+            stepId: selectedStep.id,
+            tournamentId: selectedStep.id, ...selectedStep
+          } as ITournamentEditionStep);
+        }
+      })
+    });
   }
+
+
 }

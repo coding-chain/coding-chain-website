@@ -17,6 +17,7 @@ export class UrlUtils {
   }
 
   static getQueryFromArr<T>(arr: T[], suffix: string, order: QueryEnum): KeyValue<string, any>[] {
+
     return _.compact(arr)?.map(col => ({key: Case.camel(`${col}${suffix}`), value: Case.camel(order)})) ?? [];
   }
 

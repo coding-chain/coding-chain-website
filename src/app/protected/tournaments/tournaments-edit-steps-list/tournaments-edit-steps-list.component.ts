@@ -32,9 +32,6 @@ export class TournamentsEditStepsListComponent implements OnInit {
     this.reorderSteps();
   }
 
-  addStepFormGrp($formGrp: FormGroup, i: number) {
-    this.stepsArray.insert(i,$formGrp);
-  }
 
   deleteStep(i: number) {
     this.steps.splice(i,1);
