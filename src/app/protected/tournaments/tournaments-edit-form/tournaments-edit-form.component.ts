@@ -5,7 +5,7 @@ import {IProgrammingLanguageNavigation} from '../../../shared/models/programming
 import {BehaviorSubject} from 'rxjs';
 import {minDate, validateDateBetween} from '../../../shared/validators/date.validators';
 import {delay, map} from 'rxjs/operators';
-import {dialogSize} from '../../../shared/utils/dialogs';
+import {dialogWidth} from '../../../shared/utils/dialogs.utils';
 import {IStepsTransferDialogData, StepsTransferDialogComponent} from '../../steps/steps-list-dialog/steps-transfer-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import {IStepNavigation} from '../../../shared/models/steps/responses';
@@ -74,7 +74,7 @@ export class TournamentsEditFormComponent implements OnInit {
   openStepsListDialog(): void {
 
     const dialogRef = this.dialog.open(StepsTransferDialogComponent, {
-      width: dialogSize('xl'),
+      width: dialogWidth('xl'),
       data: {currentSteps: this.tournament.steps.filter(s => !!s.id), languages: this.languages} as IStepsTransferDialogData
     });
 

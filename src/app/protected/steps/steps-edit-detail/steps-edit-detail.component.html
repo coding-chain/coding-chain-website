@@ -1,31 +1,36 @@
 <div class="row ">
-  <mat-form-field appearance="outline" class="col-6 justify-content-center">
-    <mat-label>Fonctions min</mat-label>
-    <input [formControl]="minFunctionsCntCtrl" matInput type="number">
-    <mat-error *ngIf="minFunctionsCntCtrl.hasError('gtCtrlError')">
-      Nb fonctions min < Nb fonctions max
-    </mat-error>
-    <mat-error *ngIf="minFunctionsCntCtrl.hasError('min')">
-      Nb fonctions min >= 0
-    </mat-error>
-  </mat-form-field>
-  <mat-form-field appearance="outline" class="col-6 justify-content-center">
-    <mat-label>Fonctions max</mat-label>
-    <input [formControl]="maxFunctionsCntCtrl" matInput type="number">
-    <mat-error *ngIf="maxFunctionsCntCtrl.hasError('ltCtrlError')">
-      Nb fonctions max > Nb fonctions min
-    </mat-error>
-    <mat-error *ngIf="maxFunctionsCntCtrl.hasError('min')">
-      Nb fonctions min >= 0
-    </mat-error>
-  </mat-form-field>
+  <div class="col-6">
+    <div class="row">
+      <mat-form-field appearance="outline" class="col-6 justify-content-center">
+        <mat-label>Fonctions min</mat-label>
+        <input [formControl]="minFunctionsCntCtrl" matInput type="number">
+        <mat-error *ngIf="minFunctionsCntCtrl.hasError('gtCtrlError')">
+          Nb fonctions min < Nb fonctions max
+        </mat-error>
+        <mat-error *ngIf="minFunctionsCntCtrl.hasError('min')">
+          Nb fonctions min >= 0
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-6 justify-content-center">
+        <mat-label>Fonctions max</mat-label>
+        <input [formControl]="maxFunctionsCntCtrl" matInput type="number">
+        <mat-error *ngIf="maxFunctionsCntCtrl.hasError('ltCtrlError')">
+          Nb fonctions max > Nb fonctions min
+        </mat-error>
+        <mat-error *ngIf="maxFunctionsCntCtrl.hasError('min')">
+          Nb fonctions min >= 0
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row  align-items-center">
+        <quill-editor class="col mw-100 " [maxLength]="maxDescriptionLength" [formControl]="descriptionCtrl" ></quill-editor>
+    </div>
+  </div>
+  <div class="col-6">
+      <ngx-monaco-editor class="h-100 w-100" [options]="editorOptions" [(ngModel)]="step.headerCode"  ></ngx-monaco-editor>
+  </div>
+
 </div>
-<div class="row  align-items-center">
-  <mat-form-field appearance="outline" class="w-100 mx-auto">
-    <mat-label>Description</mat-label>
-    <textarea [formControl]="descriptionCtrl" matInput type="text"></textarea>
-    <mat-error *ngIf="descriptionCtrl.hasError('maxlength')">
-      La description de l'étape doit faire au maximum {{maxDescriptionLength}}
-    </mat-error>
-  </mat-form-field>
-</div>
+
+
+

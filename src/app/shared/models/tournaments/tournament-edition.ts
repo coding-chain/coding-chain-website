@@ -7,6 +7,7 @@ export interface ITournamentEdition extends ITournamentNavigation{
 }
 
 export interface ITournamentEditionStep extends ITournamentStepNavigation {
+  isPublished: any;
   language: IProgrammingLanguageNavigation;
   tests: ITestNavigation[]
 }

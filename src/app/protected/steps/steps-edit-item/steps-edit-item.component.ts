@@ -1,13 +1,13 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
-import {StepsEditDetailDialogComponent} from '../steps-edit-detail-dialog/steps-edit-detail-dialog.component';
-import {StepsEditTestsDialogComponent} from '../steps-edit-tests-dialog/steps-edit-tests-dialog.component';
+import {IStepsEditDetailDialogData, StepsEditDetailDialogComponent} from '../steps-edit-detail-dialog/steps-edit-detail-dialog.component';
+import {IStepsEditTestsDialogData, StepsEditTestsDialogComponent} from '../steps-edit-tests-dialog/steps-edit-tests-dialog.component';
 import {IProgrammingLanguageNavigation} from '../../../shared/models/programming-languages/responses';
-import {gtCtrlValidator, ltCtrlValidator} from '../../../shared/validators/number.validators';
 import {ITournamentEditionStep} from '../../../shared/models/tournaments/tournament-edition';
-import {dialogSize} from '../../../shared/utils/dialogs';
+import {dialogWidth} from '../../../shared/utils/dialogs.utils';
 import {ITestNavigation} from '../../../shared/models/tests/responses';
+import {ThemeService} from '../../../core/services/theme.service';
 
 
 @Component({
@@ -31,19 +31,18 @@ export class StepsEditItemComponent implements OnInit {
   scoreCtrl: FormControl;
 
   @Input() stepGrp: FormGroup;
+  @Input() step: ITournamentEditionStep;
 
-  constructor(private _fb: FormBuilder, public dialog: MatDialog) {
+  constructor(private _fb: FormBuilder, public dialog: MatDialog, private readonly _themeService: ThemeService) {
 
   }
 
-  @Input() step: ITournamentEditionStep;
-
-
   openDetailDialog(): void {
     const dialogRef = this.dialog.open(StepsEditDetailDialogComponent, {
-      width: dialogSize('m'),
-      data: this.step
+      width: dialogWidth('xl'),
+      data: {step: this.step, theme: this._themeService.theme} as IStepsEditDetailDialogData
     });
+    this._themeService.publishTheme();
 
     dialogRef.afterClosed().subscribe((result: (ITournamentEditionStep | undefined)) => {
       if (result) {
@@ -56,8 +55,8 @@ export class StepsEditItemComponent implements OnInit {
 
   openTestsDialog(): void {
     const dialogRef = this.dialog.open(StepsEditTestsDialogComponent, {
-      width: dialogSize('xl'),
-      data: this.step
+      width: dialogWidth('xxl'),
+      data: {step: this.step, theme: this._themeService.theme} as IStepsEditTestsDialogData
     });
 
     dialogRef.afterClosed().subscribe((result: (ITestNavigation[] | undefined)) => {
@@ -69,8 +68,12 @@ export class StepsEditItemComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.step.difficulty ??=1;
-    this.nameCtrl = this._fb.control(this.step.name, [Validators.required, Validators.minLength(this.minNameLength), Validators.maxLength(this.maxNameLength)]);
+    this.step.difficulty ??= 1;
+    this.nameCtrl = this._fb.control(this.step.name, [
+      Validators.required,
+      Validators.minLength(this.minNameLength),
+      Validators.maxLength(this.maxNameLength)
+    ]);
     this.isOptionalCtrl = this._fb.control(this.step.isOptional);
     this.languagesCtrl = this._fb.control(this.step.language.id, [Validators.required]);
     this.scoreCtrl = this._fb.control(this.step.score ?? 0, [Validators.min(0)]);
@@ -80,7 +83,7 @@ export class StepsEditItemComponent implements OnInit {
     this.stepGrp.setControl('isOptional', this.isOptionalCtrl);
     this.stepGrp.setControl('languageId', this.languagesCtrl);
     this.stepGrp.setControl('score', this.scoreCtrl);
-    if(this.step.isPublished){
+    if (this.step.isPublished) {
       this.stepGrp.disable();
       this.isOptionalCtrl.enable();
     }
@@ -88,7 +91,7 @@ export class StepsEditItemComponent implements OnInit {
     this.stepGrp.valueChanges.subscribe(res => console.log(this.step));
   }
 
-  delete() {
+  delete(): void {
     this.stepDeleted.emit();
   }
 }

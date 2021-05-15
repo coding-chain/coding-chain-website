@@ -1,12 +1,13 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
-import {ITestNavigation} from '../../../shared/models/tests/responses';
-import * as _ from 'lodash';
-import {toMatrix} from '../../../shared/utils/array.utils';
+import {FormArray, FormBuilder} from '@angular/forms';
 import {ITournamentEditionStep} from '../../../shared/models/tournaments/tournament-edition';
-import {ITournamentStep} from '../../../shared/models/tournaments/commands';
-import {ITestEdition} from '../../../shared/models/tests/test-edition';
+import {Theme} from '../../../core/services/theme.service';
+
+export interface IStepsEditTestsDialogData {
+  step: ITournamentEditionStep;
+  theme: Theme;
+}
 
 @Component({
   selector: 'app-steps-edit-tests-dialog',
@@ -15,14 +16,19 @@ import {ITestEdition} from '../../../shared/models/tests/test-edition';
 })
 export class StepsEditTestsDialogComponent implements OnInit {
   testsArray: FormArray;
+  step: ITournamentEditionStep;
+  theme: Theme;
   constructor(public dialogRef: MatDialogRef<StepsEditTestsDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) readonly  step: ITournamentEditionStep,
+              @Inject(MAT_DIALOG_DATA) private readonly data: IStepsEditTestsDialogData,
               private readonly _fb: FormBuilder) {
   }
 
   ngOnInit(): void {
+    this.step = this.data.step;
+    this.theme = this.data.theme;
     this.testsArray = this._fb.array([]);
   }
+
   onSaveClicked(): void {
     this.dialogRef.close(this.step);
   }

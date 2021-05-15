@@ -5,6 +5,7 @@ import {HomeRoutingModule} from './home-routing.module';
 import {HomeRootComponent} from './home-root/home-root.component';
 import {FormsModule} from '@angular/forms';
 import {MonacoEditorModule} from '@materia-ui/ngx-monaco-editor';
+import {SharedModule} from '../../shared/shared.module';
 
 
 @NgModule({
@@ -12,9 +13,9 @@ import {MonacoEditorModule} from '@materia-ui/ngx-monaco-editor';
   ],
   imports: [
     CommonModule,
+    SharedModule,
     HomeRoutingModule,
-    FormsModule,
-    MonacoEditorModule
+    FormsModule
   ]
 })
 export class HomeModule {

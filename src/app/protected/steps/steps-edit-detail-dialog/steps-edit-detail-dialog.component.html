@@ -1,9 +1,9 @@
-
 <h1 mat-dialog-title>{{step.name}}</h1>
-<div mat-dialog-content>
-  <app-steps-edit-detail  [step]="step" [stepGrp]="formGroup" ></app-steps-edit-detail>
+<div mat-dialog-content class="container-fluid mx-auto ">
+  <app-steps-edit-detail [step]="step" [stepGrp]="formGroup" [theme]="theme"></app-steps-edit-detail>
 </div>
 <div mat-dialog-actions>
   <button mat-button [disabled]="formGroup.invalid" (click)="onSaveClicked()">Sauvegarder</button>
   <button mat-button mat-dialog-close>Annuler</button>
 </div>
+
