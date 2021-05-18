@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {PublicUser} from '../../../shared/models/users/responses';
 import {TeamService} from '../../../core/services/http/team.service';
+import {ITeamNavigation} from '../../../shared/models/teams/responses';
 
 @Component({
   selector: 'app-team-page',
@@ -12,22 +13,23 @@ export class TeamPageComponent implements OnInit {
   isSearching = true; // todo set default to false after tests
   searchedTeammates: PublicUser[] = [{username: 'fghjk', email: 'fghjknb', id: 'hj', teamIds: [], rightIds: []}]; // todo remove after tests
   yourTeammates: PublicUser[] = [{username: 'fghjk', email: 'fghjknb', id: 'hj', teamIds: [], rightIds: ['1']}]; // todo remove after tests
-  teamId;
-  team;
+  teamId: string;
+  team: ITeamNavigation;
 
   constructor(private route: ActivatedRoute, private teamService: TeamService) {
-    this.teamId = this.route.snapshot.paramMap.get('teamId');
   }
 
   ngOnInit(): void {
-    this.fetchTeam();
+    this.route.params.subscribe(res => {
+      this.teamId = res.id;
+      this.fetchTeam();
+    });
   }
 
   fetchTeam(): void {
     if (this.teamId != null) {
       this.teamService.getOneById(this.teamId).subscribe(team => {
         this.team = team;
-        console.log(this.team);
         // this.fetchTeammates(team);
       });
     }
@@ -36,7 +38,7 @@ export class TeamPageComponent implements OnInit {
   fetchTeammates(team): void {
     team.membersIds.forEach(memberId => {
       this.teamService.getMemberById(team.id, memberId).subscribe(member => {
-        // todo how to do member fetching
+        // todo
       });
     });
   }
