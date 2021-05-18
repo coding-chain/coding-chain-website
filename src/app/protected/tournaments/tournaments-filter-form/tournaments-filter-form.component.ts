@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FilterComponentBase} from '../../../shared/components-bases/filter-component-base';
-import {IProgrammingLanguageNavigation} from '../../../shared/models/programming-languages/responses';
+import {FilterBaseComponent} from '../../../shared/components-bases/filter-base.component';
+import {IProgrammingLanguage, IProgrammingLanguageNavigation} from '../../../shared/models/programming-languages/responses';
 import {FormBuilder, FormControl} from '@angular/forms';
 import {ITournamentsFilter} from '../../../shared/models/tournaments/filters';
 import {GetParams} from '../../../shared/models/http/get.params';
@@ -12,8 +12,8 @@ import {ITournamentResume} from '../../../shared/models/tournaments/tournament-r
   templateUrl: './tournaments-filter-form.component.html',
   styles: []
 })
-export class TournamentsFilterFormComponent extends FilterComponentBase<ITournamentResume, ITournamentsFilter> implements OnInit {
-  @Input() languages: IProgrammingLanguageNavigation[];
+export class TournamentsFilterFormComponent extends FilterBaseComponent<ITournamentResume, ITournamentsFilter> implements OnInit {
+  @Input() languages: IProgrammingLanguage[];
 
   @Input() nameOrder: SortOrder = 'desc';
   @Input() currentUserId: string;

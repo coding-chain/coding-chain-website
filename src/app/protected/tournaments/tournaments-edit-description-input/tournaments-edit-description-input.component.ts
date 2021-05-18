@@ -16,7 +16,7 @@ export class TournamentsEditDescriptionInputComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.descriptionCtrl.setValidators([Validators.maxLength(this.maxDescriptionLength)]);
+    this.descriptionCtrl.setValidators([Validators.maxLength(this.maxDescriptionLength), Validators.required]);
   }
 
 }

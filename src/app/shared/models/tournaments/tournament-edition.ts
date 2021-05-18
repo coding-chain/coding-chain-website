@@ -1,13 +1,18 @@
-import {ITournamentNavigation, ITournamentStepNavigation} from './responses';
-import {IProgrammingLanguageNavigation} from '../programming-languages/responses';
-import {ITestNavigation} from '../tests/responses';
+import {cloneTournamentStepNavigation, ITournamentNavigation, ITournamentStepNavigation} from './responses';
+import {cloneStepResume, IStepResume} from '../steps/responses';
 
-export interface ITournamentEdition extends ITournamentNavigation{
+export interface ITournamentEdition extends ITournamentNavigation {
   steps: ITournamentEditionStep[];
 }
 
-export interface ITournamentEditionStep extends ITournamentStepNavigation {
-  isPublished: any;
-  language: IProgrammingLanguageNavigation;
-  tests: ITestNavigation[]
+export interface ITournamentEditionStep extends ITournamentStepNavigation, IStepResume {
+}
+
+export function cloneTournamentEditionStep(tournamentEditionStep: ITournamentEditionStep): ITournamentEditionStep {
+  const tournamentStep = cloneTournamentStepNavigation(tournamentEditionStep);
+  const stepResume = cloneStepResume(tournamentEditionStep);
+  return {
+    ...tournamentStep,
+    ...stepResume
+  };
 }

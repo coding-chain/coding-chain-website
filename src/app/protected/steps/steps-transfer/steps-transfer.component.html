@@ -1,8 +1,26 @@
-<div class="row">
+<div class="row h-100" cdkDropListGroup>
   <div class="col-6">
+    <div
+      cdkDropList
+      class="row justify-content-center  drag-place-holder"
+      [cdkDropListData]="_selectedSteps"
+      (cdkDropListDropped)="drop($event)">
+      <app-steps-item  *ngFor="let step of _selectedSteps" [step]="step" [theme]="theme$ | async"  class="col-11 my-2" cdkDrag [cdkDragDisabled]="!step.canMove">
+      </app-steps-item>
+    </div>
 
   </div>
   <div class="col-6">
-    <app-steps-list [languages]="languages"></app-steps-list>
+    <app-steps-filter-form (filterChanged)="searchSteps($event)" [languages]="languages" class="col my-3 "></app-steps-filter-form>
+    <div *ngIf="searchedSteps$|async"
+         cdkDropList
+         class="row justify-content-center  drag-place-holder"
+         [cdkDropListData]="searchedSteps"
+         (cdkDropListDropped)="drop($event)">
+      <app-steps-item *ngFor="let step of searchedSteps" [step]="step"  [theme]="theme$ | async" class="col-11 my-2 " cdkDrag>
+      </app-steps-item>
+    </div>
+
+    <app-paged-list [cursor]="stepsCursor" ></app-paged-list>
   </div>
 </div>

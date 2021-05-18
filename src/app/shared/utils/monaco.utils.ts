@@ -4,23 +4,23 @@ import {Theme} from '../../core/services/theme.service';
 
 export type MonacoTheme = 'vs' | 'vs-dark';
 
-export interface IThemeMapping {
+export interface IMonacoThemeMapping {
   appTheme: Theme;
   monacoTheme: MonacoTheme;
 }
 
-export interface ILanguageMapping {
+export interface IMonacoLanguageMapping {
   appLanguage: AppLanguage;
   monacoLanguage: MonacoLanguage;
 }
 
 export type MonacoLanguage = 'csharp';
 
-const themeMapping: IThemeMapping[] = [
+const themeMapping: IMonacoThemeMapping[] = [
   {appTheme: 'dark', monacoTheme: 'vs-dark'},
   {appTheme: 'light', monacoTheme: 'vs'}
 ];
-const languageMapping: ILanguageMapping[] = [
+const languageMapping: IMonacoLanguageMapping[] = [
   {appLanguage: 'csharp', monacoLanguage: 'csharp'}
 ];
 

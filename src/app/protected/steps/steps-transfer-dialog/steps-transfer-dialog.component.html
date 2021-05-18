@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Toutes les étapes</h1>
+<div mat-dialog-content appMatDialogExpanderDirective>
+  <app-steps-transfer [(selectedSteps)]="data.currentSteps" [languages]="data.languages" (selectedStepsChange)="onSelectedStepsChanged($event)" ></app-steps-transfer>
+</div>
+<div mat-dialog-actions>
+  <button mat-button  (click)="onAddClicked()">Ajouter</button>
+  <button mat-button mat-dialog-close>Annuler</button>
+</div>

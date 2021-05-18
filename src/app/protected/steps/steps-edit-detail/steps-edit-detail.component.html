@@ -1,4 +1,4 @@
-<div class="row ">
+<div class="row h-100">
   <div class="col-6">
     <div class="row">
       <mat-form-field appearance="outline" class="col-6 justify-content-center">
@@ -22,8 +22,8 @@
         </mat-error>
       </mat-form-field>
     </div>
-    <div class="row  align-items-center">
-        <quill-editor class="col mw-100 " [maxLength]="maxDescriptionLength" [formControl]="descriptionCtrl" ></quill-editor>
+    <div class="row  align-items-center" >
+        <quill-editor class="col mw-100 p-0" style="background-color: white; color: black;" [formControl]="descriptionCtrl" ></quill-editor>
     </div>
   </div>
   <div class="col-6">

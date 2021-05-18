@@ -1,6 +1,11 @@
 <router-outlet></router-outlet>
-<div style="height: 500px">
-  <ngx-monaco-editor style="height: 100%;" [options]="editorOptions" [(ngModel)]="code"></ngx-monaco-editor>
-
+<div style="display: block;">
+  <canvas baseChart
+          [datasets]="pieChartData"
+          [labels]="pieChartLabels"
+          [chartType]="pieChartType"
+          [options]="pieChartOptions"
+          [plugins]="pieChartPlugins"
+          [legend]="pieChartLegend">
+  </canvas>
 </div>
-

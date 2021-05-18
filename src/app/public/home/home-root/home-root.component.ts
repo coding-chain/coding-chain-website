@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {MonacoEditorConstructionOptions} from '@materia-ui/ngx-monaco-editor/lib/interfaces';
+import {ChartDataSets, ChartOptions, ChartType} from 'chart.js';
+import {Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip} from 'ng2-charts';
 
 @Component({
   selector: 'app-home-root',
@@ -7,13 +8,25 @@ import {MonacoEditorConstructionOptions} from '@materia-ui/ngx-monaco-editor/lib
   styles: []
 })
 export class HomeRootComponent implements OnInit {
-  editorOptions = {theme: 'vs', language: 'csharp', wrappingIndent: 'indent', dimension: {height: 300, width: 300} } as MonacoEditorConstructionOptions;
-  code = ' public static void main() {\n\tConsole.Writeln("Hello world!");\n}';
+
+  public pieChartOptions: ChartOptions = {
+    responsive: true,
+  };
+  public pieChartLabels: Label[] = ['csharp', 'java'];
+  public pieChartData: ChartDataSets[] = [
+    {data: [10, 10], backgroundColor: ['#ff7043', '#4dd0e1']},
+  ];
+  public pieChartType: ChartType = 'doughnut';
+  public pieChartLegend = true;
+  public pieChartPlugins = [];
 
   constructor() {
+
   }
 
   ngOnInit(): void {
+    monkeyPatchChartJsTooltip();
+    monkeyPatchChartJsLegend();
   }
 
 }

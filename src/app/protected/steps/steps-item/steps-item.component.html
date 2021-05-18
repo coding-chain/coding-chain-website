@@ -1,1 +1,15 @@
-<p>steps-item-resume works!</p>
+<mat-card class="row w-100 mx-0">
+  <div class="col">
+    <div class="row justify-content-between w-100 align-items-center">
+      <h3 class="my-auto">
+        {{step.name}}
+      </h3>
+      <mat-chip-list>
+        <mat-chip [ngStyle]="{backgroundColor: languageColor}" selected>
+          {{step.language.label}}
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+  </div>
+    <app-star-rate [disabled]="true" [(rate)]="step.difficulty" dim="15px"></app-star-rate>
+</mat-card>

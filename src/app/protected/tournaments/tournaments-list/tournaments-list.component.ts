@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {TournamentService} from '../../../core/services/http/tournament.service';
 import {PageCursor} from '../../../shared/models/pagination/page-cursor';
-import {BehaviorSubject, forkJoin, Observable, of} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {IProgrammingLanguageNavigation} from '../../../shared/models/programming-languages/responses';
 import {LanguageService} from '../../../core/services/http/language.service';
-import {map, switchMap, tap} from 'rxjs/operators';
+import {tap} from 'rxjs/operators';
 import {ITournamentsFilter} from '../../../shared/models/tournaments/filters';
 import {GetParams} from '../../../shared/models/http/get.params';
 import {UserStateService} from '../../../core/services/user-state.service';
@@ -38,7 +38,7 @@ export class TournamentsListComponent implements OnInit {
     this.currentUser$ = this._userStateService.userSubject$;
   }
 
-  searchTournaments($filter: GetParams<ITournamentResume, ITournamentsFilter>) {
+  searchTournaments($filter: GetParams<ITournamentResume, ITournamentsFilter>): void {
     this.tournamentCursor.updateFilter($filter);
     this.tournamentCursor.current();
   }

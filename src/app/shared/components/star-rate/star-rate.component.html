@@ -1,4 +1,11 @@
-<button mat-icon-button [disabled]="disabled" *ngFor="let star of rateArr; let i = index"
+<div *ngIf="!disabled">
+  <button mat-icon-button  *ngFor="let star of rateArr; let i = index" [ngStyle]="{ fontSize: dim, height:dim, width:dim, 'line-height': dim}" [disableRipple]="disabled"
           [color]="i + 1 > rateValue ? 'primary' : 'accent'" (click)="setRate(i)" >
-  <mat-icon>star_rate</mat-icon>
-</button>
+    <mat-icon  [inline]="!!dim">star_rate</mat-icon>
+  </button>
+</div>
+<div *ngIf="disabled">
+  <mat-icon  *ngFor="let star of rateArr; let i = index" [ngStyle]="{fontSize: dim, height:dim, width:dim}" [inline]="!!dim"
+             [color]="i + 1 > rateValue ? 'primary' : 'accent'" >star_rate</mat-icon>
+</div>
+

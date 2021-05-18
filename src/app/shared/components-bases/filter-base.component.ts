@@ -3,7 +3,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {GetParams} from '../models/http/get.params';
 
 @Component({template: ''})
-export abstract class FilterComponentBase<T, F = T> {
+export abstract class FilterBaseComponent<T, F = T> {
   filterGrp: FormGroup;
 
   @Input()
@@ -17,7 +17,7 @@ export abstract class FilterComponentBase<T, F = T> {
 
   abstract reset(): void;
 
-  protected setFilterValue<K extends keyof F>(key: keyof F, val: F[K]) {
+  protected setFilterValue<K extends keyof F>(key: keyof F, val: F[K]): void {
     this.filter.filterObj[key] = val;
   }
 

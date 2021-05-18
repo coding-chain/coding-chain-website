@@ -1,16 +1,15 @@
 <mat-card>
   <mat-card-content>
-    <div class="row align-items-center justify-content-around">
+    <div class="row h-100 align-items-center justify-content-around">
       <div class="col-11">
         <div class="row" style="height: 150px">
           <div class="col-6 p-0">
-            <ngx-monaco-editor class="h-100 w-100" [options]="inputMonacoOptions" [(ngModel)]="test.inputGenerator" ></ngx-monaco-editor>
+            <ngx-monaco-editor class="h-100 w-100" [options]="inputMonacoOptions"  [formControl]="inputGeneratorCtrl"></ngx-monaco-editor>
           </div>
           <div class="col-6 p-0">
-            <ngx-monaco-editor class="h-100 w-100" [options]="outputMonacoOptions" [(ngModel)]="test.outputValidator" ></ngx-monaco-editor>
+            <ngx-monaco-editor class="h-100 w-100" [options]="outputMonacoOptions" [formControl]="outputValidatorCtrl"  ></ngx-monaco-editor>
           </div>
         </div>
-
       </div>
       <div class="col-1">
         <mat-form-field appearance="outline"  class="mx-auto my-auto w-100 ">
@@ -20,7 +19,7 @@
             Score min > 0
           </mat-error>
         </mat-form-field>
-        <button class="mx-auto my-auto" mat-icon-button (click)="deleteTest()">
+        <button class="mx-auto my-auto"  mat-icon-button  [disabled]="test.stepPublished" (click)="deleteTest()">
           <mat-icon color="warn">
             clear
           </mat-icon>

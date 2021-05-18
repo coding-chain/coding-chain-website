@@ -1,27 +1,24 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {IProgrammingLanguageNavigation} from '../../../shared/models/programming-languages/responses';
+import {IProgrammingLanguage, IProgrammingLanguageNavigation} from '../../../shared/models/programming-languages/responses';
 import {SortOrder} from '../../../shared/types/sort-order';
 import {FormBuilder, FormControl} from '@angular/forms';
-import {FilterComponentBase} from '../../../shared/components-bases/filter-component-base';
-import {GetParams} from '../../../shared/models/http/get.params';
+import {FilterBaseComponent} from '../../../shared/components-bases/filter-base.component';
 import {IStepNavigation} from '../../../shared/models/steps/responses';
 import {IStepsFilter} from '../../../shared/models/steps/filters';
 
 @Component({
   selector: 'app-steps-filter-form',
   templateUrl: './steps-filter-form.component.html',
-  styles: [
-  ]
+  styles: []
 })
-export class StepsFilterFormComponent extends FilterComponentBase<IStepNavigation, IStepsFilter> implements OnInit {
+export class StepsFilterFormComponent extends FilterBaseComponent<IStepNavigation, IStepsFilter> implements OnInit {
 
-  @Input() languages: IProgrammingLanguageNavigation[];
+  @Input() languages: IProgrammingLanguage[];
 
   @Input() nameOrder: SortOrder = 'desc';
 
   languageCtrl: FormControl;
   nameCtrl: FormControl;
-  isPublishedCtrl: FormControl;
 
   constructor(private fb: FormBuilder) {
     super();
@@ -40,7 +37,7 @@ export class StepsFilterFormComponent extends FilterComponentBase<IStepNavigatio
     });
   }
 
-  updateForm() {
+  updateForm(): void {
     this.filterChanged.emit({
       filterObj: {
         languageId: this.languageCtrl.value,

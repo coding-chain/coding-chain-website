@@ -7,8 +7,7 @@ import {getDefaultMonacoEditorConfig} from '../../../shared/utils/monaco.utils';
 
 @Component({
   selector: 'app-steps-test-edit-item',
-  templateUrl: './steps-test-edit-item.component.html',
-  styles: []
+  templateUrl: './steps-test-edit-item.component.html'
 })
 export class StepsTestEditItemComponent implements OnInit {
 
@@ -16,9 +15,12 @@ export class StepsTestEditItemComponent implements OnInit {
   @Input() theme: Theme;
   @Input() testGrp: FormGroup;
   @Output() testDelete = new EventEmitter<boolean>();
+
   scoreCtrl: FormControl;
+  outputValidatorCtrl: FormControl;
   inputMonacoOptions: MonacoEditorConstructionOptions;
   outputMonacoOptions: MonacoEditorConstructionOptions;
+  inputGeneratorCtrl: FormControl;
 
   constructor(private _fb: FormBuilder) {
   }
@@ -26,8 +28,22 @@ export class StepsTestEditItemComponent implements OnInit {
   ngOnInit(): void {
     this.inputMonacoOptions = getDefaultMonacoEditorConfig(this.test.language.name, this.theme);
     this.outputMonacoOptions = getDefaultMonacoEditorConfig(this.test.language.name, this.theme);
+    this.outputValidatorCtrl = this._fb.control(this.test.outputValidator, [Validators.required]);
+    this.inputGeneratorCtrl = this._fb.control(this.test.inputGenerator, [Validators.required]);
     this.scoreCtrl = this._fb.control(this.test.score ?? 1, [Validators.min(0)]);
     this.testGrp.setControl('score', this.scoreCtrl);
+    this.testGrp.setControl('inputGenerator', this.inputGeneratorCtrl);
+    this.testGrp.setControl('outputValidator', this.outputValidatorCtrl);
+    this.inputMonacoOptions.readOnly = this.test.stepPublished;
+    this.outputMonacoOptions.readOnly = this.test.stepPublished;
+    if (this.test.stepPublished) {
+      this.testGrp.disable();
+    }
+    this.testGrp.valueChanges.subscribe((res: ITestEdition) => {
+      this.test.score = res.score;
+      this.test.outputValidator = res.outputValidator;
+      this.test.inputGenerator = res.inputGenerator;
+    });
   }
 
   deleteTest(): void {

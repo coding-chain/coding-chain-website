@@ -27,7 +27,7 @@
         </mat-select>
       </mat-form-field>
       <div class="col-2 text-center" matTooltip="Difficulté">
-        <app-star-rate [(rate)]="step.difficulty" [maxRate]="5" [disabled]="step.isPublished"></app-star-rate>
+        <app-star-rate [(rate)]="step.difficulty" [maxRate]="5" [disabled]="step.isPublished" dim="15px" ></app-star-rate>
       </div>
       <mat-form-field appearance="outline" class="col-1">
         <mat-label>Score</mat-label>
@@ -44,17 +44,20 @@
       <div class="col-1  align-items-center">
         <div class="row justify-content-center">
           <mat-slide-toggle
-            [formControl]="isOptionalCtrl" [matTooltip]="isOptionalCtrl.value ? 'Obligatoire' : 'Optionnel'">
+            [formControl]="isOptionalCtrl"  [matTooltip]="isOptionalCtrl.value?'Obligatoire':'Optionnel'">
           </mat-slide-toggle>
         </div>
       </div>
       <div class="col-1 text-center">
-        <button mat-icon-button color="primary" (click)="openDetailDialog()" matTooltip="Détail">
+        <button mat-icon-button [color]="descriptionCtrl.valid ? 'primary': 'warn'" (click)="openDetailDialog()" matTooltip="Détail">
           <mat-icon>zoom_in</mat-icon>
         </button>
+        <mat-error *ngIf="descriptionCtrl.errors?.required">
+          Donnez une description à l'étape
+        </mat-error>
       </div>
       <div class="col-1 text-center">
-        <button mat-icon-button color="warn" (click)="delete()" matTooltip="Supprimer">
+        <button mat-icon-button color="warn" [disabled]="tournamentPublished" (click)="delete()" matTooltip="Supprimer">
           <mat-icon>clear</mat-icon>
         </button>
       </div>

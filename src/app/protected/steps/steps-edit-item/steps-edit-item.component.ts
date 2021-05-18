@@ -2,12 +2,13 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {IStepsEditDetailDialogData, StepsEditDetailDialogComponent} from '../steps-edit-detail-dialog/steps-edit-detail-dialog.component';
-import {IStepsEditTestsDialogData, StepsEditTestsDialogComponent} from '../steps-edit-tests-dialog/steps-edit-tests-dialog.component';
+import {IStepsTestsDialogData, StepsTestsDialogComponent} from '../steps-edit-tests-dialog/steps-tests-dialog.component';
 import {IProgrammingLanguageNavigation} from '../../../shared/models/programming-languages/responses';
 import {ITournamentEditionStep} from '../../../shared/models/tournaments/tournament-edition';
-import {dialogWidth} from '../../../shared/utils/dialogs.utils';
+import {dialogHeight, dialogWidth} from '../../../shared/utils/dialogs.utils';
 import {ITestNavigation} from '../../../shared/models/tests/responses';
 import {ThemeService} from '../../../core/services/theme.service';
+import {map} from 'rxjs/operators';
 
 
 @Component({
@@ -32,6 +33,7 @@ export class StepsEditItemComponent implements OnInit {
 
   @Input() stepGrp: FormGroup;
   @Input() step: ITournamentEditionStep;
+  @Input() tournamentPublished = true;
 
   constructor(private _fb: FormBuilder, public dialog: MatDialog, private readonly _themeService: ThemeService) {
 
@@ -40,13 +42,14 @@ export class StepsEditItemComponent implements OnInit {
   openDetailDialog(): void {
     const dialogRef = this.dialog.open(StepsEditDetailDialogComponent, {
       width: dialogWidth('xl'),
+      height: dialogHeight('l'),
       data: {step: this.step, theme: this._themeService.theme} as IStepsEditDetailDialogData
     });
     this._themeService.publishTheme();
 
     dialogRef.afterClosed().subscribe((result: (ITournamentEditionStep | undefined)) => {
       if (result) {
-        this.step.description = result.description;
+        this.descriptionCtrl.setValue(result.description);
         this.step.minFunctionsCount = result.minFunctionsCount;
         this.step.maxFunctionsCount = result.maxFunctionsCount;
       }
@@ -54,9 +57,10 @@ export class StepsEditItemComponent implements OnInit {
   }
 
   openTestsDialog(): void {
-    const dialogRef = this.dialog.open(StepsEditTestsDialogComponent, {
+    const dialogRef = this.dialog.open(StepsTestsDialogComponent, {
       width: dialogWidth('xxl'),
-      data: {step: this.step, theme: this._themeService.theme} as IStepsEditTestsDialogData
+      height: dialogHeight('xl'),
+      data: {step: this.step, theme: this._themeService.theme, readonly: this.step.isPublished} as IStepsTestsDialogData
     });
 
     dialogRef.afterClosed().subscribe((result: (ITestNavigation[] | undefined)) => {
@@ -74,21 +78,31 @@ export class StepsEditItemComponent implements OnInit {
       Validators.minLength(this.minNameLength),
       Validators.maxLength(this.maxNameLength)
     ]);
-    this.isOptionalCtrl = this._fb.control(this.step.isOptional);
+    this.isOptionalCtrl = this._fb.control(!this.step.isOptional);
+    this.isOptionalCtrl.valueChanges.pipe(map(isOptional => !isOptional));
     this.languagesCtrl = this._fb.control(this.step.language.id, [Validators.required]);
     this.scoreCtrl = this._fb.control(this.step.score ?? 0, [Validators.min(0)]);
 
     this.stepGrp.setControl('name', this.nameCtrl);
-    this.stepGrp.setControl('description', this.descriptionCtrl);
     this.stepGrp.setControl('isOptional', this.isOptionalCtrl);
     this.stepGrp.setControl('languageId', this.languagesCtrl);
     this.stepGrp.setControl('score', this.scoreCtrl);
     if (this.step.isPublished) {
       this.stepGrp.disable();
-      this.isOptionalCtrl.enable();
+      if (!this.tournamentPublished) {
+        this.isOptionalCtrl.enable();
+      }
     }
+    this.descriptionCtrl = this._fb.control(this.step.description, [Validators.required]);
+    this.stepGrp.setControl('description', this.descriptionCtrl);
 
-    this.stepGrp.valueChanges.subscribe(res => console.log(this.step));
+    this.stepGrp.valueChanges.subscribe((res: ITournamentEditionStep) => {
+      this.step.name = res.name;
+      this.step.description = res.description;
+      this.step.isOptional = !res.isOptional;
+      this.step.languageId = res.languageId;
+      this.step.score = res.score;
+    });
   }
 
   delete(): void {

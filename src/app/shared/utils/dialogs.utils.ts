@@ -1,11 +1,11 @@
 export type DialogSize = 'xxl' | 'xl' | 'l' | 'm' | 's' | 'xs' | 'xxs';
 
 export function dialogWidth(size: DialogSize): string {
-  return calculatePercents((window.screen.width / 100), size);
+  return calculatePercents((window.innerWidth / 100), size);
 }
 
 export function dialogHeight(size: DialogSize): string {
-  return calculatePercents((window.screen.height / 100), size);
+  return calculatePercents((window.innerHeight / 100), size);
 }
 
 function calculatePercents(windowsPercent: number, size: DialogSize): string {

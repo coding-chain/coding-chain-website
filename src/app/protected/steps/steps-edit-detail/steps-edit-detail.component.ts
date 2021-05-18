@@ -27,6 +27,7 @@ export class StepsEditDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.editorOptions = getDefaultMonacoEditorConfig(this.step.language.name, this.theme);
+    this.editorOptions.readOnly = this.step.isPublished;
     this.maxFunctionsCntCtrl = this._fb.control(this.step.maxFunctionsCount);
     this.minFunctionsCntCtrl = this._fb.control(this.step.minFunctionsCount);
     this.minFunctionsCntCtrl.setValidators([gtCtrlValidator(this.maxFunctionsCntCtrl), Validators.min(0)]);

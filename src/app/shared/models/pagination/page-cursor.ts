@@ -112,10 +112,11 @@ export class PageCursor<TResult, TFilter> {
     this.pageSubjectFunction(this.filter)
       .subscribe((page) => {
         const subResults = page.result.map(subRes => subRes.result);
-        this.hasNext = !!page.nextLink();
-        this.hasPrevious = !!page.previousLink();
+        this.hasNext = !!page.nextLink;
+        this.hasPrevious = !!page.previousLink;
         this._totalValues = page.total;
-        this.setTotalPagesFromTotalValuesCount(page.total);
+        this._totalPages = page.pageCount;
+        // this.setTotalPagesFromTotalValuesCount(page.total);
         this.resultsSubject$.next(subResults);
       });
   }

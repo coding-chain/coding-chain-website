@@ -1,8 +1,38 @@
 import {GramOrderEnum} from '../types/gram-order.enum';
+import * as _ from 'lodash';
+import {IObjectUpdateResume} from '../models/object-difference';
+import {IStepResume} from '../models/steps/responses';
 
 export const isObject = (obj: any): boolean => {
   return !!obj && typeof obj === 'object';
 };
+
+export function getNotEqualProperties<T>(source: T, other: T): (keyof T)[] {
+  return _.reduce(source, (result, value, key) => {
+    return _.isEqual(value, other[key]) ?
+      result : result.concat(key);
+  }, []);
+}
+
+export function getNotEqualsObjectsWith<T>(sources: T[], others: T[], uniqComparator: (src: T, other: T) => boolean)
+  : IObjectUpdateResume<T>[]{
+    return _.without(sources.map(source => {
+        const sameObj = others.find(other => uniqComparator(other, source));
+        if (!sameObj) {
+          return;
+        }
+        const objDifference: IObjectUpdateResume<T> = {
+          originalVersion: source,
+          editedVersion: sameObj,
+          differentProperties: getNotEqualProperties(source, sameObj)
+        };
+        if (!objDifference.differentProperties.length) {
+          return;
+        }
+        return objDifference;
+      }
+    ), undefined);
+}
 
 export class ObjectUtils {
   public static getPropertiesByType(ctr: any): string[] {
