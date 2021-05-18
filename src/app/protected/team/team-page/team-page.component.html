@@ -1,10 +1,18 @@
-<div class="w-75 mx-auto mt-5 d-flex flex-row">
+<div class="w-75 mx-auto mt-5 d-flex flex-row" backgounr="primary">
   <mat-card class="w-100 d-flex flex-column mr-5">
+    <mat-card-title class="d-flex justify-content-center pt-2">
+      <span>Administration d'équipe</span>
+    </mat-card-title>
     <app-team-form [team]="team"></app-team-form>
     <app-team-teammate *ngIf="isSearching" [teammates]="searchedTeammates" [addOrDelete]="addTeammate"
                        [isDelete]="false"></app-team-teammate>
+    <app-team-delete-button *ngIf="teamId !== null && teamId !== undefined" [teamId]="teamId"></app-team-delete-button>
   </mat-card>
   <mat-card class="w-100 d-flex flex-column ml-5">
-    <app-team-teammate [teammates]="yourTeammates" [addOrDelete]="removeTeammate" [manageStatus]="manageStatus" [isDelete]="true"></app-team-teammate>
+    <mat-card-title class="d-flex justify-content-center pt-2">
+      <span>Membres</span>
+    </mat-card-title>
+    <app-team-teammate class="pt-4" [teammates]="yourTeammates" [addOrDelete]="removeTeammate"
+                       [manageStatus]="manageStatus" [isDelete]="true"></app-team-teammate>
   </mat-card>
 </div>

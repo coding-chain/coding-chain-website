@@ -7,6 +7,8 @@ import {TeamRoutingModule} from './team-routing.module';
 import {TeamFormComponent} from './team-form/team-form.component';
 import {SharedModule} from '../../shared/shared.module';
 import {TeamTeammateComponent} from './team-teammate/team-teammate.component';
+import {TeamDeleteButtonComponent} from './team-delete-button/team-delete-button.component';
+import {TeamDeleteDialogComponent} from './team-delete-dialog/team-delete-dialog.component';
 
 
 @NgModule({
@@ -14,7 +16,9 @@ import {TeamTeammateComponent} from './team-teammate/team-teammate.component';
     TeamRootComponent,
     TeamPageComponent,
     TeamTeammateComponent,
-    TeamFormComponent
+    TeamFormComponent,
+    TeamDeleteButtonComponent,
+    TeamDeleteDialogComponent
   ],
   imports: [
     CommonModule,

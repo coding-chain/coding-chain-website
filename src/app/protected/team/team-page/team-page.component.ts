@@ -16,7 +16,7 @@ export class TeamPageComponent implements OnInit {
   team;
 
   constructor(private route: ActivatedRoute, private teamService: TeamService) {
-    this.teamId = this.route.snapshot.paramMap.get('id');
+    this.teamId = this.route.snapshot.paramMap.get('teamId');
   }
 
   ngOnInit(): void {
@@ -27,7 +27,7 @@ export class TeamPageComponent implements OnInit {
     if (this.teamId != null) {
       this.teamService.getOneById(this.teamId).subscribe(team => {
         this.team = team;
-        console.log(this.team)
+        console.log(this.team);
         // this.fetchTeammates(team);
       });
     }

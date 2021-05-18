@@ -45,7 +45,7 @@ export class TeamFormComponent implements OnInit {
   }
 
   saveTeamName(input: string): void {
-    if (this.team !== null) {
+    if (this.team !== null && this.team !== undefined) {
       this.teamService.renameTeam(this.team.id, {name: input}).subscribe(team => {
         // todo success or failure
       });
@@ -67,8 +67,6 @@ export class TeamFormComponent implements OnInit {
           });
         }
       );
-
     }
-
   }
 }

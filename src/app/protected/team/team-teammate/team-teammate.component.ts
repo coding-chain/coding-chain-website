@@ -12,6 +12,7 @@ export class TeamTeammateComponent implements OnInit {
   @Input() isDelete;
   icon;
   iconColor;
+  tooltips;
 
   displayedColumns: string[] = ['username', 'email', 'action'];
 
@@ -21,6 +22,7 @@ export class TeamTeammateComponent implements OnInit {
   ngOnInit(): void {
     this.icon = this.isDelete ? 'delete' : 'add';
     this.iconColor = this.isDelete ? 'warn' : 'primary';
+    this.tooltips = this.isDelete ? 'Retiré de l\'équipe' : 'Ajouter à l\'équipe';
     this.displayedColumns = this.manageStatus ? ['username', 'email', 'action', 'status'] : ['username', 'email', 'action'];
   }
 
