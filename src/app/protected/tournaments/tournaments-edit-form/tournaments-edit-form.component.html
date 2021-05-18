@@ -10,7 +10,7 @@
       <div class="col-6 text-center">
         <mat-form-field>
           <mat-label>Date début du tournois</mat-label>
-          <input matInput type="datetime-local" [formControl]="startDateCtrl">
+          <input [formControl]="startDateCtrl" matInput type="datetime-local">
         </mat-form-field>
         <mat-error *ngIf="startDateCtrl.hasError('minDateError')">
           La date de début du tournois doit être supérieure à maintenant
@@ -19,7 +19,7 @@
       <div class="col-6 text-center">
         <mat-form-field>
           <mat-label>Date fin du tournois</mat-label>
-          <input matInput type="datetime-local" [formControl]="endDateCtrl">
+          <input [formControl]="endDateCtrl" matInput type="datetime-local">
         </mat-form-field>
         <mat-error *ngIf="formGroup.hasError('noStartDate')">
           Le tournois doit avoir une date de début
@@ -37,11 +37,11 @@
   </div>
   <div class="col-2 align-self-stretch">
     <div class="d-flex h-100 justify-content-around flex-column">
-      <button mat-stroked-button [disabled]="tournamentPublished || (isInvalid$ | async)" (click)="saveTournament()">
+      <button (click)="saveTournament()" [disabled]="tournamentPublished || (isInvalid$ | async)" mat-stroked-button>
         Sauvegarder
       </button>
-      <mat-slide-toggle class="mx-auto"
-                        [formControl]="isPublishedCtrl" [matTooltip]="isPublishedCtrl.value ? 'Publié' : 'Non publié'">
+      <mat-slide-toggle [formControl]="isPublishedCtrl"
+                        [matTooltip]="isPublishedCtrl.value ? 'Publié' : 'Non publié'" class="mx-auto">
       </mat-slide-toggle>
     </div>
 
@@ -52,18 +52,18 @@
 </mat-divider>
 <div class="row">
   <div class="col-6">
-    <button mat-stroked-button [disabled]="tournamentPublished || (isInvalid$ | async)" class="w-100 py-1 my-2"
-            (click)="addStep()">Ajouter une nouvelle étape
+    <button (click)="addStep()" [disabled]="tournamentPublished || (isInvalid$ | async)" class="w-100 py-1 my-2"
+            mat-stroked-button>Ajouter une nouvelle étape
     </button>
   </div>
   <div class="col-6">
-    <button mat-stroked-button [disabled]="tournamentPublished || (isInvalid$ | async)" class="w-100 py-1 my-2"
-            (click)="openStepsListDialog()">Ajouter une étape existante
+    <button (click)="openStepsListDialog()" [disabled]="tournamentPublished || (isInvalid$ | async)" class="w-100 py-1 my-2"
+            mat-stroked-button>Ajouter une étape existante
     </button>
   </div>
 </div>
 
-<app-tournaments-edit-steps-list [steps]="tournament.steps" [languages]="languages"
-                                 [tournamentPublished]="tournamentPublished"
-                                 [stepsArray]="stepsArray"></app-tournaments-edit-steps-list>
+<app-tournaments-edit-steps-list [languages]="languages" [stepsArray]="stepsArray"
+                                 [steps]="tournament.steps"
+                                 [tournamentPublished]="tournamentPublished"></app-tournaments-edit-steps-list>
 

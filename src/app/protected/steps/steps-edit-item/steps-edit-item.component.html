@@ -27,7 +27,8 @@
         </mat-select>
       </mat-form-field>
       <div class="col-2 text-center" matTooltip="Difficulté">
-        <app-star-rate [(rate)]="step.difficulty" [maxRate]="5" [disabled]="step.isPublished" dim="15px" ></app-star-rate>
+        <app-star-rate [(rate)]="step.difficulty" [disabled]="step.isPublished" [maxRate]="5"
+                       dim="15px"></app-star-rate>
       </div>
       <mat-form-field appearance="outline" class="col-1">
         <mat-label>Score</mat-label>
@@ -37,19 +38,20 @@
         </mat-error>
       </mat-form-field>
       <div class="col-1 text-center">
-        <button mat-stroked-button color="primary" [matBadge]="step.tests?.length" matBadgePosition="after"
-                matBadgeColor="accent" (click)="openTestsDialog()">Tests
+        <button (click)="openTestsDialog()" [matBadge]="step.tests?.length" color="primary" mat-stroked-button
+                matBadgeColor="accent" matBadgePosition="after">Tests
         </button>
       </div>
       <div class="col-1  align-items-center">
         <div class="row justify-content-center">
           <mat-slide-toggle
-            [formControl]="isOptionalCtrl"  [matTooltip]="isOptionalCtrl.value?'Obligatoire':'Optionnel'">
+            [formControl]="isOptionalCtrl" [matTooltip]="isOptionalCtrl.value?'Obligatoire':'Optionnel'">
           </mat-slide-toggle>
         </div>
       </div>
       <div class="col-1 text-center">
-        <button mat-icon-button [color]="descriptionCtrl.valid ? 'primary': 'warn'" (click)="openDetailDialog()" matTooltip="Détail">
+        <button (click)="openDetailDialog()" [color]="descriptionCtrl.valid ? 'primary': 'warn'" mat-icon-button
+                matTooltip="Détail">
           <mat-icon>zoom_in</mat-icon>
         </button>
         <mat-error *ngIf="descriptionCtrl.errors?.required">
@@ -57,7 +59,7 @@
         </mat-error>
       </div>
       <div class="col-1 text-center">
-        <button mat-icon-button color="warn" [disabled]="tournamentPublished" (click)="delete()" matTooltip="Supprimer">
+        <button (click)="delete()" [disabled]="tournamentPublished" color="warn" mat-icon-button matTooltip="Supprimer">
           <mat-icon>clear</mat-icon>
         </button>
       </div>

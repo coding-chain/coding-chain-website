@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {ThemeService as ChartsThemeService} from 'ng2-charts';
-import { ChartOptions } from 'chart.js';
+import {ChartOptions} from 'chart.js';
 
 export type Theme = 'dark' | 'light';
 

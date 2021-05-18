@@ -42,37 +42,6 @@ export class TournamentsEditFormComponent implements OnInit, OnChanges {
     this.setForm();
   }
 
-
-  private setForm(): void {
-    this.tournamentPublished = this.tournament.isPublished;
-    this.startDateCtrl = this.fb.control(dateTimeToString(this.tournament.startDate), [minDate(new Date())]);
-    this.endDateCtrl = this.fb.control(dateTimeToString(this.tournament.endDate));
-    this.isPublishedCtrl = this.fb.control(this.tournament.isPublished);
-    this.descriptionCtrl = this.fb.control(this.tournament.description);
-    this.nameCtrl = this.fb.control(this.tournament.name);
-    this.stepsArray = this.fb.array([]);
-    this.formGroup = this.fb.group({
-      startDate: this.startDateCtrl,
-      endDate: this.endDateCtrl,
-      name: this.nameCtrl,
-      description: this.descriptionCtrl,
-      steps: this.stepsArray,
-      isPublished: this.isPublishedCtrl
-    }, {validators: validateDateBetween(this.startDateCtrl, this.endDateCtrl)});
-    this.formGroup.valueChanges.pipe(delay(100)).subscribe((res: ITournamentEdition) => {
-      this.tournament.startDate = new Date(res.startDate);
-      this.tournament.endDate = res.endDate;
-      this.tournament.name = res.name;
-      this.tournament.description = res.description;
-      this.tournament.isPublished = res.isPublished;
-      this.isInvalid$.next(this.formGroup.invalid);
-    });
-    if (this.tournament.isPublished) {
-      this.formGroup.disable();
-      this.isPublishedCtrl.disable();
-    }
-  }
-
   addStep(): void {
     this.tournament.steps.push({
       language: {},
@@ -107,13 +76,42 @@ export class TournamentsEditFormComponent implements OnInit, OnChanges {
     });
   }
 
-
   saveTournament(): void {
     this.tournamentSave.emit(this.tournament);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.setForm();
+  }
+
+  private setForm(): void {
+    this.tournamentPublished = this.tournament.isPublished;
+    this.startDateCtrl = this.fb.control(dateTimeToString(this.tournament.startDate), [minDate(new Date())]);
+    this.endDateCtrl = this.fb.control(dateTimeToString(this.tournament.endDate));
+    this.isPublishedCtrl = this.fb.control(this.tournament.isPublished);
+    this.descriptionCtrl = this.fb.control(this.tournament.description);
+    this.nameCtrl = this.fb.control(this.tournament.name);
+    this.stepsArray = this.fb.array([]);
+    this.formGroup = this.fb.group({
+      startDate: this.startDateCtrl,
+      endDate: this.endDateCtrl,
+      name: this.nameCtrl,
+      description: this.descriptionCtrl,
+      steps: this.stepsArray,
+      isPublished: this.isPublishedCtrl
+    }, {validators: validateDateBetween(this.startDateCtrl, this.endDateCtrl)});
+    this.formGroup.valueChanges.pipe(delay(100)).subscribe((res: ITournamentEdition) => {
+      this.tournament.startDate = new Date(res.startDate);
+      this.tournament.endDate = res.endDate;
+      this.tournament.name = res.name;
+      this.tournament.description = res.description;
+      this.tournament.isPublished = res.isPublished;
+      this.isInvalid$.next(this.formGroup.invalid);
+    });
+    if (this.tournament.isPublished) {
+      this.formGroup.disable();
+      this.isPublishedCtrl.disable();
+    }
   }
 
 }

@@ -3,7 +3,6 @@ import {IStepResume} from '../../../shared/models/steps/responses';
 import {Theme} from '../../../core/services/theme.service';
 import {IStepsTestsDialogData, StepsTestsDialogComponent} from '../steps-edit-tests-dialog/steps-tests-dialog.component';
 import {dialogHeight, dialogWidth} from '../../../shared/utils/dialogs.utils';
-import {ITestNavigation} from '../../../shared/models/tests/responses';
 import {MatDialog} from '@angular/material/dialog';
 
 @Component({

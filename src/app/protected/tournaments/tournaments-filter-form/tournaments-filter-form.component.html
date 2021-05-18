@@ -13,8 +13,8 @@
     <input [formControl]="nameCtrl" matInput type="text">
   </mat-form-field>
   <app-sort-by-arrows (orderChanged)="nameOrder = $event" [order]="nameOrder" class="col-1"></app-sort-by-arrows>
-  <mat-slide-toggle class="col-3"
-    [formControl]="inMyTeamCtrl">
+  <mat-slide-toggle [formControl]="inMyTeamCtrl"
+                    class="col-3">
     {{inMyTeamCtrl.value ? "Mes tournois" : "Tous les tournois"}}
   </mat-slide-toggle>
   <div class="col-2">

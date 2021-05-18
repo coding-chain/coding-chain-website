@@ -22,12 +22,13 @@
         </mat-error>
       </mat-form-field>
     </div>
-    <div class="row  align-items-center" >
-        <quill-editor class="col mw-100 p-0" style="background-color: white; color: black;" [formControl]="descriptionCtrl" ></quill-editor>
+    <div class="row  align-items-center">
+      <quill-editor [formControl]="descriptionCtrl" class="col mw-100 p-0"
+                    style="background-color: white; color: black;"></quill-editor>
     </div>
   </div>
   <div class="col-6">
-      <ngx-monaco-editor class="h-100 w-100" [options]="editorOptions" [(ngModel)]="step.headerCode"  ></ngx-monaco-editor>
+    <ngx-monaco-editor [(ngModel)]="step.headerCode" [options]="editorOptions" class="h-100 w-100"></ngx-monaco-editor>
   </div>
 
 </div>

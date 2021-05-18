@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {ITournamentEditionStep} from '../../../shared/models/tournaments/tournament-edition';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {IProgrammingLanguageNavigation} from '../../../shared/models/programming-languages/responses';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {FormArray, FormBuilder} from '@angular/forms';
 import {ItemWithForm} from '../../../shared/models/forms/item-with-form';
 
 @Component({
@@ -32,7 +32,6 @@ export class TournamentsEditStepsListComponent implements OnInit {
   ngOnInit(): void {
     this.setStepsWithForm();
   }
-
 
 
   drop($event: CdkDragDrop<any, any>): void {

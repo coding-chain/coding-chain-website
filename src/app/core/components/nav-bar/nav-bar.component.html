@@ -17,10 +17,10 @@
   <div class="d-flex w-25 justify-content-end align-items-center">
     <mat-slide-toggle [formControl]="toggleThemeCtrl" class="mx-2">
     </mat-slide-toggle>
-    <mat-icon *ngIf="toggleThemeCtrl.value" color="accent" class="mx-2">
+    <mat-icon *ngIf="toggleThemeCtrl.value" class="mx-2" color="accent">
       brightness_2
     </mat-icon>
-    <mat-icon *ngIf="!toggleThemeCtrl.value" color="accent" class="mx-2">
+    <mat-icon *ngIf="!toggleThemeCtrl.value" class="mx-2" color="accent">
       brightness_5
     </mat-icon>
 

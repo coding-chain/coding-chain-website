@@ -1,9 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FilterBaseComponent} from '../../../shared/components-bases/filter-base.component';
-import {IProgrammingLanguage, IProgrammingLanguageNavigation} from '../../../shared/models/programming-languages/responses';
+import {IProgrammingLanguage} from '../../../shared/models/programming-languages/responses';
 import {FormBuilder, FormControl} from '@angular/forms';
 import {ITournamentsFilter} from '../../../shared/models/tournaments/filters';
-import {GetParams} from '../../../shared/models/http/get.params';
 import {SortOrder} from '../../../shared/types/sort-order';
 import {ITournamentResume} from '../../../shared/models/tournaments/tournament-resume';
 

@@ -13,13 +13,13 @@
     <input [formControl]="nameCtrl" matInput type="text">
   </mat-form-field>
   <app-sort-by-arrows (orderChanged)="nameOrder = $event" [order]="nameOrder" class="col-1"></app-sort-by-arrows>
-  <mat-radio-group class="d-flex flex-column" aria-label="Select an option" [(ngModel)]="filter.filterObj.isPublished">
+  <mat-radio-group [(ngModel)]="filter.filterObj.isPublished" aria-label="Select an option" class="d-flex flex-column">
     <mat-radio-button [value]="true">Publiées</mat-radio-button>
     <mat-radio-button [value]="false">Non publiées</mat-radio-button>
     <mat-radio-button [value]="null">Toutes</mat-radio-button>
   </mat-radio-group>
 
   <div class="col-2">
-    <button (click)="updateForm()" class="ml-2" id="filter-button" mat-stroked-button >Filtrer</button>
+    <button (click)="updateForm()" class="ml-2" id="filter-button" mat-stroked-button>Filtrer</button>
   </div>
 </div>

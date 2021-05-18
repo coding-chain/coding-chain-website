@@ -27,7 +27,7 @@ export class MatDialogExpanderDirective implements OnInit {
 
 
   get dialog(): Element {
-    return  document.getElementsByClassName('mat-dialog-container')[0];
+    return document.getElementsByClassName('mat-dialog-container')[0];
   }
 
   get dialogHeight(): number {

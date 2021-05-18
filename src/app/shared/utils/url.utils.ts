@@ -60,7 +60,7 @@ export class UrlUtils {
     const resKeyVal: KeyValue<string, any>[] = [];
     keyVal.forEach(kV => {
       if (Array.isArray(kV.value)) {
-        kV.value.forEach((v,i) => resKeyVal.push({key: `${kV.key}[${i}]`, value: v}));
+        kV.value.forEach((v, i) => resKeyVal.push({key: `${kV.key}[${i}]`, value: v}));
       } else {
         resKeyVal.push(kV);
       }

@@ -6,44 +6,43 @@ import {ITournamentEditionStep} from '../../../shared/models/tournaments/tournam
 import {Theme} from '../../../core/services/theme.service';
 
 export interface IStepsEditDetailDialogData {
-    step: ITournamentEditionStep;
-    theme: Theme;
+  step: ITournamentEditionStep;
+  theme: Theme;
 }
 
 @Component({
-    selector: 'app-steps-edit-detail-dialog',
-    templateUrl: './steps-edit-detail-dialog.component.html',
-    styles: []
+  selector: 'app-steps-edit-detail-dialog',
+  templateUrl: './steps-edit-detail-dialog.component.html',
+  styles: []
 })
 export class StepsEditDetailDialogComponent implements OnInit {
 
-    maxDescriptionLength = 500;
-    formGroup: FormGroup;
-    step: ITournamentEditionStep;
-    theme: Theme;
+  maxDescriptionLength = 500;
+  formGroup: FormGroup;
+  step: ITournamentEditionStep;
+  theme: Theme;
 
-    constructor(
-        public dialogRef: MatDialogRef<StepsEditDetailDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) private readonly _data: IStepsEditDetailDialogData,
-        private readonly _fb: FormBuilder) {
+  constructor(
+    public dialogRef: MatDialogRef<StepsEditDetailDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) private readonly _data: IStepsEditDetailDialogData,
+    private readonly _fb: FormBuilder) {
+  }
+
+
+  onSaveClicked(): void {
+    this.step.description = this.formGroup.value.description;
+    this.step.minFunctionsCount = this.formGroup.value.minFunctions;
+    this.step.maxFunctionsCount = this.formGroup.value.maxFunctions;
+    this.dialogRef.close(this.step);
+  }
+
+  ngOnInit(): void {
+    this.step = _.clone(this._data.step);
+    this.theme = this._data.theme;
+    this.formGroup = this._fb.group({});
+    if (this.step.isPublished) {
+      this.formGroup.disable();
     }
-
-
-
-    onSaveClicked(): void {
-        this.step.description = this.formGroup.value.description;
-        this.step.minFunctionsCount = this.formGroup.value.minFunctions;
-        this.step.maxFunctionsCount = this.formGroup.value.maxFunctions;
-        this.dialogRef.close(this.step);
-    }
-
-    ngOnInit(): void {
-        this.step = _.clone(this._data.step);
-        this.theme = this._data.theme;
-        this.formGroup = this._fb.group({});
-        if (this.step.isPublished) {
-            this.formGroup.disable();
-        }
-    }
+  }
 
 }

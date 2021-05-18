@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {IProgrammingLanguage, IProgrammingLanguageNavigation} from '../../../shared/models/programming-languages/responses';
+import {IProgrammingLanguage} from '../../../shared/models/programming-languages/responses';
 import {SortOrder} from '../../../shared/types/sort-order';
 import {FormBuilder, FormControl} from '@angular/forms';
 import {FilterBaseComponent} from '../../../shared/components-bases/filter-base.component';

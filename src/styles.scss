@@ -5,12 +5,14 @@
 @import "assets/light-theme";
 @import "assets/dark-theme";
 
-.light-theme{
+.light-theme {
   @include angular-material-theme($light-theme);
 }
+
 .dark-theme {
   @include angular-material-theme($dark-theme);
 }
+
 html, body {
   height: 100%;
 }
@@ -24,7 +26,7 @@ body {
 @import '~bootstrap/scss/bootstrap';
 //.ql-toolbar .ql-stroke {
 //  color: white;
-  //stroke: #fff;
+//stroke: #fff;
 //}
 //
 //.ql-toolbar .ql-fill {

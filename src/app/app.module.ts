@@ -9,7 +9,7 @@ import {CoreModule} from './core/core.module';
 import {PublicModule} from './public/public.module';
 import {ProtectedModule} from './protected/protected.module';
 import {AppRoutingModule} from './app-routing.module';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 registerLocaleData(localeFr, 'fr');
 

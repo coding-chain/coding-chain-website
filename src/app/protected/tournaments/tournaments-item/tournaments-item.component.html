@@ -5,7 +5,8 @@
       <div class="col-6 d-flex align-items-center">
         <h1 class="my-0">{{tournament.name}}</h1>
       </div>
-      <button *ngIf="currentUser?.isAdmin() || currentUser?.isCreator()" [routerLink]="['/tournaments', tournament.id, 'edit']"
+      <button *ngIf="currentUser?.isAdmin() || currentUser?.isCreator()"
+              [routerLink]="['/tournaments', tournament.id, 'edit']"
               mat-icon-button matTooltip="Modifier">
         <mat-icon>edit</mat-icon>
       </button>

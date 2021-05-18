@@ -1,11 +1,11 @@
 <router-outlet></router-outlet>
 <div style="display: block;">
-  <canvas baseChart
+  <canvas [chartType]="pieChartType"
           [datasets]="pieChartData"
           [labels]="pieChartLabels"
-          [chartType]="pieChartType"
+          [legend]="pieChartLegend"
           [options]="pieChartOptions"
           [plugins]="pieChartPlugins"
-          [legend]="pieChartLegend">
+          baseChart>
   </canvas>
 </div>

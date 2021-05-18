@@ -1,4 +1,4 @@
-<app-tournaments-edit-form *ngIf="tournament$ | async as tournament" [tournament]="tournament"
+<app-tournaments-edit-form (addExistingStep)="onExistingStepAdded($event)" (tournamentSave)="onTournamentSave($event)"
+                           *ngIf="tournament$ | async as tournament"
                            [languages]="languages$ | async"
-                           (tournamentSave)="onTournamentSave($event)"
-(addExistingStep)="onExistingStepAdded($event)"></app-tournaments-edit-form>
+                           [tournament]="tournament"></app-tournaments-edit-form>
