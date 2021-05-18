@@ -41,7 +41,7 @@ export class TournamentsFilterFormComponent extends FilterComponentBase<ITournam
     });
   }
 
-  updateForm() {
+  updateForm(): void {
     this.filterChanged.emit({
       filterObj: {
         languageId: this.languageCtrl.value,

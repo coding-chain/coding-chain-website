@@ -3,6 +3,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TeamService} from '../../../core/services/http/team.service';
 import Swal from 'sweetalert2';
+import {ITeamNavigation} from '../../../shared/models/teams/responses';
 
 @Component({
   selector: 'app-team-form',
@@ -10,14 +11,12 @@ import Swal from 'sweetalert2';
 })
 export class TeamFormComponent implements OnInit {
   @Input()
-  team;
-
+  team: ITeamNavigation;
   teamForm: FormGroup;
   teamNameControl: FormControl;
   searchControl: FormControl;
 
-  constructor(private route: ActivatedRoute, private router: Router,
-              private formBuilder: FormBuilder, private teamService: TeamService) {
+  constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, private teamService: TeamService) {
   }
 
   initForm(): void {
@@ -60,7 +59,7 @@ export class TeamFormComponent implements OnInit {
             title: 'Error',
             text: 'Impossible de modifier la team'
           });
-      });
+        });
     } else {
       this.teamService.createOne({name: input}).subscribe(response => {
           Swal.fire({
@@ -81,4 +80,5 @@ export class TeamFormComponent implements OnInit {
       );
     }
   }
+
 }

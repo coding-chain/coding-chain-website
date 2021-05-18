@@ -3,6 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {PublicUser} from '../../../shared/models/users/responses';
 import {TeamService} from '../../../core/services/http/team.service';
 import {ITeamNavigation} from '../../../shared/models/teams/responses';
+import {UserService} from '../../../core/services/http/user.service';
 
 @Component({
   selector: 'app-team-page',
@@ -16,7 +17,7 @@ export class TeamPageComponent implements OnInit {
   teamId: string;
   team: ITeamNavigation;
 
-  constructor(private route: ActivatedRoute, private teamService: TeamService) {
+  constructor(private route: ActivatedRoute, private teamService: TeamService, private userService: UserService) {
   }
 
   ngOnInit(): void {
@@ -37,9 +38,13 @@ export class TeamPageComponent implements OnInit {
 
   fetchTeammates(team): void {
     team.membersIds.forEach(memberId => {
-      this.teamService.getMemberById(team.id, memberId).subscribe(member => {
-        // todo
+      this.teamService.getMemberById(this.team.id, memberId).subscribe(member => {
+        this.userService.getOneById(member.userId).subscribe(user => {
+          // todo fill array
+          console.log(user);
+        });
       });
+
     });
   }
 
