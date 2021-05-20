@@ -1,0 +1,21 @@
+<form [formGroup]="teamForm" class="p-4">
+  <div class="d-flex flex-column" id="team-data">
+    <mat-form-field appearance="outline" class="w-100 mx-auto" id="team-name">
+      <mat-label>Nom de l'équipe*</mat-label>
+      <input [formControl]="teamNameControl" id="team-name-input" matInput type="text">
+      <button mat-icon-button (click)="saveTeamName(teamNameControl.value)" matSuffix>
+        <mat-icon aria-hidden="false" aria-label="Search">save</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+
+  <div class="d-flex flex-column" id="search-teammate">
+    <mat-form-field appearance="outline" class="w-100 mx-auto" id="search-teammates">
+      <mat-label>Inviter un coéquipier</mat-label>
+      <input [formControl]="searchControl" id="search-teammates-input" matInput type="text">
+      <button mat-icon-button (click)="searchTeammate(searchControl.value)" matSuffix>
+        <mat-icon aria-hidden="false" aria-label="Search">search</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+</form>
