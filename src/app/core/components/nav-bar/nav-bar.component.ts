@@ -5,6 +5,7 @@ import {ConnectedUser} from '../../../shared/models/users/connected-user';
 import {AuthenticationService} from '../../services/http/authentication.service';
 import {FormBuilder, FormControl} from '@angular/forms';
 import {ThemeService} from '../../services/theme.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-nav-bar',
@@ -17,6 +18,7 @@ export class NavBarComponent implements OnInit {
 
   constructor(private userStateService: UserStateService,
               private authService: AuthenticationService,
+              private _router: Router,
               private readonly _fb: FormBuilder,
               private readonly _renderer: Renderer2,
               private readonly _themeService: ThemeService) {
@@ -38,5 +40,6 @@ export class NavBarComponent implements OnInit {
   onLogout(): void {
     this.userStateService.updateUser(null);
     this.authService.clearLocalUserData();
+    this._router.navigate(['/home']);
   }
 }
