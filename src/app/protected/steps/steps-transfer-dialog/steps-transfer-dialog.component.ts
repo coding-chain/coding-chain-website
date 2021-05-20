@@ -15,7 +15,7 @@ export interface IStepsTransferDialogData {
   styles: []
 })
 export class StepsTransferDialogComponent implements OnInit {
-  private selectedSteps: IStepNavigation[];
+  selectedSteps: IStepNavigation[];
 
 
   constructor(

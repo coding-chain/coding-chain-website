@@ -37,13 +37,13 @@
   </div>
   <div class="col-2 align-self-stretch">
     <div class="d-flex h-100 justify-content-around flex-column">
-      <button (click)="saveTournament()" [disabled]="tournamentPublished || (isInvalid$ | async)" mat-stroked-button>
+      <button (click)="saveTournament()" [disabled]="!canSave() || (isInvalid$ | async)" mat-stroked-button>
         Sauvegarder
       </button>
       <button (click)="deleteTournament()" [disabled]="!canDelete()" color="warn" mat-stroked-button>
         Supprimer
       </button>
-      <mat-slide-toggle [disabled]="tournamentPublished ||!this.tournament.endDate || (isInvalid$ | async)"
+      <mat-slide-toggle [disabled]="!canPublish() || (isInvalid$ | async)"
                         [formControl]="isPublishedCtrl"
                         [matTooltip]="isPublishedCtrl.value ? 'Publié' : 'Non publié'" class="mx-auto">
       </mat-slide-toggle>

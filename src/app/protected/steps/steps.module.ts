@@ -24,9 +24,9 @@ import {StepsEditItemComponent} from './steps-edit-item/steps-edit-item.componen
     StepsRoutingModule,
     SharedModule
   ],
-  exports: [
-    StepsEditDetailDialogComponent, StepsEditDetailDialogComponent, TournamentStepEditItemComponent
-  ],
+    exports: [
+        StepsEditDetailDialogComponent, StepsEditDetailDialogComponent, TournamentStepEditItemComponent, StepsItemComponent
+    ],
   entryComponents: [
     StepsTestsDialogComponent, StepsEditDetailDialogComponent, StepsTransferDialogComponent
   ]

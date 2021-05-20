@@ -3,6 +3,7 @@
                              [languages]="languages$ | async"
                              class="col my-3"></app-tournaments-filter-form>
 <app-tournaments-item *ngFor="let tournament of tournaments$|async" [currentUser]="currentUser$ | async"
+                      [theme]="theme$ | async"
                       [tournament]="tournament"
                       class="row my-2">
 </app-tournaments-item>

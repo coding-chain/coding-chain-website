@@ -16,6 +16,7 @@ export class StarRateComponent implements OnInit {
   @Input() disabled = true;
   rateArr = [];
   @Input() dim: string;
+  @Input() orientation: 'vertical' | 'horizontal' = 'horizontal';
 
   constructor() {
   }

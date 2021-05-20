@@ -35,17 +35,12 @@ export class StepsTransferComponent implements OnInit {
               private readonly _themeService: ThemeService) {
   }
 
+  @Input()
+  selectedSteps: IStepNavigation[];
   _selectedSteps: IMovableStepNavigation[];
 
-  get selectedSteps(): IStepNavigation[] {
-    return this._selectedSteps;
-  }
 
-  @Input()
-  set selectedSteps(steps: IStepNavigation[]) {
-    this._selectedSteps = steps.map(s => ({canMove: false, ...s}));
-    this._selectedSteps.forEach(s => s.canMove = false);
-  }
+
 
   get selectedStepsIds(): string[] {
     return this.selectedSteps.map(s => s.id).filter(id => !!id);
@@ -53,6 +48,8 @@ export class StepsTransferComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this._selectedSteps = this.selectedSteps.map(s => ({canMove: false, ...s}));
+    this._selectedSteps.forEach(s => s.canMove = false);
     this.stepsCursor = this._stepsService.getResumeCursor({});
     this.stepsCursor.availableSizes = [5, 10];
     this.stepsCursor.resultsSubject$.subscribe(steps => {

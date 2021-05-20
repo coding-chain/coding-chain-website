@@ -68,6 +68,9 @@ export class TournamentsEditFormComponent implements OnInit, OnChanges {
     });
 
     dialogRef.afterClosed().subscribe((selectedSteps: IStepNavigation[]) => {
+      if (!selectedSteps) {
+        return;
+      }
       const newSteps = selectedSteps?.filter(selectedStep => !this.tournament.steps.some(step => step.id === selectedStep.id));
       const newTournamentSteps = newSteps.map(newStep => ({
         isOptional: true,
@@ -96,6 +99,18 @@ export class TournamentsEditFormComponent implements OnInit, OnChanges {
 
   deleteTournament(): void {
     this.tournamentDelete.emit();
+  }
+
+  canSave(): boolean {
+    return !this.tournamentPublished;
+  }
+
+  canPublish(): boolean {
+    const hasMandatoryStep = this.tournament.steps.some(s => !s.isOptional);
+    if (!hasMandatoryStep) {
+      this.isPublishedCtrl.setValue(false);
+    }
+    return !this.tournamentPublished && this.tournament.endDate && hasMandatoryStep;
   }
 
   private setForm(): void {
@@ -127,5 +142,4 @@ export class TournamentsEditFormComponent implements OnInit, OnChanges {
       this.isPublishedCtrl.disable();
     }
   }
-
 }

@@ -50,7 +50,7 @@
         </div>
       </div>
       <div class="col-1 text-center">
-        <button (click)="openDetailDialog()" [color]="descriptionCtrl.valid ? 'primary': 'warn'" mat-icon-button
+        <button (click)="openDetailDialog()" [color]="descriptionCtrl.valid ? 'primary': 'warn'" mat-icon-button [disabled]="languagesCtrl.invalid"
                 matTooltip="Détail">
           <mat-icon>zoom_in</mat-icon>
         </button>

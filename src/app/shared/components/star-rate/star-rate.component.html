@@ -6,7 +6,7 @@
   </button>
 </div>
 <div *ngIf="disabled">
-  <mat-icon *ngFor="let star of rateArr; let i = index" [color]="i + 1 > rateValue ? 'primary' : 'accent'"
+  <mat-icon [ngClass]="orientation === 'vertical' ? 'd-flex' : '' " *ngFor="let star of rateArr; let i = index" [color]="i + 1 > rateValue ? 'primary' : 'accent'"
             [inline]="!!dim"
             [ngStyle]="{fontSize: dim, height:dim, width:dim}">star_rate
   </mat-icon>

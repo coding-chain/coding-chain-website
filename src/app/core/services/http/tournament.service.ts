@@ -276,7 +276,7 @@ export class TournamentService extends ApiHelperService {
     const steps$ = tournaments
       .map(tournament => {
         if (tournament.stepsIds?.length > 0) {
-          this.getAllTournamentsSteps(tournament.id);
+          return this.getAllTournamentsSteps(tournament.id);
         }
         return of([]);
       });
