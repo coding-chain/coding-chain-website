@@ -12,6 +12,7 @@ import {QuillModule} from 'ngx-quill';
 import {MatDialogExpanderDirective} from './directives/mat-dialog-expander.directive';
 import {MatDialogExpandedContentDirective} from './directives/mat-dialog-expanded-content.directive';
 import {ChartsModule} from 'ng2-charts';
+import {SortedInputComponent} from './components/sorted-input/sorted-input.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import {ChartsModule} from 'ng2-charts';
     SortByArrowsComponent,
     StarRateComponent,
     MatDialogExpanderDirective,
-    MatDialogExpandedContentDirective
+    MatDialogExpandedContentDirective,
+    SortedInputComponent
   ],
   imports: [
     ChartsModule,
@@ -46,7 +48,8 @@ import {ChartsModule} from 'ng2-charts';
     MonacoEditorModule,
     QuillModule,
     MatDialogExpanderDirective,
-    MatDialogExpandedContentDirective
+    MatDialogExpandedContentDirective,
+    SortedInputComponent
   ]
 })
 export class SharedModule {

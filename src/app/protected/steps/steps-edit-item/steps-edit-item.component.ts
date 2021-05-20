@@ -1,15 +1,13 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {IProgrammingLanguageNavigation} from '../../../shared/models/programming-languages/responses';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
-import {IStepsEditDetailDialogData, StepsEditDetailDialogComponent} from '../steps-edit-detail-dialog/steps-edit-detail-dialog.component';
-import {IStepsTestsDialogData, StepsTestsDialogComponent} from '../steps-edit-tests-dialog/steps-tests-dialog.component';
-import {IProgrammingLanguageNavigation} from '../../../shared/models/programming-languages/responses';
-import {ITournamentEditionStep} from '../../../shared/models/tournaments/tournament-edition';
-import {dialogHeight, dialogWidth} from '../../../shared/utils/dialogs.utils';
-import {ITestNavigation} from '../../../shared/models/tests/responses';
 import {ThemeService} from '../../../core/services/theme.service';
-import {map} from 'rxjs/operators';
-
+import {IStepsEditDetailDialogData, StepsEditDetailDialogComponent} from '../steps-edit-detail-dialog/steps-edit-detail-dialog.component';
+import {dialogHeight, dialogWidth} from '../../../shared/utils/dialogs.utils';
+import {IStepsTestsDialogData, StepsTestsDialogComponent} from '../steps-edit-tests-dialog/steps-tests-dialog.component';
+import {ITestNavigation} from '../../../shared/models/tests/responses';
+import {IStepResume} from '../../../shared/models/steps/responses';
 
 @Component({
   selector: 'app-steps-edit-item',
@@ -17,6 +15,8 @@ import {map} from 'rxjs/operators';
   styles: []
 })
 export class StepsEditItemComponent implements OnInit {
+
+
   @Input() maxNameLength = 50;
   @Input() minNameLength = 5;
   @Input() minDifficulty = 1;
@@ -27,13 +27,12 @@ export class StepsEditItemComponent implements OnInit {
 
   nameCtrl: FormControl;
   descriptionCtrl: FormControl;
-  isOptionalCtrl: FormControl;
   languagesCtrl: FormControl;
   scoreCtrl: FormControl;
 
-  @Input() stepGrp: FormGroup;
-  @Input() step: ITournamentEditionStep;
-  @Input() tournamentPublished = true;
+  stepGrp: FormGroup;
+  @Input() step: IStepResume;
+  @Output() stepSave = new EventEmitter();
 
   constructor(private _fb: FormBuilder, public dialog: MatDialog, private readonly _themeService: ThemeService) {
 
@@ -47,7 +46,7 @@ export class StepsEditItemComponent implements OnInit {
     });
     this._themeService.publishTheme();
 
-    dialogRef.afterClosed().subscribe((result: (ITournamentEditionStep | undefined)) => {
+    dialogRef.afterClosed().subscribe((result: (IStepResume | undefined)) => {
       if (result) {
         this.descriptionCtrl.setValue(result.description);
         this.step.minFunctionsCount = result.minFunctionsCount;
@@ -72,34 +71,30 @@ export class StepsEditItemComponent implements OnInit {
 
 
   ngOnInit(): void {
+
     this.step.difficulty ??= 1;
     this.nameCtrl = this._fb.control(this.step.name, [
       Validators.required,
       Validators.minLength(this.minNameLength),
       Validators.maxLength(this.maxNameLength)
     ]);
-    this.isOptionalCtrl = this._fb.control(!this.step.isOptional);
-    this.isOptionalCtrl.valueChanges.pipe(map(isOptional => !isOptional));
-    this.languagesCtrl = this._fb.control(this.step.language.id, [Validators.required]);
+    this.languagesCtrl = this._fb.control(this.step.language?.id, [Validators.required]);
     this.scoreCtrl = this._fb.control(this.step.score ?? 0, [Validators.min(0)]);
+    this.descriptionCtrl = this._fb.control(this.step.description, [Validators.required]);
 
-    this.stepGrp.setControl('name', this.nameCtrl);
-    this.stepGrp.setControl('isOptional', this.isOptionalCtrl);
-    this.stepGrp.setControl('languageId', this.languagesCtrl);
-    this.stepGrp.setControl('score', this.scoreCtrl);
+    this.stepGrp = this._fb.group({
+      name: this.nameCtrl,
+      languageId: this.languagesCtrl,
+      score: this.scoreCtrl
+    });
+
     if (this.step.isPublished) {
       this.stepGrp.disable();
-      if (!this.tournamentPublished) {
-        this.isOptionalCtrl.enable();
-      }
     }
-    this.descriptionCtrl = this._fb.control(this.step.description, [Validators.required]);
     this.stepGrp.setControl('description', this.descriptionCtrl);
-
-    this.stepGrp.valueChanges.subscribe((res: ITournamentEditionStep) => {
+    this.stepGrp.valueChanges.subscribe((res: IStepResume) => {
       this.step.name = res.name;
       this.step.description = res.description;
-      this.step.isOptional = !res.isOptional;
       this.step.languageId = res.languageId;
       this.step.score = res.score;
     });
@@ -107,5 +102,9 @@ export class StepsEditItemComponent implements OnInit {
 
   delete(): void {
     this.stepDeleted.emit();
+  }
+
+  saveStep(): void {
+    this.stepSave.emit();
   }
 }

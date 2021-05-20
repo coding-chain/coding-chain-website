@@ -5,7 +5,8 @@
       [cdkDropListData]="_selectedSteps"
       cdkDropList
       class="row justify-content-center  drag-place-holder">
-      <app-steps-item *ngFor="let step of _selectedSteps" [cdkDragDisabled]="!step.canMove" [step]="step" [theme]="theme$ | async"
+      <app-steps-item *ngFor="let step of _selectedSteps" [cdkDragDisabled]="!step.canMove" [step]="step"
+                      [theme]="theme$ | async"
                       cdkDrag class="col-11 my-2">
       </app-steps-item>
     </div>

@@ -40,7 +40,11 @@
       <button (click)="saveTournament()" [disabled]="tournamentPublished || (isInvalid$ | async)" mat-stroked-button>
         Sauvegarder
       </button>
-      <mat-slide-toggle [formControl]="isPublishedCtrl"
+      <button (click)="deleteTournament()" [disabled]="!canDelete()" color="warn" mat-stroked-button>
+        Supprimer
+      </button>
+      <mat-slide-toggle [disabled]="tournamentPublished ||!this.tournament.endDate || (isInvalid$ | async)"
+                        [formControl]="isPublishedCtrl"
                         [matTooltip]="isPublishedCtrl.value ? 'Publié' : 'Non publié'" class="mx-auto">
       </mat-slide-toggle>
     </div>
@@ -57,7 +61,8 @@
     </button>
   </div>
   <div class="col-6">
-    <button (click)="openStepsListDialog()" [disabled]="tournamentPublished || (isInvalid$ | async)" class="w-100 py-1 my-2"
+    <button (click)="openStepsListDialog()" [disabled]="tournamentPublished || (isInvalid$ | async)"
+            class="w-100 py-1 my-2"
             mat-stroked-button>Ajouter une étape existante
     </button>
   </div>

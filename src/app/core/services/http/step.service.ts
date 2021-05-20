@@ -80,10 +80,25 @@ export class StepService extends ApiHelperService {
       );
   }
 
+  public createOneResume(step: IStepResume): Observable<IStepResume> {
+    return this.createOneAndGet(stepResumeToUpdateStepCommand(step)).pipe(
+      switchMap(createdStep => forkJoin([of(createdStep), this.setTests(createdStep.result.id, stepResumeToSetTestCommand(step))])),
+      switchMap((res: [HateoasResponse<IStepNavigation>, any]) => this.toStepResume(res[0].result))
+    );
+    // return this.setTests(step.id, stepResumeToSetTestCommand(step)).pipe(
+    //   switchMap(res => this.createOneAndGet(stepResumeToUpdateStepCommand(step))),
+    //   switchMap(createdStep => this.toStepResume(createdStep))
+    // );
+  }
+
   public createOneAndGetId(body: ICreateStepCommand): Observable<string> {
     return this.createAndGetIds(this.apiUrl, body).pipe(
-      map(ids => ids[0])
+      map(ids => ids.pop())
     );
+  }
+
+  public createOneAndGet(body: ICreateStepCommand): Observable<HateoasResponse<IStepNavigation>> {
+    return this.createAndGet(`${this.apiUrl}`, body);
   }
 
   public createOneStepResumeAndGetId(step: IStepResume): Observable<string> {
@@ -123,9 +138,19 @@ export class StepService extends ApiHelperService {
     return this.http.delete(`${this.apiUrl}/${stepId}/tests/${testId}`);
   }
 
+  public updateStepWithComparisonAndGet(comparison: IObjectUpdateResume<IStepResume>): Observable<IStepResume> {
+    return this.updateStepWithComparison(comparison).pipe(
+      switchMap(res => this.getById(comparison.editedVersion.id)),
+      switchMap(step => this.toStepResume(step))
+    );
+  }
+
   public updateStepWithComparison(comparison: IObjectUpdateResume<IStepResume>): Observable<any> {
     const editedVersion: IStepResume = comparison.editedVersion;
     let updateObs$ = of([]);
+    if (!comparison.editedVersion.id) {
+      return updateObs$;
+    }
     if (comparison.differentProperties.some(p => p === 'tests')) {
       updateObs$ = this.setTests(editedVersion.id, stepResumeToSetTestCommand(editedVersion));
     }
@@ -150,6 +175,15 @@ export class StepService extends ApiHelperService {
           return {language, tests, ...step};
         });
         return page.clone(stepsResumes, ((pageElement, subElement) => pageElement.result.id === subElement.id));
+      })
+    );
+  }
+
+  private toStepResume(step: IStepNavigation): Observable<IStepResume> {
+    return this._languageService.getById(step.languageId).pipe(
+      switchMap(language => forkJoin({language: of(language), tests: this.getAllTests(step.id)})),
+      map(res => {
+        return {language: res.language, tests: res.tests, ...step};
       })
     );
   }

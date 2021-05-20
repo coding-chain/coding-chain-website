@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormArray, FormBuilder} from '@angular/forms';
 import {ITestEdition} from '../../../shared/models/tests/test-edition';
-import {toMatrix} from '../../../shared/utils/array.utils';
+import {ArrayUtils} from '../../../shared/utils/array.utils';
 import {ITournamentEditionStep} from '../../../shared/models/tournaments/tournament-edition';
 import {ITestNavigation} from '../../../shared/models/tests/responses';
 import {Theme} from '../../../core/services/theme.service';
@@ -31,7 +31,7 @@ export class StepsEditTestsComponent implements OnInit {
 
   ngOnInit(): void {
     this._tests = this.step.tests.map(t => this.toTestEditionGrp(t));
-    this.testsMatrix = toMatrix(this._tests, this.cardCountBySlide);
+    this.testsMatrix = ArrayUtils.toMatrix(this._tests, this.cardCountBySlide);
     this.fillTestsArray();
     this.testsArray.valueChanges.subscribe(res => this.testsChange.emit(this._tests.map(testWithGrp => {
       const test = testWithGrp.item;
@@ -51,7 +51,7 @@ export class StepsEditTestsComponent implements OnInit {
   addTest(): void {
     const testWithGrp = this.toTestEditionGrp();
     this._tests.unshift(testWithGrp);
-    this.testsMatrix = toMatrix(this._tests, this.cardCountBySlide);
+    this.testsMatrix = ArrayUtils.toMatrix(this._tests, this.cardCountBySlide);
 
     this.testsArray.insert(0, testWithGrp.form);
   }
@@ -60,7 +60,7 @@ export class StepsEditTestsComponent implements OnInit {
     const idx = this.getTestIndex(rowIdx, colIdx);
     this._tests.splice(idx, 1);
     this.testsArray.removeAt(idx);
-    this.testsMatrix = toMatrix(this._tests, this.cardCountBySlide);
+    this.testsMatrix = ArrayUtils.toMatrix(this._tests, this.cardCountBySlide);
   }
 
   getTestIndex(rowIdx: number, colIdx: number): number {

@@ -1,4 +1,5 @@
-<app-tournaments-filter-form (filterChanged)="searchTournaments($event)" [currentUserId]="(currentUser$ | async).id"
+<app-tournaments-filter-form (filterChanged)="searchTournaments($event)" *ngIf="(currentUser$|async) as currentUser "
+                             [currentUser]="currentUser"
                              [languages]="languages$ | async"
                              class="col my-3"></app-tournaments-filter-form>
 <app-tournaments-item *ngFor="let tournament of tournaments$|async" [currentUser]="currentUser$ | async"

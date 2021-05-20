@@ -9,7 +9,7 @@ import {dialogHeight, dialogWidth} from '../../../shared/utils/dialogs.utils';
 import {IStepsTransferDialogData, StepsTransferDialogComponent} from '../../steps/steps-transfer-dialog/steps-transfer-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import {IStepNavigation} from '../../../shared/models/steps/responses';
-import {dateTimeToString} from '../../../shared/utils/date.utils';
+import {DateUtils} from '../../../shared/utils/date.utils';
 
 @Component({
   selector: 'app-tournaments-edit-form',
@@ -21,6 +21,7 @@ export class TournamentsEditFormComponent implements OnInit, OnChanges {
   @Input() tournament: ITournamentEdition;
   @Output() tournamentSave = new EventEmitter<ITournamentEdition>();
   @Output() addExistingStep = new EventEmitter<ITournamentEditionStep>();
+  @Output() tournamentDelete = new EventEmitter();
 
   @Input() languages: IProgrammingLanguageNavigation[] = [];
 
@@ -40,6 +41,11 @@ export class TournamentsEditFormComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.setForm();
+    this.isInvalid$.subscribe(isInvalid => {
+      if (!this.tournamentPublished && isInvalid && this.isPublishedCtrl?.value) {
+        this.isPublishedCtrl?.setValue(false);
+      }
+    });
   }
 
   addStep(): void {
@@ -84,10 +90,18 @@ export class TournamentsEditFormComponent implements OnInit, OnChanges {
     this.setForm();
   }
 
+  canDelete(): boolean {
+    return !this.tournamentPublished && (!this.tournament.endDate || this.tournament?.endDate?.getTime() > Date.now());
+  }
+
+  deleteTournament(): void {
+    this.tournamentDelete.emit();
+  }
+
   private setForm(): void {
     this.tournamentPublished = this.tournament.isPublished;
-    this.startDateCtrl = this.fb.control(dateTimeToString(this.tournament.startDate), [minDate(new Date())]);
-    this.endDateCtrl = this.fb.control(dateTimeToString(this.tournament.endDate));
+    this.startDateCtrl = this.fb.control(DateUtils.dateTimeToString(this.tournament.startDate), [minDate(new Date())]);
+    this.endDateCtrl = this.fb.control(DateUtils.dateTimeToString(this.tournament.endDate));
     this.isPublishedCtrl = this.fb.control(this.tournament.isPublished);
     this.descriptionCtrl = this.fb.control(this.tournament.description);
     this.nameCtrl = this.fb.control(this.tournament.name);
@@ -101,8 +115,8 @@ export class TournamentsEditFormComponent implements OnInit, OnChanges {
       isPublished: this.isPublishedCtrl
     }, {validators: validateDateBetween(this.startDateCtrl, this.endDateCtrl)});
     this.formGroup.valueChanges.pipe(delay(100)).subscribe((res: ITournamentEdition) => {
-      this.tournament.startDate = new Date(res.startDate);
-      this.tournament.endDate = res.endDate;
+      this.tournament.startDate = res.startDate ? new Date(res.startDate) : undefined;
+      this.tournament.endDate = res.endDate ? new Date(res.endDate) : undefined;
       this.tournament.name = res.name;
       this.tournament.description = res.description;
       this.tournament.isPublished = res.isPublished;

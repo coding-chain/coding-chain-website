@@ -1,4 +1,6 @@
+export type Right = 'admin' | 'creator' | 'user';
+
 export interface IRightNavigation {
   id: string;
-  name: 'admin' | 'creator' | 'user';
+  name: Right;
 }

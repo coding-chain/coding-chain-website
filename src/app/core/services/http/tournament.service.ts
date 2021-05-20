@@ -27,8 +27,8 @@ import {IProgrammingLanguage, IProgrammingLanguageNavigation} from '../../../sha
 import {ITournamentEdition, ITournamentEditionStep} from '../../../shared/models/tournaments/tournament-edition';
 import {TestService} from './test.service';
 import {ITestNavigation} from '../../../shared/models/tests/responses';
-import {getNotEqualsObjectsWith} from '../../../shared/utils/object.utils';
 import {cloneStepResume, IStepResume} from '../../../shared/models/steps/responses';
+import {ObjectUtils} from '../../../shared/utils/object.utils';
 
 @Injectable({
   providedIn: 'root'
@@ -189,13 +189,14 @@ export class TournamentService extends ApiHelperService {
     return of([]);
   }
 
+
   private upsertSteps(originSteps: IStepResume[], editedTournamentSteps: ITournamentEditionStep[]): Observable<any> {
     const editedSteps = editedTournamentSteps.map(s => cloneStepResume(s));
     originSteps = originSteps.map(s => cloneStepResume(s));
     const existingSteps = originSteps.filter(s => !!s.id);
     const newSteps = editedTournamentSteps.filter(s => !s.id);
     const existingEditedSteps = editedSteps.filter(s => !!s.id);
-    const stepsForUpdate = getNotEqualsObjectsWith(existingSteps, existingEditedSteps,
+    const stepsForUpdate = ObjectUtils.getNotEqualsObjectsWith(existingSteps, existingEditedSteps,
       (existingStep, editedStep) => existingStep.id === editedStep.id);
     const updateSteps$ = stepsForUpdate.length > 0 ? stepsForUpdate.map(s => this._stepService.updateStepWithComparison(s)) : of([]);
     const addSteps$ = newSteps.length ? newSteps.map(tournamentStep => this._stepService

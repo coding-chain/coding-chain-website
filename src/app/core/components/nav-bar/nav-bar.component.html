@@ -6,6 +6,9 @@
          routerLinkActive="active">Temporary participation access</a>
       <a [routerLink]="['/tournaments']" class="nav-link" data-toggle="tab" id="tournmanentsLink" mat-tab-link
          routerLinkActive="active">Tournois</a>
+      <a *ngIf="user.isAdmin() || user.isCreator()" [routerLink]="['/steps']" class="nav-link" data-toggle="tab"
+         id="stepsLink" mat-tab-link
+         routerLinkActive="active">Etapes</a>
     </ng-container>
     <a *ngIf="!(user$ | async) as user" [routerLink]="['/login']" class="nav-link" data-toggle="tab" id="loginLink"
        mat-tab-link routerLinkActive="active">Connexion</a>
