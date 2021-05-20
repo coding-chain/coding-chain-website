@@ -10,6 +10,7 @@ import {GetParams} from '../../../shared/models/http/get.params';
 import {UserStateService} from '../../../core/services/user-state.service';
 import {ConnectedUser} from '../../../shared/models/users/connected-user';
 import {ITournamentResume} from '../../../shared/models/tournaments/tournament-resume';
+import {Theme, ThemeService} from '../../../core/services/theme.service';
 
 
 @Component({
@@ -22,9 +23,12 @@ export class TournamentsListComponent implements OnInit {
   tournaments$ = new BehaviorSubject<ITournamentResume[]>([]);
   languages$: Observable<IProgrammingLanguageNavigation[]>;
   currentUser$: Observable<ConnectedUser>;
+  theme$ = new BehaviorSubject<Theme>('light');
 
-  constructor(private readonly _tournamentService: TournamentService, private readonly _languageService: LanguageService, private readonly _userStateService: UserStateService) {
-
+  constructor(private readonly _tournamentService: TournamentService,
+              private readonly _languageService: LanguageService,
+              private readonly _userStateService: UserStateService,
+              private readonly _themeService: ThemeService) {
   }
 
 
@@ -33,6 +37,10 @@ export class TournamentsListComponent implements OnInit {
     this.tournamentCursor.resultsSubject$.subscribe(tournaments => {
       this.tournaments$.next(tournaments);
     });
+    this._themeService.themeSubject$.subscribe(theme => {
+      this.theme$.next(theme);
+    });
+    this._themeService.publishTheme();
     this.tournamentCursor.current();
     this.languages$ = this._languageService.getAll().pipe(tap(res => console.log(res)));
     this.currentUser$ = this._userStateService.userSubject$;

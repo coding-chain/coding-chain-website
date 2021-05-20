@@ -10,6 +10,14 @@
         </mat-chip>
       </mat-chip-list>
     </div>
+    <div class="row justify-content-between w-100 align-items-center">
+      <app-star-rate [(rate)]="step.difficulty" [disabled]="true" dim="15px"></app-star-rate>
+    </div>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Description</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div [innerHTML]="step.description"></div>
+    </mat-expansion-panel>
   </div>
-  <app-star-rate [(rate)]="step.difficulty" [disabled]="true" dim="15px"></app-star-rate>
 </mat-card>

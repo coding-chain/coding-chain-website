@@ -83,6 +83,14 @@ export class ObjectUtils {
     return this.isEmpty(obj) ? obj : newObj;
   }
 
+  public static groupBy<T, K extends keyof T>(arr: T[], selector: (el: T) => T[K]): Map<T[K], T[]> {
+    const grpObj = _.groupBy(arr, selector);
+    const map = new Map<T[K], T[]>();
+    Object.keys(grpObj).forEach((k: any) => {
+      map.set(k, grpObj[k]);
+    });
+    return map;
+  }
 
   private static isEmpty(obj: any): boolean {
     if (!_.isObject(obj)) {

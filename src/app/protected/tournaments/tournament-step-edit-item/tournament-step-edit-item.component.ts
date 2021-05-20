@@ -86,6 +86,8 @@ export class TournamentStepEditItemComponent implements OnInit {
     this.languagesCtrl = this._fb.control(this.languages?.find(l => this.step.language?.id === l.id), [Validators.required]);
     this.scoreCtrl = this._fb.control(this.step.score ?? 0, [Validators.min(0)]);
 
+    this.languagesCtrl.markAsTouched();
+    this.nameCtrl.markAsTouched();
     this.stepGrp.setControl('name', this.nameCtrl);
     this.stepGrp.setControl('isOptional', this.isOptionalCtrl);
     this.stepGrp.setControl('languageId', this.languagesCtrl);
