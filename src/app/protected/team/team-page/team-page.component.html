@@ -3,8 +3,8 @@
     <mat-card-title class="d-flex justify-content-center pt-2">
       <span>Administration d'équipe</span>
     </mat-card-title>
-    <app-team-form [team]="team"></app-team-form>
-    <app-team-teammate *ngIf="isSearching" [teammates]="searchedTeammates" [addOrDelete]="addTeammate"
+    <app-team-form [team]="team" (filterChanged)="searchUser($event)" ></app-team-form>
+    <app-team-teammate *ngIf="isSearching" [teammates]="users$" [addOrDelete]="addTeammate"
                        [isDelete]="false"></app-team-teammate>
     <app-team-delete-button *ngIf="teamId !== null && teamId !== undefined" [teamId]="teamId"></app-team-delete-button>
   </mat-card>

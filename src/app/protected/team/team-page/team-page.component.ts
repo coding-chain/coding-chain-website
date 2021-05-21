@@ -4,6 +4,10 @@ import {PublicUser} from '../../../shared/models/users/responses';
 import {TeamService} from '../../../core/services/http/team.service';
 import {ITeamNavigation} from '../../../shared/models/teams/responses';
 import {UserService} from '../../../core/services/http/user.service';
+import {GetParams} from '../../../shared/models/http/get.params';
+import {PageCursor} from '../../../shared/models/pagination/page-cursor';
+import {IUsersFilter} from '../../../shared/models/users/filters';
+import {BehaviorSubject} from 'rxjs';
 
 @Component({
   selector: 'app-team-page',
@@ -12,10 +16,12 @@ import {UserService} from '../../../core/services/http/user.service';
 })
 export class TeamPageComponent implements OnInit {
   isSearching = true; // todo set default to false after tests
-  searchedTeammates: PublicUser[] = [{username: 'fghjk', email: 'fghjknb', id: 'hj', teamIds: [], rightIds: []}]; // todo remove after tests
-  yourTeammates: PublicUser[] = [{username: 'fghjk', email: 'fghjknb', id: 'hj', teamIds: [], rightIds: ['1']}]; // todo remove after tests
+  searchedTeammates: PublicUser[];
+  yourTeammates: PublicUser[]; // = [{username: 'fghjk', email: 'fghjknb', id: 'hj', teamIds: [], rightIds: ['1']}]; // todo remove after tests
   teamId: string;
   team: ITeamNavigation;
+  userCursor: PageCursor<PublicUser, IUsersFilter>;
+  users$ = new BehaviorSubject<PublicUser[]>([]);
 
   constructor(private route: ActivatedRoute, private teamService: TeamService, private userService: UserService) {
   }
@@ -25,6 +31,14 @@ export class TeamPageComponent implements OnInit {
       this.teamId = res.id;
       this.fetchTeam();
     });
+
+    this.userCursor = this.userService.getUserResumeCursor();
+    this.userCursor.resultsSubject$.subscribe(users => {
+      console.log('subscribe', users);
+      this.users$.next(users);
+    });
+    this.userCursor.current();
+
   }
 
   fetchTeam(): void {
@@ -46,6 +60,11 @@ export class TeamPageComponent implements OnInit {
       });
 
     });
+  }
+
+  searchUser($filter: GetParams<PublicUser, IUsersFilter>): void {
+    this.userCursor.updateFilter($filter);
+    this.userCursor.current();
   }
 
   addTeammate(id: string): void {

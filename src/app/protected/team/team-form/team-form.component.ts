@@ -4,12 +4,15 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {TeamService} from '../../../core/services/http/team.service';
 import Swal from 'sweetalert2';
 import {ITeamNavigation} from '../../../shared/models/teams/responses';
+import {FilterComponentBase} from '../../../shared/components-bases/filter-component-base';
+import {PublicUser} from '../../../shared/models/users/responses';
+import {IUsersFilter} from '../../../shared/models/users/filters';
 
 @Component({
   selector: 'app-team-form',
   templateUrl: './team-form.component.html',
 })
-export class TeamFormComponent implements OnInit {
+export class TeamFormComponent extends FilterComponentBase<PublicUser, IUsersFilter> implements OnInit {
   @Input()
   team: ITeamNavigation;
   teamForm: FormGroup;
@@ -17,6 +20,7 @@ export class TeamFormComponent implements OnInit {
   searchControl: FormControl;
 
   constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, private teamService: TeamService) {
+    super();
   }
 
   initForm(): void {
@@ -38,8 +42,12 @@ export class TeamFormComponent implements OnInit {
     this.teamNameControl?.setValue(this.team.name);
   }
 
-  searchTeammate(input: string): void {
-    // todo fetch corresponding users and put it in searchedTeammates
+  searchTeammate(): void {
+    this.filterChanged.emit({
+      filterObj: {
+        name: this.searchControl.value
+      },
+    });
   }
 
   saveTeamName(input: string): void {
@@ -79,6 +87,9 @@ export class TeamFormComponent implements OnInit {
         }
       );
     }
+  }
+
+  reset(): void {
   }
 
 }

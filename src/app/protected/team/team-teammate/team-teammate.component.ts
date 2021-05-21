@@ -10,9 +10,9 @@ export class TeamTeammateComponent implements OnInit {
   @Input() manageStatus: (id) => void;
   @Input() teammates: PublicUser[];
   @Input() isDelete;
-  icon;
-  iconColor;
-  tooltips;
+  icon: string;
+  iconColor: string;
+  tooltips: string;
 
   displayedColumns: string[] = ['username', 'email', 'action'];
 
