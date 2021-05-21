@@ -13,7 +13,7 @@
     <mat-form-field appearance="outline" class="w-100 mx-auto" id="search-teammates">
       <mat-label>Inviter un coéquipier</mat-label>
       <input [formControl]="searchControl" id="search-teammates-input" matInput type="text">
-      <button mat-icon-button (click)="searchTeammate(searchControl.value)" matSuffix>
+      <button mat-icon-button (click)="searchTeammate()" matSuffix>
         <mat-icon aria-hidden="false" aria-label="Search">search</mat-icon>
       </button>
     </mat-form-field>

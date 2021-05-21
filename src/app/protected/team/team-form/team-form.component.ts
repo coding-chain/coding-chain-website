@@ -1,14 +1,18 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {TeamService} from '../../../core/services/http/team.service';
 import Swal from 'sweetalert2';
+import {ITeamNavigation} from '../../../shared/models/teams/responses';
+import {IUsersFilter} from '../../../shared/models/users/filters';
+import {PublicUser} from '../../../shared/models/users/responses';
+import {FilterBaseComponent} from '../../../shared/components-bases/filter-base.component';
 
 @Component({
   selector: 'app-team-form',
   templateUrl: './team-form.component.html',
 })
-export class TeamFormComponent extends FilterComponentBase<PublicUser, IUsersFilter> implements OnInit, OnChanges {
+export class TeamFormComponent extends FilterBaseComponent<PublicUser, IUsersFilter> implements OnInit, OnChanges {
 
   @Input() teamId;
   @Input()
@@ -19,8 +23,8 @@ export class TeamFormComponent extends FilterComponentBase<PublicUser, IUsersFil
 
   // todo use snackbar for ok or ko messages
   constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, private teamService: TeamService) {
+    super();
   }
-
 
 
   initForm(): void {
