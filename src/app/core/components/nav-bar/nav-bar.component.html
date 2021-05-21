@@ -6,6 +6,9 @@
          routerLinkActive="active">Temporary participation access</a>
       <a [routerLink]="['/tournaments']" class="nav-link" data-toggle="tab" id="tournmanentsLink" mat-tab-link
          routerLinkActive="active">Tournois</a>
+      <a *ngIf="user.isAdmin() || user.isCreator()" [routerLink]="['/steps']" class="nav-link" data-toggle="tab"
+         id="stepsLink" mat-tab-link
+         routerLinkActive="active">Etapes</a>
       <a class="nav-link" data-toggle="tab" id="teamLink" mat-tab-link [routerLink]="['/team']"
          routerLinkActive="active">Créer une équipe</a>
     </ng-container>
@@ -19,10 +22,10 @@
   <div class="d-flex w-25 justify-content-end align-items-center">
     <mat-slide-toggle [formControl]="toggleThemeCtrl" class="mx-2">
     </mat-slide-toggle>
-    <mat-icon *ngIf="toggleThemeCtrl.value" color="accent" class="mx-2">
+    <mat-icon *ngIf="toggleThemeCtrl.value" class="mx-2" color="accent">
       brightness_2
     </mat-icon>
-    <mat-icon *ngIf="!toggleThemeCtrl.value" color="accent" class="mx-2">
+    <mat-icon *ngIf="!toggleThemeCtrl.value" class="mx-2" color="accent">
       brightness_5
     </mat-icon>
 

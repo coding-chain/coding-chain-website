@@ -1,7 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {ICreateTournamentCommand} from '../../../shared/models/tournaments/commands';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {BehaviorSubject, Subject} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 
 @Component({
   selector: 'app-tournaments-create-form',
@@ -15,7 +15,7 @@ export class TournamentsCreateFormComponent implements OnInit {
   tournamentGrp: FormGroup;
   nameCtrl: FormControl;
   descriptionCtrl: FormControl;
-  invalid$ = new BehaviorSubject<boolean>(true)
+  invalid$ = new BehaviorSubject<boolean>(true);
 
   constructor(private readonly _fb: FormBuilder) {
   }
@@ -27,14 +27,14 @@ export class TournamentsCreateFormComponent implements OnInit {
       name: this.nameCtrl,
       description: this.descriptionCtrl
     });
-    this.tournamentGrp.valueChanges.subscribe(res => this.invalid$.next(this.tournamentGrp.invalid || this.tournamentGrp.pristine))
+    this.tournamentGrp.valueChanges.subscribe(res => this.invalid$.next(this.tournamentGrp.invalid || this.tournamentGrp.pristine));
   }
 
-  reset() {
+  reset(): void {
     this.tournamentGrp.reset();
   }
 
-  createTournament() {
+  createTournament(): void {
     this.creationSubmitted.emit(this.tournamentGrp.value);
   }
 }

@@ -60,7 +60,7 @@ export class UrlUtils {
     const resKeyVal: KeyValue<string, any>[] = [];
     keyVal.forEach(kV => {
       if (Array.isArray(kV.value)) {
-        kV.value.forEach(v => resKeyVal.push({key: `${kV.key}[]`, value: v}));
+        kV.value.forEach((v, i) => resKeyVal.push({key: `${kV.key}[${i}]`, value: v}));
       } else {
         resKeyVal.push(kV);
       }
@@ -68,15 +68,13 @@ export class UrlUtils {
     return resKeyVal;
   }
 
-  static convertPathUrlToKeysValues(textUrl: string): KeyValue<string, number>[] {
+  static convertPathUrlToKeysValues(textUrl: string): KeyValue<string, any>[] {
     const url = new URL(textUrl);
-    const keyValues: KeyValue<string, number>[] = [];
+    const keyValues: KeyValue<string, any>[] = [];
     const segments = url.pathname.split('/');
     for (let i = 0; i < segments.length - 1; i++) {
-      const id = Number(segments[i + 1]);
-      if (!isNaN(id)) {
-        keyValues.push({key: segments[i], value: id});
-      }
+      const id = segments[i + 1];
+      keyValues.push({key: segments[i], value: id});
     }
     return keyValues;
   }

@@ -1,4 +1,4 @@
-import {IRightNavigation} from '../rights/responses';
+import {IRightNavigation, Right} from '../rights/responses';
 import {IMemberNavigation} from '../teams/responses';
 
 export class ConnectedUser {
@@ -14,6 +14,18 @@ export class ConnectedUser {
     this.email = obj.email;
     this.rights = obj.rights ?? [];
     this.teams = obj.teams ?? [];
+  }
+
+  hasRight(name: Right): boolean {
+    return this.rights.some(r => r.name.toLowerCase() === name);
+  }
+
+  hasAllRights(names: Right[]): boolean {
+    return names.every(r => this.hasRight(r));
+  }
+
+  hasSomeRights(names: Right[]): boolean {
+    return names.some(r => this.hasRight(r));
   }
 
   isTeamAdmin(teamId: string): boolean {

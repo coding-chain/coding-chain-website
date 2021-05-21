@@ -14,7 +14,7 @@ import {TournamentsEditDescriptionInputComponent} from './tournaments-edit-descr
 import {TournamentsFilterFormComponent} from './tournaments-filter-form/tournaments-filter-form.component';
 import {TournamentsItemComponent} from './tournaments-item/tournaments-item.component';
 import {TournamentsEditFormComponent} from './tournaments-edit-form/tournaments-edit-form.component';
-import { TournamentsEditStepsListComponent } from './tournaments-edit-steps-list/tournaments-edit-steps-list.component';
+import {TournamentsEditStepsListComponent} from './tournaments-edit-steps-list/tournaments-edit-steps-list.component';
 import {StepsModule} from '../steps/steps.module';
 
 

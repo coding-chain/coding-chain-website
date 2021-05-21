@@ -1,27 +1,27 @@
-import {Component, Input, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {TeamService} from '../../../core/services/http/team.service';
 import Swal from 'sweetalert2';
-import {ITeamNavigation} from '../../../shared/models/teams/responses';
-import {FilterComponentBase} from '../../../shared/components-bases/filter-component-base';
-import {PublicUser} from '../../../shared/models/users/responses';
-import {IUsersFilter} from '../../../shared/models/users/filters';
 
 @Component({
   selector: 'app-team-form',
   templateUrl: './team-form.component.html',
 })
-export class TeamFormComponent extends FilterComponentBase<PublicUser, IUsersFilter> implements OnInit {
+export class TeamFormComponent extends FilterComponentBase<PublicUser, IUsersFilter> implements OnInit, OnChanges {
+
+  @Input() teamId;
   @Input()
   team: ITeamNavigation;
   teamForm: FormGroup;
   teamNameControl: FormControl;
   searchControl: FormControl;
 
+  // todo use snackbar for ok or ko messages
   constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, private teamService: TeamService) {
-    super();
   }
+
+
 
   initForm(): void {
     this.teamNameControl = this.formBuilder.control(this.team?.name,
@@ -36,7 +36,9 @@ export class TeamFormComponent extends FilterComponentBase<PublicUser, IUsersFil
 
   ngOnInit(): void {
     this.initForm();
+
   }
+
 
   ngOnChanges(changes: SimpleChanges): void {
     this.teamNameControl?.setValue(this.team.name);
@@ -91,5 +93,4 @@ export class TeamFormComponent extends FilterComponentBase<PublicUser, IUsersFil
 
   reset(): void {
   }
-
 }

@@ -1,4 +1,4 @@
-import {IStepNavigation} from '../steps/responses';
+import {cloneStepNavigation, IStepNavigation} from '../steps/responses';
 
 export interface ITournamentStepNavigation extends IStepNavigation {
   stepId: string;
@@ -6,7 +6,6 @@ export interface ITournamentStepNavigation extends IStepNavigation {
   isOptional: boolean;
   order: number;
 }
-
 
 export interface ITournamentNavigation {
   id: string;
@@ -17,4 +16,15 @@ export interface ITournamentNavigation {
   endDate?: Date;
   stepsIds: string[];
   participationsIds: string[];
+}
+
+export function cloneTournamentStepNavigation(tournamentStep: ITournamentStepNavigation): ITournamentStepNavigation {
+  const stepNav = cloneStepNavigation(tournamentStep);
+  return {
+    stepId: tournamentStep.stepId,
+    tournamentId: tournamentStep.tournamentId,
+    isOptional: tournamentStep.isOptional,
+    order: tournamentStep.order,
+    ...stepNav
+  };
 }

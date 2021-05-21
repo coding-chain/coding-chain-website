@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Subject} from 'rxjs';
+import {Subject} from 'rxjs';
 import {environment} from '../../../environments/environment';
+import {ThemeService as ChartsThemeService} from 'ng2-charts';
+import {ChartOptions} from 'chart.js';
 
 export type Theme = 'dark' | 'light';
 
@@ -12,20 +14,8 @@ export class ThemeService {
   themeSubject$ = new Subject<Theme>();
   private themeKey = environment.themeKey;
 
-  constructor() {
+  constructor(private readonly _chartsThemeService: ChartsThemeService) {
 
-  }
-
-  public updateTheme(theme: Theme): void {
-    this.setTheme(theme);
-  }
-
-  private setTheme(theme: Theme): void {
-    localStorage.setItem(this.themeKey, theme);
-  }
-
-  public publishTheme(): void{
-    this.themeSubject$.next(this.theme);
   }
 
   get theme(): Theme {
@@ -34,5 +24,39 @@ export class ThemeService {
       return 'light';
     }
     return theme;
+  }
+
+  public updateTheme(theme: Theme): void {
+    this.setTheme(theme);
+  }
+
+  public publishTheme(): void {
+    this.themeSubject$.next(this.theme);
+  }
+
+  private setTheme(theme: Theme): void {
+    localStorage.setItem(this.themeKey, theme);
+  }
+
+  private changeChartsColorsByTheme(theme: Theme): void {
+    let overrides: ChartOptions = {};
+    if (theme === 'dark') {
+      overrides = {
+        legend: {
+          labels: {fontColor: 'white'}
+        },
+        scales: {
+          xAxes: [{
+            ticks: {fontColor: 'white'},
+            gridLines: {color: 'rgba(255,255,255,0.1)'}
+          }],
+          yAxes: [{
+            ticks: {fontColor: 'white'},
+            gridLines: {color: 'rgba(255,255,255,0.1)'}
+          }]
+        }
+      };
+    }
+    this._chartsThemeService.setColorschemesOptions(overrides);
   }
 }

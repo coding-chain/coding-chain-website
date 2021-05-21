@@ -1,10 +1,12 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FormArray, FormBuilder} from '@angular/forms';
 import {ITestEdition} from '../../../shared/models/tests/test-edition';
-import {toMatrix} from '../../../shared/utils/array.utils';
+import {ArrayUtils} from '../../../shared/utils/array.utils';
 import {ITournamentEditionStep} from '../../../shared/models/tournaments/tournament-edition';
 import {ITestNavigation} from '../../../shared/models/tests/responses';
 import {Theme} from '../../../core/services/theme.service';
+import {ItemWithForm} from '../../../shared/models/forms/item-with-form';
+
 
 @Component({
   selector: 'app-steps-edit-tests',
@@ -17,45 +19,65 @@ export class StepsEditTestsComponent implements OnInit {
   @Input() cardCountBySlide = 2;
   @Input() step: ITournamentEditionStep;
   @Input() theme: Theme;
+  @Input() readonly = true;
+  @Output() testsChange = new EventEmitter<ITestNavigation[]>();
 
-  testsMatrix: ITestEdition[][] = [];
-  private _tests: ITestEdition[];
+  slides: number[];
+  testsMatrix: ItemWithForm<ITestEdition>[][] = [];
+  _tests: ItemWithForm<ITestEdition>[];
 
   constructor(private readonly _fb: FormBuilder) {
   }
 
   ngOnInit(): void {
-    this._tests = this.step.tests.map(t => (this.toTestEdition(t) as ITestEdition));
-    this.testsMatrix = toMatrix(this._tests, this.cardCountBySlide);
-    this.testsArray = this._fb.array([]);
-  }
-
-  getTestForm(rowIdx: number, colIdx: number): FormGroup {
-    const newTestGrp = this._fb.group({});
-    if (this.testsMatrix[rowIdx][colIdx].stepPublished) {
-      newTestGrp.disable();
+    this._tests = this.step.tests.map(t => this.toTestEditionGrp(t));
+    this.testsMatrix = ArrayUtils.toMatrix(this._tests, this.cardCountBySlide);
+    this.fillTestsArray();
+    this.testsArray.valueChanges.subscribe(res => this.testsChange.emit(this._tests.map(testWithGrp => {
+      const test = testWithGrp.item;
+      return {
+        id: test.id,
+        stepId: test.stepId,
+        score: test.score,
+        outputValidator: test.outputValidator,
+        inputGenerator: test.inputGenerator
+      };
+    })));
+    if (!this.readonly && this._tests.length === 0) {
+      this.addTest();
     }
-    this.testsArray.setControl(this.getTestIndex(rowIdx, colIdx), newTestGrp);
-    return newTestGrp;
   }
-
 
   addTest(): void {
-    this._tests.unshift(this.toTestEdition() as ITestEdition);
-    this.testsMatrix = toMatrix(this._tests, this.cardCountBySlide);
+    const testWithGrp = this.toTestEditionGrp();
+    this._tests.unshift(testWithGrp);
+    this.testsMatrix = ArrayUtils.toMatrix(this._tests, this.cardCountBySlide);
+
+    this.testsArray.insert(0, testWithGrp.form);
   }
 
   onTestDelete(rowIdx: number, colIdx: number): void {
-    this._tests.splice(this.getTestIndex(rowIdx, colIdx), 1);
-    this.testsMatrix = toMatrix(this._tests, this.cardCountBySlide);
+    const idx = this.getTestIndex(rowIdx, colIdx);
+    this._tests.splice(idx, 1);
+    this.testsArray.removeAt(idx);
+    this.testsMatrix = ArrayUtils.toMatrix(this._tests, this.cardCountBySlide);
+  }
 
+  getTestIndex(rowIdx: number, colIdx: number): number {
+    return rowIdx * this.cardCountBySlide + colIdx;
+  }
+
+  private fillTestsArray(): void {
+    this._tests.forEach((t, i) => {
+      this.testsArray.setControl(i, t.form);
+    });
   }
 
   private toTestEdition(test?: ITestNavigation): Partial<ITestEdition> {
-    return {language: this.step.language, stepId: this.step.stepId, score: 1, stepPublished: this.step.isPublished};
+    return {language: this.step.language, stepId: this.step.stepId, score: 1, stepPublished: this.step.isPublished, ...test};
   }
 
-  private getTestIndex(rowIdx: number, colIdx: number): number {
-    return rowIdx * this.cardCountBySlide + colIdx;
+  private toTestEditionGrp(test?: ITestNavigation): ItemWithForm<ITestEdition> {
+    return {item: this.toTestEdition(test) as ITestEdition, form: this._fb.group({})};
   }
 }

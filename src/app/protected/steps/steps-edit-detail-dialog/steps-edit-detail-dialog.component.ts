@@ -4,7 +4,6 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import * as _ from 'lodash';
 import {ITournamentEditionStep} from '../../../shared/models/tournaments/tournament-edition';
 import {Theme} from '../../../core/services/theme.service';
-import {Subject} from 'rxjs';
 
 export interface IStepsEditDetailDialogData {
   step: ITournamentEditionStep;

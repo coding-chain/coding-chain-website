@@ -1,17 +1,18 @@
 import {AbstractControl, ValidationErrors, ValidatorFn} from '@angular/forms';
 
-function prepareCtrls(sourceCtrl: AbstractControl, compareCtrl: AbstractControl,  transformFunc: (value: any) => any = null): {sourceControlValue: any, compareCtrlValue: any}{
+function prepareCtrls(sourceCtrl: AbstractControl, compareCtrl: AbstractControl, transformFunc: (value: any) => any = null): { sourceControlValue: any, compareCtrlValue: any } {
   let comparedVal = compareCtrl?.value;
   let ctrlVal = sourceCtrl.value;
-  if(transformFunc){
+  if (transformFunc) {
     comparedVal = transformFunc(compareCtrl?.value);
     ctrlVal = transformFunc(sourceCtrl.value);
   }
-  return {sourceControlValue: ctrlVal, compareCtrlValue: comparedVal}
+  return {sourceControlValue: ctrlVal, compareCtrlValue: comparedVal};
 }
+
 export function leCtrlValidator(comparedCtrl: AbstractControl, transformFunc: (value: any) => any = null): ValidatorFn {
   return (ctrl: AbstractControl): ValidationErrors | null => {
-    if (comparedCtrl.value ==null || ctrl.value == null) {
+    if (comparedCtrl.value == null || ctrl.value == null) {
       return null;
     }
     const controls = prepareCtrls(ctrl, comparedCtrl, transformFunc);
@@ -21,7 +22,7 @@ export function leCtrlValidator(comparedCtrl: AbstractControl, transformFunc: (v
 
 export function ltCtrlValidator(comparedCtrl: AbstractControl, transformFunc: (value: any) => any = null): ValidatorFn {
   return (ctrl: AbstractControl): ValidationErrors | null => {
-    if (comparedCtrl.value ==null  || ctrl.value == null ) {
+    if (comparedCtrl.value == null || ctrl.value == null) {
       return null;
     }
     const controls = prepareCtrls(ctrl, comparedCtrl, transformFunc);
@@ -31,16 +32,17 @@ export function ltCtrlValidator(comparedCtrl: AbstractControl, transformFunc: (v
 
 export function geCtrlValidator(comparedCtrl: AbstractControl, transformFunc: (value: any) => any = null): ValidatorFn {
   return (ctrl: AbstractControl): ValidationErrors | null => {
-    if (comparedCtrl.value ==null || ctrl.value == null) {
+    if (comparedCtrl.value == null || ctrl.value == null) {
       return null;
     }
     const controls = prepareCtrls(ctrl, comparedCtrl, transformFunc);
     return controls.sourceControlValue >= controls.compareCtrlValue ? {geCtrlError: true} : null;
   };
 }
+
 export function gtCtrlValidator(comparedCtrl: AbstractControl, transformFunc: (value: any) => any = null): ValidatorFn {
   return (ctrl: AbstractControl): ValidationErrors | null => {
-    if (comparedCtrl.value ==null || ctrl.value == null) {
+    if (comparedCtrl.value == null || ctrl.value == null) {
       return null;
     }
     const controls = prepareCtrls(ctrl, comparedCtrl, transformFunc);

@@ -1,4 +1,4 @@
-export interface IStepsFilter{
+export interface IStepsFilter {
   name: string;
   isPublished: string;
   languageId: string;

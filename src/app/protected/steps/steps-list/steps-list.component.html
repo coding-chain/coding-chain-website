@@ -1,4 +1,13 @@
-<app-steps-filter-form (filterChanged)="searchSteps($event)" [languages]="languages$ | async" class="col my-3 "></app-steps-filter-form>
-<app-steps-item *ngFor="let step of steps$|async" [step]="step" class="row my-2">
-</app-steps-item>
+<app-steps-filter-form (filterChanged)="searchSteps($event)" [languages]="languages$ | async"
+                       class="col my-3 "></app-steps-filter-form>
+
+<div class="row justify-content-center">
+  <button (click)="createStep()" [disabled]="!canCreate" class="col-7 mx-auto" mat-stroked-button>Ajouter une étape
+  </button>
+</div>
+<app-steps-edit-item (stepDeleted)="onStepDeleted(step)" (stepSave)="onStepSaved(step)"
+                     *ngFor="let step of steps$|async; trackBy: trackById" [languages]="languages$ | async" [step]="step"
+                     class="row my-2 justify-content-center">
+</app-steps-edit-item>
+
 <app-paged-list [cursor]="stepsCursor"></app-paged-list>

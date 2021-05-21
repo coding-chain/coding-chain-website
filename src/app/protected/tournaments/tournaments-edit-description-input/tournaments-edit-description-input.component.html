@@ -1,8 +1,12 @@
-<mat-form-field appearance="outline" class="w-100 mx-auto">
-  <mat-label>Description</mat-label>
-  <textarea [formControl]="descriptionCtrl" matInput type="text"></textarea>
+<div class="col">
+  <div class="row  align-items-center">
+    <quill-editor [formControl]="descriptionCtrl" class="col w-100 p-0"
+                  style="background-color: white; color: black;"></quill-editor>
+  </div>
   <mat-error *ngIf="descriptionCtrl.hasError('maxlength')">
-    La description du tournois doit faire au maximum {{maxDescriptionLength}}
+    La description du tournoi doit faire au maximum {{maxDescriptionLength}}
   </mat-error>
-  <mat-hint align="end">{{descriptionCtrl.value?.length}} / {{maxDescriptionLength}}</mat-hint>
-</mat-form-field>
+  <mat-error *ngIf="descriptionCtrl.hasError('required')">
+    La description du tournoi ne doit pas être vide
+  </mat-error>
+</div>

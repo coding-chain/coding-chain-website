@@ -3,6 +3,11 @@ import {AuthenticationService} from '../../../core/services/http/authentication.
 import {Router} from '@angular/router';
 import {RegisterUser} from '../../../shared/models/users/register-user';
 import Swal from 'sweetalert2';
+import {SwalUtils} from '../../../shared/utils/swal.utils';
+import {catchError, map, switchMap} from 'rxjs/operators';
+import {of} from 'rxjs';
+import {ConnectedUser} from '../../../shared/models/users/connected-user';
+import {UserStateService} from '../../../core/services/user-state.service';
 
 @Component({
   selector: 'app-register-page',
@@ -11,20 +16,20 @@ import Swal from 'sweetalert2';
 })
 export class RegisterPageComponent implements OnInit {
 
-  constructor(private authService: AuthenticationService, private router: Router) {
+  constructor(private authService: AuthenticationService, private router: Router, private readonly _userStateService: UserStateService) {
   }
 
   ngOnInit(): void {
   }
 
   createUser(user: RegisterUser): void {
-    this.authService.register(user).subscribe(
-      value => this.router.navigate(['/home']),
-      err => Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Impossible de créer l\'utilisateur'
+    this.authService.register(user).pipe(
+      switchMap(res => this.authService.login(user)),
+      map(res => this._userStateService.updateUser(new ConnectedUser(res))),
+      catchError(err => {
+        Swal.fire(SwalUtils.errorOptions('Erreur durant la création de votre compte'));
+        return of([]);
       })
-    );
+    ).subscribe(value => this.router.navigate(['/home']));
   }
 }

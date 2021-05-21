@@ -1,7 +1,6 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {NgbCarouselModule} from '@ng-bootstrap/ng-bootstrap';
-
 
 
 @NgModule({
@@ -9,8 +8,9 @@ import {NgbCarouselModule} from '@ng-bootstrap/ng-bootstrap';
   imports: [
     NgbCarouselModule,
     CommonModule
-  ],exports: [
+  ], exports: [
     NgbCarouselModule
   ]
 })
-export class BootstrapModule { }
+export class BootstrapModule {
+}
