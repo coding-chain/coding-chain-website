@@ -21,7 +21,7 @@
       <button mat-stroked-button color="primary" (click)="save()" [disabled]="teamForm.invalid"> Sauvegarder</button>
     </div>
     <div class="col-6 text-center">
-      <button mat-stroked-button color="warn" (click)="delete()" [disabled]="!team.id"> Supprimer</button>
+      <button mat-stroked-button color="warn" (click)="delete()" [disabled]="!team?.id"> Supprimer</button>
     </div>
   </div>
 </div>

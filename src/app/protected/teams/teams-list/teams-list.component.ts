@@ -10,6 +10,7 @@ import {ITeamNavigation, ITeamResume} from '../../../shared/models/teams/respons
 import {TeamService} from '../../../core/services/http/team.service';
 import Swal from 'sweetalert2';
 import {SwalUtils} from '../../../shared/utils/swal.utils';
+import {ArrayUtils} from '../../../shared/utils/array.utils';
 
 @Component({
   selector: 'app-teams-list',
@@ -21,12 +22,12 @@ export class TeamsListComponent implements OnInit {
   teams$ = new BehaviorSubject<ITeamResume[]>([]);
   connectedUser: ConnectedUser;
   connectedUser$ = new BehaviorSubject<ConnectedUser>(null);
+  trackBy = ArrayUtils.trackById;
 
   constructor(private readonly _teamService: TeamService,
               private readonly _languageService: LanguageService,
               private readonly _userStateService: UserStateService) {
   }
-
 
   ngOnInit(): void {
     this.teamCursor = this._teamService.getResumeCursor();
@@ -47,7 +48,7 @@ export class TeamsListComponent implements OnInit {
 
   leaveTeam(team: ITeamResume): void {
     this._teamService.removeTeamMember(team.id, this.connectedUser.id).subscribe(res => {
-      this.teamCursor.current();
+      this._userStateService.reloadUser$().subscribe(user => this.teamCursor.current());
       Swal.fire(SwalUtils.successOptions('Vous avez quitté l\'équipe'));
     }, error => Swal.fire(SwalUtils.errorOptions('Vous n\'avez pas pu quitter l\'équipe')));
   }

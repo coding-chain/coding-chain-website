@@ -141,9 +141,15 @@ export class TeamService extends ApiHelperService {
     if (originAdminMember?.userId !== editedAdminMember?.userId) {
       elevateMember$ = this.elevateTeamMemberRight(editedAdminMember.teamId, editedAdminMember.userId);
     }
-    const addMembers$ = newMembers.map(m => this.addMember(m.teamId, memberNavToAddMemberCommand(m)));
-    const removeMembers$ = removedMembers.map(m => this.removeTeamMember(m.teamId, m.userId));
-    return forkJoin([elevateMember$, ...addMembers$, ...removeMembers$]);
+    let addMembers$ = newMembers.map(m => this.addMember(m.teamId, memberNavToAddMemberCommand(m)));
+    addMembers$ = addMembers$.length > 0 ? addMembers$ : [of(null)];
+    let removeMembers$ = removedMembers.map(m => this.removeTeamMember(m.teamId, m.userId));
+    removeMembers$ = removeMembers$.length > 0 ? removeMembers$ : [of(null)];
+    return forkJoin(addMembers$).pipe(
+      switchMap(res => elevateMember$)
+    ).pipe(
+      switchMap(res => forkJoin(removeMembers$))
+    );
   }
 
   private createAndGetTeamResume(team: ITeamResume): Observable<ITeamResume> {
