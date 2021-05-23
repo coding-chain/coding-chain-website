@@ -37,3 +37,9 @@ body {
 //.ql-toolbar .ql-picker {
 //  color: #fff;
 //}
+.drag-place-holder {
+  border: solid 1px #ccc;
+  min-height: 60px;
+  border-radius: 4px;
+  overflow: hidden;
+}

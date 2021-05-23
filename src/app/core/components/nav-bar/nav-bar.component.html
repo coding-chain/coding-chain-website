@@ -9,7 +9,7 @@
       <a *ngIf="user.isAdmin() || user.isCreator()" [routerLink]="['/steps']" class="nav-link" data-toggle="tab"
          id="stepsLink" mat-tab-link
          routerLinkActive="active">Etapes</a>
-      <a class="nav-link" data-toggle="tab" id="teamLink" mat-tab-link [routerLink]="['/team']"
+      <a class="nav-link" data-toggle="tab" id="teamLink" mat-tab-link [routerLink]="['/teams']"
          routerLinkActive="active">Equipes</a>
     </ng-container>
     <a *ngIf="!(user$ | async) as user" [routerLink]="['/login']" class="nav-link" data-toggle="tab" id="loginLink"

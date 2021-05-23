@@ -1,0 +1,35 @@
+<mat-card class="row w-100">
+  <div class="col-12">
+    <div class="row justify-content-between">
+      <h2 class="col-3">{{team.name}}</h2>
+      <div *ngIf="connectedUser.isTeamAdmin(team.id)" class="col-1">
+        <button  mat-icon-button color="accent"
+                [routerLink]="['/teams',team.id, 'edit']"
+                matTooltip="Administrer l'équipe">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+      <div *ngIf="connectedUser.isTeamMember(team.id) && !connectedUser.isTeamAdmin(team.id)" class="col-1">
+        <button  mat-icon-button
+                color="warn" (click)="leave()"
+                matTooltip="Quitter l'équipe">
+          <mat-icon>clear</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="row ">
+      <div class="col">
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>{{team.members.length}} Membres</mat-panel-title>
+          </mat-expansion-panel-header>
+          <app-teams-member-item class="my-1 col" *ngFor="let member of team.members"
+                                 [member]="member"></app-teams-member-item>
+        </mat-expansion-panel>
+      </div>
+
+    </div>
+  </div>
+
+
+</mat-card>

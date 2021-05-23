@@ -10,11 +10,11 @@ import {IUsersFilter} from '../../../shared/models/users/filters';
 import {BehaviorSubject} from 'rxjs';
 
 @Component({
-  selector: 'app-team-page',
-  templateUrl: './team-page.component.html',
+  selector: 'app-teams-page',
+  templateUrl: './teams-page.component.html',
   styles: []
 })
-export class TeamPageComponent implements OnInit {
+export class TeamsPageComponent implements OnInit {
   isSearching = true; // todo set default to false after tests
   searchedTeammates: PublicUser[];
   yourTeammates: PublicUser[]; // = [{username: 'fghjk', email: 'fghjknb', id: 'hj', teamIds: [], rightIds: ['1']}]; // todo remove after tests

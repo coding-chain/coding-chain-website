@@ -1,6 +1,6 @@
 import {Component, OnInit, Renderer2} from '@angular/core';
 import {UserStateService} from '../../services/user-state.service';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 import {ConnectedUser} from '../../../shared/models/users/connected-user';
 import {AuthenticationService} from '../../services/http/authentication.service';
 import {FormBuilder, FormControl} from '@angular/forms';
@@ -13,7 +13,7 @@ import {Router} from '@angular/router';
   styles: []
 })
 export class NavBarComponent implements OnInit {
-  user$: BehaviorSubject<ConnectedUser>;
+  user$: Subject<ConnectedUser>;
   toggleThemeCtrl: FormControl;
 
   constructor(private userStateService: UserStateService,

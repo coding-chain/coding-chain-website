@@ -1,4 +1,5 @@
 export interface IUsersFilter {
-  name: string;
+  username?: string;
+  withoutIds?: string[];
 }
 

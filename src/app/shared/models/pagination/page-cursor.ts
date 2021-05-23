@@ -11,11 +11,15 @@ export class PageCursor<TResult, TFilter> {
 
   public resultsSubject$ = new BehaviorSubject<TResult[]>([]);
   private pageSubjectFunction: PageFunction<TResult, TFilter>;
-  private filter: GetParams<TResult, TFilter>;
+  private _filter: GetParams<TResult, TFilter>;
 
   constructor(pageSubjectFunction: PageFunction<TResult, TFilter>, filter: GetParams<TResult, TFilter>) {
     this.pageSubjectFunction = pageSubjectFunction;
-    this.filter = filter;
+    this._filter = filter;
+  }
+
+  get filter(): GetParams<TResult, TFilter> {
+    return _.cloneDeep(this._filter);
   }
 
   private _availableSizes = [10, 20, 50];
@@ -41,75 +45,78 @@ export class PageCursor<TResult, TFilter> {
   }
 
   get pageSize(): number {
-    return this.filter.size;
+    return this._filter.size;
   }
 
   set pageSize(size: number) {
-    if (size !== this.filter.size) {
-      this.filter.size = size;
+    if (size !== this._filter.size) {
+      this._filter.size = size;
       this.sendRequest();
     }
   }
 
   clone(filter: TFilter): PageCursor<TResult, TFilter> {
-    const newFilter = {...this.filter, filterObj: filter};
+    const newFilter = {...this._filter, filterObj: filter};
     return new PageCursor(this.pageSubjectFunction, newFilter);
   }
 
-  updateFilter(filter: GetParams<TResult, TFilter>) {
-    this.filter = {
-      ...this.filter,
+  updateFilter(filter: GetParams<TResult, TFilter>): PageCursor<TResult, TFilter> {
+    this._filter = {
+      ...this._filter,
       filterObj: filter.filterObj,
       descOrderColumns: filter.descOrderColumns,
       ascOrderColumns: filter.ascOrderColumns
     };
+    return this;
   }
 
-  setPageSizeAndPage(pageSize: number, page: number) {
+  setPageSizeAndPage(pageSize: number, page: number): PageCursor<TResult, TFilter> {
     if (page > this._totalPages || page < 1) {
-      return;
+      return this;
     }
-    const pageChanged = this.filter.page !== page;
-    const sizeChanged = pageSize !== this.filter.size;
+    const pageChanged = this._filter.page !== page;
+    const sizeChanged = pageSize !== this._filter.size;
     if (pageChanged || sizeChanged) {
-      this.filter.page = page;
-      this.filter.size = pageSize;
+      this._filter.page = page;
+      this._filter.size = pageSize;
       this.sendRequest();
     }
+    return this;
   }
 
 
   next(): number {
     if (this.hasNext) {
-      this.filter.page++;
+      this._filter.page++;
       this.sendRequest();
     }
-    return this.filter.page;
+    return this._filter.page;
   }
 
   previous(): number {
     if (this.hasPrevious) {
-      this.filter.page--;
+      this._filter.page--;
       this.sendRequest();
     }
-    return this.filter.page;
+    return this._filter.page;
   }
 
   current(): number {
     this.sendRequest();
-    return this.filter.page;
+    return this._filter.page;
   }
 
-  toPage(page: number) {
-    if (page > this._totalPages || page < 1 || this.filter.page == page) {
+  toPage(page: number): PageCursor<TResult, TFilter> {
+    if (page > this._totalPages || page < 1 || this._filter.page === page) {
       return;
     }
-    this.filter.page = page;
+    this._filter.page = page;
     this.sendRequest();
+    return this;
   }
 
-  private sendRequest() {
-    this.pageSubjectFunction(this.filter)
+  private sendRequest(): void {
+    this.pageSubjectFunction(this._filter)
       .subscribe((page) => {
         const subResults = page.result.map(subRes => subRes.result);
         this.hasNext = !!page.nextLink;
@@ -121,8 +128,8 @@ export class PageCursor<TResult, TFilter> {
       });
   }
 
-  private setTotalPagesFromTotalValuesCount(total: number) {
-    this._totalPages = Math.ceil(total / this.filter.size);
+  private setTotalPagesFromTotalValuesCount(total: number): void {
+    this._totalPages = Math.ceil(total / this._filter.size);
   }
 
 

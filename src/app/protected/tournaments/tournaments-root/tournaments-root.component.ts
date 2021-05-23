@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UserStateService} from '../../../core/services/user-state.service';
-import {BehaviorSubject} from 'rxjs';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-tournaments-root',
@@ -9,19 +10,20 @@ import {BehaviorSubject} from 'rxjs';
 })
 export class TournamentsRootComponent implements OnInit {
 
-  canCreateTournament$ = new BehaviorSubject<boolean>(false);
+  canCreateTournament$ = new Observable<boolean>();
 
   constructor(private userStateService: UserStateService) {
 
   }
 
   ngOnInit(): void {
-    this.userStateService.userSubject$.subscribe(user => {
+    this.canCreateTournament$ = this.userStateService.userSubject$.pipe(map(user => {
       if (!user) {
         return;
       }
-      this.canCreateTournament$.next(user.isAdmin() || user.isCreator());
-    });
+      return user.isAdmin() || user.isCreator();
+    }));
+    this.userStateService.loadUser();
   }
 
 }

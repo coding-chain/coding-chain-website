@@ -3,8 +3,8 @@
 @include mat-core();
 
 
-$dark-theme-primary: mat-palette($mat-teal);
-$dark-theme-accent: mat-palette($mat-lime, A200, A100, A400);
+$dark-theme-primary: mat-palette($mat-indigo);
+$dark-theme-accent: mat-palette($mat-amber, A200, A100, A400);
 $dark-theme-warn: mat-palette($mat-deep-orange);
 
 $dark-theme: mat-dark-theme(

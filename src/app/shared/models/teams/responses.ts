@@ -1,3 +1,7 @@
+import {PublicUser} from '../users/responses';
+import {IAddMemberToTeamCommand, ICreateTeamCommand} from './commands';
+import {ConnectedUser} from '../users/connected-user';
+
 export interface ITeamNavigation {
   id: string;
   name: string;
@@ -10,4 +14,44 @@ export interface IMemberNavigation {
   isAdmin: boolean;
   joinDate: Date;
   leaveDate?: Date;
+}
+
+export interface IMemberResume extends IMemberNavigation, PublicUser {
+
+}
+
+export interface ITeamResume extends ITeamNavigation {
+  members: IMemberResume[];
+}
+
+export function teamNavToTeamCommand(team: ITeamNavigation): ICreateTeamCommand {
+  return {name: team.name};
+}
+
+export function memberNavToAddMemberCommand(member: IMemberNavigation): IAddMemberToTeamCommand {
+  return {memberId: member.userId};
+}
+
+export function connectedUserWithTeamToMember(user: ConnectedUser, team: ITeamNavigation): IMemberResume {
+  return {
+    userId: user.id,
+    isAdmin: true,
+    teamId: team.id,
+    ...user
+  } as unknown as IMemberResume;
+}
+
+export function cloneMemberResume(member: IMemberResume): IMemberResume {
+  return {
+    userId: member.userId,
+    teamId: member.teamId,
+    id: member.id,
+    isAdmin: member.isAdmin,
+    email: member.email,
+    username: member.username,
+    joinDate: member.joinDate,
+    leaveDate: member.leaveDate,
+    teamIds: member.teamIds,
+    rightIds: member.rightIds
+  };
 }

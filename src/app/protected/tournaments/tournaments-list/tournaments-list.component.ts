@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TournamentService} from '../../../core/services/http/tournament.service';
 import {PageCursor} from '../../../shared/models/pagination/page-cursor';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {IProgrammingLanguageNavigation} from '../../../shared/models/programming-languages/responses';
 import {LanguageService} from '../../../core/services/http/language.service';
 import {tap} from 'rxjs/operators';
@@ -22,7 +22,7 @@ export class TournamentsListComponent implements OnInit {
   tournamentCursor: PageCursor<ITournamentResume, ITournamentsFilter>;
   tournaments$ = new BehaviorSubject<ITournamentResume[]>([]);
   languages$: Observable<IProgrammingLanguageNavigation[]>;
-  currentUser$: Observable<ConnectedUser>;
+  currentUser$ = new Subject<ConnectedUser>();
   theme$ = new BehaviorSubject<Theme>('light');
 
   constructor(private readonly _tournamentService: TournamentService,
@@ -44,6 +44,7 @@ export class TournamentsListComponent implements OnInit {
     this.tournamentCursor.current();
     this.languages$ = this._languageService.getAll().pipe(tap(res => console.log(res)));
     this.currentUser$ = this._userStateService.userSubject$;
+    this._userStateService.loadUser();
   }
 
   searchTournaments($filter: GetParams<ITournamentResume, ITournamentsFilter>): void {

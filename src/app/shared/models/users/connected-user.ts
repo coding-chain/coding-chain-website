@@ -32,6 +32,10 @@ export class ConnectedUser {
     return this.teams.some(t => t.teamId === teamId && t.isAdmin);
   }
 
+  isTeamMember(teamId: string): boolean {
+    return this.teams.some(t => t.teamId === teamId);
+  }
+
   isAdmin(): boolean {
     return this.rights.some(r => r.name.toLowerCase() === 'admin');
   }
