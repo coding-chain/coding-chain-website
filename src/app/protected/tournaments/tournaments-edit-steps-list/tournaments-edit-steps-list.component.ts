@@ -3,7 +3,7 @@ import {ITournamentEditionStep} from '../../../shared/models/tournaments/tournam
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {IProgrammingLanguageNavigation} from '../../../shared/models/programming-languages/responses';
 import {FormArray, FormBuilder} from '@angular/forms';
-import {ItemWithForm} from '../../../shared/models/forms/item-with-form';
+import {ItemWithForm} from '../../../shared/models/forms';
 
 @Component({
   selector: 'app-tournaments-edit-steps-list',

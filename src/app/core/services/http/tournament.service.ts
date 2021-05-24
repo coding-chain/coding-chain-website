@@ -148,6 +148,12 @@ export class TournamentService extends ApiHelperService {
     );
   }
 
+  public getAllTournamentParticipations(tournamentId: string): Observable<IParticipationNavigation[]> {
+    return this.fetchAll<IParticipationNavigation>({url: `${this.apiUrl}/${tournamentId}/participations`}).pipe(
+      map(participations => participations.map(p => p.result))
+    );
+  }
+
 
   updateFullTournament(originTournament: ITournamentEdition, originSteps: IStepResume[], editedTournament: ITournamentEdition)
     : Observable<any> {
@@ -258,7 +264,7 @@ export class TournamentService extends ApiHelperService {
 
   private getParticipationsForTournaments(tournaments: ITournamentResume[])
     : Observable<(ITournamentResume[] | IParticipationNavigation[])[]> {
-    const participations$ = tournaments.map(t => this.getParticipations(t.participationsIds));
+    const participations$ = tournaments.map(t => this.getAllTournamentParticipations(t.id));
     return forkJoin([of(tournaments), ...participations$]);
   }
 

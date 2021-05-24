@@ -1,11 +1,13 @@
 import {PublicUser} from '../users/responses';
 import {IAddMemberToTeamCommand, ICreateTeamCommand} from './commands';
 import {ConnectedUser} from '../users/connected-user';
+import {IParticipationNavigation} from '../participations/responses';
 
 export interface ITeamNavigation {
   id: string;
   name: string;
   membersIds: string[];
+  participationIds: string[];
 }
 
 export interface IMemberNavigation {
@@ -16,13 +18,22 @@ export interface IMemberNavigation {
   leaveDate?: Date;
 }
 
+
+export interface IMemberTeamNavigation extends IMemberNavigation, ITeamNavigation{
+}
+
 export interface IMemberResume extends IMemberNavigation, PublicUser {
 
 }
 
-export interface ITeamResume extends ITeamNavigation {
+export interface ITeamWithMembersResume extends ITeamNavigation {
   members: IMemberResume[];
 }
+export interface ITeamWithParticipations extends ITeamNavigation{
+  participations: IParticipationNavigation[];
+}
+
+
 
 export function teamNavToTeamCommand(team: ITeamNavigation): ICreateTeamCommand {
   return {name: team.name};

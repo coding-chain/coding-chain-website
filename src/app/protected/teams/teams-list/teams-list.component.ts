@@ -6,7 +6,7 @@ import {LanguageService} from '../../../core/services/http/language.service';
 import {UserStateService} from '../../../core/services/user-state.service';
 import {GetParams} from '../../../shared/models/http/get.params';
 import {ITeamFilter} from '../../../shared/models/teams/filters';
-import {ITeamNavigation, ITeamResume} from '../../../shared/models/teams/responses';
+import {ITeamNavigation, ITeamWithMembersResume} from '../../../shared/models/teams/responses';
 import {TeamService} from '../../../core/services/http/team.service';
 import Swal from 'sweetalert2';
 import {SwalUtils} from '../../../shared/utils/swal.utils';
@@ -18,8 +18,8 @@ import {ArrayUtils} from '../../../shared/utils/array.utils';
   styles: []
 })
 export class TeamsListComponent implements OnInit {
-  teamCursor: PageCursor<ITeamResume, ITeamFilter>;
-  teams$ = new BehaviorSubject<ITeamResume[]>([]);
+  teamCursor: PageCursor<ITeamWithMembersResume, ITeamFilter>;
+  teams$ = new BehaviorSubject<ITeamWithMembersResume[]>([]);
   connectedUser: ConnectedUser;
   connectedUser$ = new BehaviorSubject<ConnectedUser>(null);
   trackBy = ArrayUtils.trackById;
@@ -46,7 +46,7 @@ export class TeamsListComponent implements OnInit {
     this.teamCursor.updateFilter($filter).current();
   }
 
-  leaveTeam(team: ITeamResume): void {
+  leaveTeam(team: ITeamWithMembersResume): void {
     this._teamService.removeTeamMember(team.id, this.connectedUser.id).subscribe(res => {
       this._userStateService.reloadUser$().subscribe(user => this.teamCursor.current());
       Swal.fire(SwalUtils.successOptions('Vous avez quitté l\'équipe'));

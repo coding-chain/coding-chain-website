@@ -26,6 +26,12 @@
       <quill-editor [formControl]="descriptionCtrl" class="col mw-100 p-0"
                     style="background-color: white; color: black;"></quill-editor>
     </div>
+    <div class="row">
+      <mat-error *ngIf="descriptionCtrl.hasError('required')">Veuillez renseigner une description pour l'étape
+      </mat-error>
+      <mat-error *ngIf="descriptionCtrl.hasError('maxlength')">La taille de la description doit être inférieure
+        à {{maxDescriptionLength}}</mat-error>
+    </div>
   </div>
   <div class="col-6">
     <ngx-monaco-editor [(ngModel)]="step.headerCode" [options]="editorOptions" class="h-100 w-100"></ngx-monaco-editor>

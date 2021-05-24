@@ -6,6 +6,7 @@
   <app-tournaments-item *ngFor="let tournament of tournaments$|async" [currentUser]="currentUser"
                         [theme]="theme$ | async"
                         [tournament]="tournament"
+                        (tournamentLeave)="onTournamentLeft($event, tournament)"
                         class="row my-2">
   </app-tournaments-item>
   <app-paged-list [cursor]="tournamentCursor"></app-paged-list>

@@ -3,13 +3,15 @@ import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
 import {EMPTY, forkJoin, Observable, of} from 'rxjs';
 import {ApiHelperService} from './api-helper.service';
-import {catchError, map, switchMap, tap} from 'rxjs/operators';
+import {catchError, map, switchMap} from 'rxjs/operators';
 import {LoginUser} from '../../../shared/models/users/login-user';
 import {PublicUser, UserToken} from '../../../shared/models/users/responses';
 import {RegisterUserCommand} from '../../../shared/models/users/requests';
 import {ConnectedUser} from '../../../shared/models/users/connected-user';
 import {RightService} from './right.service';
 import {TeamService} from './team.service';
+import {IRightNavigation} from '../../../shared/models/rights/responses';
+import {IMemberNavigation, ITeamNavigation} from '../../../shared/models/teams/responses';
 
 @Injectable({
   providedIn: 'root'
@@ -47,23 +49,34 @@ export class AuthenticationService extends ApiHelperService {
   getMe(): Observable<ConnectedUser> {
     return this.http.get<PublicUser>(`${this.apiUrl}/me`).pipe(
       switchMap(user => {
-        const connectedUser = new ConnectedUser(user);
-        return forkJoin([of(connectedUser),
-          ...user.rightIds.map(id => this._rightService
-            .getById(id)
-            .pipe(
-              tap(r => connectedUser.rights.push(r))
-            )),
-          ...user.teamIds.map(id => this._teamService
-            .getMemberById(id, user.id)
-            .pipe(
-              tap(m => connectedUser.teams.push(m))
-            ))
-        ]);
+        return forkJoin([of(user), ...user.rightIds.map(id => this._rightService.getById(id))]);
       }),
-      map((res: [ConnectedUser]) => res[0]),
-      catchError(err => EMPTY)
-    );
+      switchMap(res => {
+        const user = res[0] as PublicUser;
+        return forkJoin([of(user), of(res.slice(1) as IRightNavigation[]), ...user.teamIds.map(id => this._teamService.getOneById(id))]);
+      }),
+      switchMap(res => {
+        const user = res[0] as PublicUser;
+        const members$ = user.teamIds.map(id => this._teamService.getMemberById(id, user.id));
+        return forkJoin([
+          of(user),
+          of(res[1] as IRightNavigation[]),
+          of(res.slice(2) as ITeamNavigation[]),
+          ...members$]);
+      }),
+      map(res => {
+        const user = res[0] as PublicUser;
+        const teams = res[2] as ITeamNavigation[];
+        const members = res.slice(3) as IMemberNavigation[];
+        const connectedUser = new ConnectedUser(user);
+        connectedUser.rights = res[1] as IRightNavigation[];
+        connectedUser.teams = teams.map(t => {
+          const member = members.find(m => m.teamId === t.id);
+          return {...t, ...member};
+        });
+        return connectedUser;
+      }),
+      catchError(err => EMPTY));
   }
 
   register(user: RegisterUserCommand): Observable<any> {

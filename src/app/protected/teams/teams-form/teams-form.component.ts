@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {ITeamNavigation, ITeamResume} from '../../../shared/models/teams/responses';
+import {ITeamNavigation, ITeamWithMembersResume} from '../../../shared/models/teams/responses';
 import {IUsersFilter} from '../../../shared/models/users/filters';
 import {PublicUser} from '../../../shared/models/users/responses';
 import {GetParams} from '../../../shared/models/http/get.params';
@@ -30,7 +30,7 @@ export class TeamsFormComponent implements OnInit, OnChanges {
     this.teamNameControl = this._fb.control(this.team?.name,
       [Validators.required, Validators.minLength(this.nameMinLength), Validators.maxLength(this.nameMaxLength)]);
     this.teamForm.setControl('name', this.teamNameControl);
-    this.teamForm.valueChanges.subscribe((form: ITeamResume) => {
+    this.teamForm.valueChanges.subscribe((form: ITeamWithMembersResume) => {
       this.team.name = form.name;
     });
   }

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {IMemberResume, ITeamResume} from '../../../shared/models/teams/responses';
+import {IMemberResume, ITeamWithMembersResume} from '../../../shared/models/teams/responses';
 import {ConnectedUser} from '../../../shared/models/users/connected-user';
 
 @Component({

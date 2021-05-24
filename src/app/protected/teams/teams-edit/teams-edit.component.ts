@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {PublicUser} from '../../../shared/models/users/responses';
-import {connectedUserWithTeamToMember, IMemberResume, ITeamResume} from '../../../shared/models/teams/responses';
+import {connectedUserWithTeamToMember, IMemberResume, ITeamWithMembersResume} from '../../../shared/models/teams/responses';
 import {PageCursor} from '../../../shared/models/pagination/page-cursor';
 import {IUsersFilter} from '../../../shared/models/users/filters';
 import {BehaviorSubject, of, Subject} from 'rxjs';
@@ -29,10 +29,10 @@ export interface IMovableMember extends IMemberResume {
 export class TeamsEditComponent implements OnInit {
 
   teamId: string;
-  team: ITeamResume;
-  originalTeam: ITeamResume =  {name: '', members: []} as ITeamResume;
+  team: ITeamWithMembersResume;
+  originalTeam: ITeamWithMembersResume =  {name: '', members: []} as ITeamWithMembersResume;
   users: IMovableMember[] = [];
-  team$ = new BehaviorSubject<ITeamResume>(this.originalTeam);
+  team$ = new BehaviorSubject<ITeamWithMembersResume>(this.originalTeam);
   teamMembers: IMovableMember[] = [];
   userCursor: PageCursor<PublicUser, IUsersFilter>;
   users$ = new BehaviorSubject<IMemberResume[]>([]);
@@ -111,7 +111,7 @@ export class TeamsEditComponent implements OnInit {
   }
 
   saveTeam(): void {
-    const editedTeam = _.cloneDeep(this.team) as ITeamResume;
+    const editedTeam = _.cloneDeep(this.team) as ITeamWithMembersResume;
     editedTeam.members = this.teamMembers;
     this.teamService.upsertFullTeam(this.originalTeam, editedTeam).subscribe(team => {
       Swal.fire(SwalUtils.successOptions('Modifications d\'équipe sauvegardées')).then(closed => {
@@ -129,7 +129,7 @@ export class TeamsEditComponent implements OnInit {
     }, err => Swal.fire(SwalUtils.errorOptions('Erreur lors de la sauvegarde de l\'équipe.')));
   }
 
-  private setTeam(team?: ITeamResume): void {
+  private setTeam(team?: ITeamWithMembersResume): void {
     team = team ?? this.originalTeam;
     if (!team.id) {
       team.members.push(connectedUserWithTeamToMember(this.connectedUser, team));

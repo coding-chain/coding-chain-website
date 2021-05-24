@@ -5,8 +5,8 @@
       <div class="col-7">
         <h1 class="my-0">{{tournament.name}}</h1>
       </div>
-      <div class="col-5">
-        <div class="row align-items-center">
+      <div class="col-5 ">
+        <div class="row align-items-center justify-content-end">
           <div class="col-3 text-center">
             <button *ngIf="currentUser?.isAdmin() || currentUser?.isCreator()"
                     [routerLink]="['/tournaments', tournament.id, 'edit']"
@@ -14,14 +14,14 @@
               <mat-icon>edit</mat-icon>
             </button>
           </div>
-          <div class="col-3 text-center">
-            <button *ngIf="currentUser" (click)="openJoinDialog()"
+          <div *ngIf="canJoin()" class="col-3 text-center">
+            <button  (click)="openJoinDialog()"
                     mat-stroked-button color="accent">
                 Rejoindre
             </button>
           </div>
-          <div class="col-3 text-center">
-            <button *ngIf="currentUser" (click)="openLeaveDialog()"
+          <div *ngIf="canLeave()" class="col-3 text-center">
+            <button (click)="openLeaveDialog()"
                     mat-stroked-button  color="warn">
               Quitter
             </button>

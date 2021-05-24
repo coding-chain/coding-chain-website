@@ -16,6 +16,8 @@ import {TournamentsItemComponent} from './tournaments-item/tournaments-item.comp
 import {TournamentsEditFormComponent} from './tournaments-edit-form/tournaments-edit-form.component';
 import {TournamentsEditStepsListComponent} from './tournaments-edit-steps-list/tournaments-edit-steps-list.component';
 import {StepsModule} from '../steps/steps.module';
+import { TournamentsJoinDialogComponent } from './tournaments-join-dialog/tournaments-join-dialog.component';
+import { TournamentsLeaveDialogComponent } from './tournaments-leave-dialog/tournaments-leave-dialog.component';
 
 
 @NgModule({
@@ -31,7 +33,9 @@ import {StepsModule} from '../steps/steps.module';
     TournamentsFilterFormComponent,
     TournamentsItemComponent,
     TournamentsEditFormComponent,
-    TournamentsEditStepsListComponent
+    TournamentsEditStepsListComponent,
+    TournamentsJoinDialogComponent,
+    TournamentsLeaveDialogComponent
   ],
   imports: [
     CommonModule,

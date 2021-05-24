@@ -1,12 +1,13 @@
 import {IRightNavigation, Right} from '../rights/responses';
-import {IMemberNavigation} from '../teams/responses';
+import {IMemberNavigation, IMemberTeamNavigation, ITeamNavigation} from '../teams/responses';
+import {IParticipationNavigation} from '../participations/responses';
 
 export class ConnectedUser {
   id: string;
   username: string;
   email: string;
   rights: IRightNavigation[];
-  teams: IMemberNavigation[];
+  teams: IMemberTeamNavigation[];
 
   constructor(obj: Partial<ConnectedUser>) {
     this.id = obj.id;
@@ -47,4 +48,17 @@ export class ConnectedUser {
   isUser(): boolean {
     return this.rights.some(r => r.name.toLowerCase() === 'user');
   }
+
+  hasTeamInParticipations(participations: IParticipationNavigation[]): boolean {
+    return this.teams.some(t => participations.some(p => p.teamId === t.teamId));
+  }
+
+  canLeaveTournament(participations: IParticipationNavigation[]): boolean {
+    return this.teams.some(t => participations.some(p => p.teamId === t.teamId && t.isAdmin));
+  }
+
+  getTeamsInParticipations(participations: IParticipationNavigation[]): ITeamNavigation[]{
+    return this.teams.filter(t => participations.some(p => p.teamId === t.teamId));
+  }
 }
+

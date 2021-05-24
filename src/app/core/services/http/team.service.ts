@@ -7,7 +7,7 @@ import {
   IMemberNavigation,
   IMemberResume,
   ITeamNavigation,
-  ITeamResume,
+  ITeamWithMembersResume,
   memberNavToAddMemberCommand,
   teamNavToTeamCommand
 } from '../../../shared/models/teams/responses';
@@ -37,12 +37,12 @@ export class TeamService extends ApiHelperService {
     return this.getFiltered(obj);
   }
 
-  public getTeamResumeFiltered(obj: GetParams<ITeamResume, ITeamFilter>): Observable<HateoasPageResult<ITeamResume>> {
-    return this.getFiltered<ITeamNavigation, ITeamResume, ITeamFilter>(obj).pipe(
+  public getTeamResumeFiltered(obj: GetParams<ITeamWithMembersResume, ITeamFilter>): Observable<HateoasPageResult<ITeamWithMembersResume>> {
+    return this.getFiltered<ITeamNavigation, ITeamWithMembersResume, ITeamFilter>(obj).pipe(
       switchMap(page => forkJoin([of(page), ...page.result.map(t => this.getOneResumeById(t.result.id))])),
-      map((res: [HateoasPageResult<ITeamNavigation> | ITeamResume]) => {
+      map((res: [HateoasPageResult<ITeamNavigation> | ITeamWithMembersResume]) => {
         const page = res[0] as HateoasPageResult<ITeamNavigation>;
-        const teams = res.slice(1) as ITeamResume[];
+        const teams = res.slice(1) as ITeamWithMembersResume[];
         return page.clone(teams, (pageElement, subElement) => pageElement.result.id === subElement.id);
       })
     );
@@ -58,7 +58,7 @@ export class TeamService extends ApiHelperService {
     );
   }
 
-  public getOneResumeById(id: string): Observable<ITeamResume> {
+  public getOneResumeById(id: string): Observable<ITeamWithMembersResume> {
     return this.getOneById(id).pipe(
       switchMap(team => forkJoin({team: of(team), members: this.getAllMembersResume(team.id)})),
       map(value => ({...value.team, members: value.members}))
@@ -71,8 +71,8 @@ export class TeamService extends ApiHelperService {
     );
   }
 
-  public getResumeCursor(query?: GetParams<ITeamResume, ITeamFilter>): PageCursor<ITeamResume, ITeamFilter> {
-    return new PageCursor<ITeamResume, ITeamFilter>(
+  public getResumeCursor(query?: GetParams<ITeamWithMembersResume, ITeamFilter>): PageCursor<ITeamWithMembersResume, ITeamFilter> {
+    return new PageCursor<ITeamWithMembersResume, ITeamFilter>(
       this.getTeamResumeFiltered, {url: this.apiUrl, ...query}
     );
   }
@@ -106,6 +106,10 @@ export class TeamService extends ApiHelperService {
     return this.http.delete(`${this.apiUrl}/${teamId}`);
   }
 
+  public leaveTournament(teamId: string, tournamentId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${teamId}/tournaments/${tournamentId}`);
+  }
+
   public getMemberById(teamId: string, memberId: string): Observable<IMemberNavigation> {
     return this.http.get<HateoasResponse<IMemberNavigation>>(`${this.apiUrl}/${teamId}/members/${memberId}`)
       .pipe(
@@ -113,8 +117,8 @@ export class TeamService extends ApiHelperService {
       );
   }
 
-  public upsertFullTeam(originTeam: ITeamResume, editedTeam: ITeamResume): Observable<ITeamResume> {
-    let upsert$ = of<ITeamResume>(editedTeam);
+  public upsertFullTeam(originTeam: ITeamWithMembersResume, editedTeam: ITeamWithMembersResume): Observable<ITeamWithMembersResume> {
+    let upsert$ = of<ITeamWithMembersResume>(editedTeam);
     const teamDifferences = ObjectUtils.getNotEqualsObjectWith(originTeam, editedTeam);
     if (!originTeam.id) {
       upsert$ = this.createAndGetTeamResume(editedTeam);
@@ -126,7 +130,7 @@ export class TeamService extends ApiHelperService {
         editedTeam.members.forEach(m => m.teamId = team.id);
         return forkJoin([of(team), this.upsertMembers(originTeam.members, editedTeam.members)]);
       }),
-      switchMap((res: [ITeamResume, any]) => this.getOneResumeById(res[0].id))
+      switchMap((res: [ITeamWithMembersResume, any]) => this.getOneResumeById(res[0].id))
     );
     return upsert$;
   }
@@ -152,7 +156,7 @@ export class TeamService extends ApiHelperService {
     );
   }
 
-  private createAndGetTeamResume(team: ITeamResume): Observable<ITeamResume> {
+  private createAndGetTeamResume(team: ITeamWithMembersResume): Observable<ITeamWithMembersResume> {
     return this.createAndGetIds<ICreateTeamCommand>(this.apiUrl, teamNavToTeamCommand(team)).pipe(
       switchMap(ids => this.getOneResumeById(ids[3]))
     );

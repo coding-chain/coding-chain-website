@@ -5,7 +5,7 @@ import {ArrayUtils} from '../../../shared/utils/array.utils';
 import {ITournamentEditionStep} from '../../../shared/models/tournaments/tournament-edition';
 import {ITestNavigation} from '../../../shared/models/tests/responses';
 import {Theme} from '../../../core/services/theme.service';
-import {ItemWithForm} from '../../../shared/models/forms/item-with-form';
+import {ItemWithForm} from '../../../shared/models/forms';
 
 
 @Component({

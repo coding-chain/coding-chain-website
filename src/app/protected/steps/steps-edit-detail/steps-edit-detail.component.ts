@@ -32,8 +32,8 @@ export class StepsEditDetailComponent implements OnInit {
     this.minFunctionsCntCtrl = this._fb.control(this.step.minFunctionsCount);
     this.minFunctionsCntCtrl.setValidators([gtCtrlValidator(this.maxFunctionsCntCtrl), Validators.min(0)]);
     this.maxFunctionsCntCtrl.setValidators([ltCtrlValidator(this.minFunctionsCntCtrl), Validators.min(0)]);
-    this.descriptionCtrl = this._fb.control(this.step.description, [Validators.maxLength(this.maxDescriptionLength)]);
-
+    this.descriptionCtrl = this._fb.control(this.step.description, [Validators.required, Validators.maxLength(this.maxDescriptionLength)]);
+    this.descriptionCtrl.markAsTouched();
     this.stepGrp.setControl('maxFunctions', this.maxFunctionsCntCtrl);
     this.stepGrp.setControl('minFunctions', this.minFunctionsCntCtrl);
     this.stepGrp.setControl('description', this.descriptionCtrl);
