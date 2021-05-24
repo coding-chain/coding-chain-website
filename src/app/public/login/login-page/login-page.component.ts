@@ -13,6 +13,7 @@ import {ConnectedUser} from 'src/app/shared/models/users/connected-user';
 })
 export class LoginPageComponent implements OnInit {
 
+  isLoading = false;
 
   constructor(private authService: AuthenticationService, private userStateService: UserStateService, private router: Router) {
   }
@@ -21,15 +22,20 @@ export class LoginPageComponent implements OnInit {
   }
 
   logUser(user: LoginUser): void {
+    this.isLoading = true;
     this.authService.login(user).subscribe(
       res => {
+        this.isLoading = false;
         this.router.navigate(['/home']);
         this.userStateService.updateUser(new ConnectedUser(res));
-      }, err => Swal.fire({
-        title: 'Erreur',
-        icon: 'error',
-        text: 'Utilisateur inconnu!'
-      })
+      }, err => {
+        this.isLoading = false;
+        Swal.fire({
+          title: 'Erreur',
+          icon: 'error',
+          text: 'Utilisateur inconnu!'
+        });
+      }
     );
 
   }

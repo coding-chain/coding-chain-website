@@ -16,6 +16,8 @@ import {UserStateService} from '../../../core/services/user-state.service';
 })
 export class RegisterPageComponent implements OnInit {
 
+  isLoading = false;
+
   constructor(private authService: AuthenticationService, private router: Router, private readonly _userStateService: UserStateService) {
   }
 
@@ -23,13 +25,18 @@ export class RegisterPageComponent implements OnInit {
   }
 
   createUser(user: RegisterUser): void {
+    this.isLoading = true;
     this.authService.register(user).pipe(
       switchMap(res => this.authService.login(user)),
       map(res => this._userStateService.updateUser(new ConnectedUser(res))),
       catchError(err => {
+        this.isLoading = false;
         Swal.fire(SwalUtils.errorOptions('Erreur durant la création de votre compte'));
         return of([]);
       })
-    ).subscribe(value => this.router.navigate(['/home']));
+    ).subscribe(value => {
+      this.isLoading = false;
+      this.router.navigate(['/home']);
+    });
   }
 }
