@@ -5,12 +5,8 @@ import {ProfileEditComponent} from './profile-edit/profile-edit.component';
 
 const routes: Routes = [
 
-  {path: ':id', pathMatch: 'full', redirectTo: ':id/edit'},
-  {
-    path: ':id', component: ProfileRootComponent, children: [
-      {path: 'edit', component: ProfileEditComponent}
-    ]
-  }
+  { path: '', component: ProfileRootComponent},
+  { path: 'edit', component: ProfileEditComponent},
 ];
 
 @NgModule({
