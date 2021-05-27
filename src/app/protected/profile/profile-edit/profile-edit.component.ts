@@ -4,7 +4,7 @@ import {Subject} from 'rxjs';
 import {ConnectedUser} from '../../../shared/models/users/connected-user';
 import {UserStateService} from '../../../core/services/user-state.service';
 import {SaveUser} from '../../../shared/models/users/save-user';
-import {eqCtrlsValidator} from '../../../shared/validators/value.validators';
+import {eqCtrlsIfExistsValidator, eqCtrlsValidator} from '../../../shared/validators/value.validators';
 
 @Component({
   selector: 'app-profile-edit',
@@ -39,12 +39,12 @@ export class ProfileEditComponent implements OnInit {
       [Validators.required, Validators.minLength(6), Validators.maxLength(20)]);
     this.emailCtrl = this.fb.control(this.user?.email,
       [Validators.required, Validators.email]);
-    this.pwdCtrl = this.fb.control('',
-      [Validators.required, Validators.minLength(8)]);
-    this.confirmPwdCtrl = this.fb.control('', [Validators.required]);
+    this.pwdCtrl = this.fb.control(undefined,
+      [Validators.minLength(8)]);
+    this.confirmPwdCtrl = this.fb.control(undefined, []);
     this.passwordForm = this.fb.group(
       {password: this.pwdCtrl, confirm: this.confirmPwdCtrl},
-      {validators: eqCtrlsValidator([this.confirmPwdCtrl, this.pwdCtrl])}
+      {validators: eqCtrlsIfExistsValidator([this.confirmPwdCtrl, this.pwdCtrl])}
     );
     this.userForm = this.fb.group({
         username: this.usernameCtrl,
