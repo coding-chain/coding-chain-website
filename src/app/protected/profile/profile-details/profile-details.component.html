@@ -3,14 +3,39 @@
   <mat-card-content>
     <ng-container *ngIf="user$ | async as user">
       <div class="ml-4">
-        <div class="row mb-2">Username : {{user.username}}</div>
-        <div class="row mb-2">Email : {{user.email}}</div>
-        <div class="row mb-3">Droits :
-          <div *ngFor="let right of user.rights; let i = index" class="ml-1">{{right.name}}<span
-            *ngIf="user.rights.length > 1 && i < user.rights.length -1">,</span></div>
+        <div class="row mb-2">
+          <span class="mat-body-1 mr-2"><b>Username :</b></span>
+          <span class="mat-body-1">{{user.username}}</span>
+        </div>
+        <div class="row mb-2">
+          <span class="mat-body-1 mr-2"><b>Email : </b></span>
+          {{user.email}}
+        </div>
+        <div class="row mb-3">
+          <span class="mat-body-1 mt-2 mr-2"><b>Droits :</b></span>
+          <mat-chip-list>
+            <mat-chip
+              *ngFor="let right of user.rights;"
+              [color]="right.name === 'Admin' ? 'accent' : 'primary'"
+              selected
+            >
+              {{right.name}}
+            </mat-chip>
+          </mat-chip-list>
         </div>
       </div>
       <button color="primary" mat-raised-button [routerLink]="['/profile/edit']">Editer mon profil</button>
+      <div class="row w-100 mt-4 ml-2">
+        <div class="w-50 mt-1">
+          <h2>Mes Teams</h2>
+          <app-profile-teams *ngFor="let team of teams" [team]="team"
+                             [connectedUser]="user$ | async"></app-profile-teams>
+        </div>
+        <div class="w-50">
+          <h2>Mes Tournois</h2>
+        </div>
+      </div>
+
     </ng-container>
   </mat-card-content>
 </mat-card>
