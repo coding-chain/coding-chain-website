@@ -1,1 +1,22 @@
-<p>tournaments-join-dialog works!</p>
+<h1 mat-dialog-title>Rejoindre un tournoi</h1>
+<div appMatDialogExpanderDirective class="container-fluid mx-auto " mat-dialog-content>
+  <mat-card *ngFor="let teamParticipation of teamsParticipation" class="row w-100 mx-auto my-1">
+    <div class="col">
+      <div class="row justify-content-between">
+        <h4 class="col-5 my-0">{{teamParticipation.team.name}}</h4>
+        <h4 class="col-5 my-0">{{teamParticipation.step.name}}</h4>
+        <div class="col-2 my-0">
+          <button mat-mini-fab matTooltip="Rejoindre l'étape" (click)="join(teamParticipation)">
+            <mat-icon>play_arrow</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close (click)="createAndJoin()">Créer une équipe</button>
+  <button mat-button mat-dialog-close>Fermer</button>
+</div>
+
+

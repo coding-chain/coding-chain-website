@@ -3,7 +3,7 @@ import {Router} from '@angular/router';
 import {AuthenticationService} from '../../../core/services/http/authentication.service';
 import {LoginUser} from '../../../shared/models/users/login-user';
 import Swal from 'sweetalert2';
-import {UserStateService} from 'src/app/core/services/user-state.service';
+import {UserStateService} from 'src/app/core/services/states/user-state.service';
 import {ConnectedUser} from 'src/app/shared/models/users/connected-user';
 
 @Component({

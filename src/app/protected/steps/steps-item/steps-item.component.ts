@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {IStepResume} from '../../../shared/models/steps/responses';
-import {Theme} from '../../../core/services/theme.service';
+import {Theme} from '../../../core/services/states/theme.service';
 import {IStepsTestsDialogData, StepsTestsDialogComponent} from '../steps-edit-tests-dialog/steps-tests-dialog.component';
 import {dialogHeight, dialogWidth} from '../../../shared/utils/dialogs.utils';
 import {MatDialog} from '@angular/material/dialog';

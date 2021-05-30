@@ -8,7 +8,7 @@ import {RouterModule} from '@angular/router';
 import {NavBarComponent} from './components/nav-bar/nav-bar.component';
 import {SharedModule} from '../shared/shared.module';
 import {AuthenticationService} from './services/http/authentication.service';
-import {UserStateService} from './services/user-state.service';
+import {UserStateService} from './services/states/user-state.service';
 import {MatButtonModule} from '@angular/material/button';
 import {HateoasInterceptor} from './commons/interceptors/hateoas.interceptor';
 

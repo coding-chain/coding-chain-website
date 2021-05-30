@@ -7,10 +7,10 @@ import {LanguageService} from '../../../core/services/http/language.service';
 import {switchMap, tap} from 'rxjs/operators';
 import {ITournamentsFilter} from '../../../shared/models/tournaments/filters';
 import {GetParams} from '../../../shared/models/http/get.params';
-import {UserStateService} from '../../../core/services/user-state.service';
+import {UserStateService} from '../../../core/services/states/user-state.service';
 import {ConnectedUser} from '../../../shared/models/users/connected-user';
 import {ITournamentResume} from '../../../shared/models/tournaments/tournament-resume';
-import {Theme, ThemeService} from '../../../core/services/theme.service';
+import {Theme, ThemeService} from '../../../core/services/states/theme.service';
 import {ITeamNavigation} from '../../../shared/models/teams/responses';
 import {TeamService} from '../../../core/services/http/team.service';
 import Swal from 'sweetalert2';
@@ -62,7 +62,9 @@ export class TournamentsListComponent implements OnInit {
       switchMap(res => this._userStateService.reloadUser$())
     ).subscribe(res => {
       this.tournamentCursor.current();
-      Swal.fire(SwalUtils.successOptions(`Tournoi ${tournament.name} quitté pour les équipes suivantes ${teams.map(t => t.name).join(', ')}`));
+      Swal.fire(SwalUtils.successOptions(
+        `Tournoi ${tournament.name} quitté pour les équipes suivantes ${teams.map(t => t.name).join(', ')}`
+      ));
     }, err => Swal.fire(SwalUtils.errorOptions(`Erreur lors de la désinscription du tournoi ${tournament.name}`)));
   }
 }

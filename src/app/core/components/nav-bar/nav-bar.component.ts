@@ -1,10 +1,10 @@
 import {Component, OnInit, Renderer2} from '@angular/core';
-import {UserStateService} from '../../services/user-state.service';
+import {UserStateService} from '../../services/states/user-state.service';
 import {BehaviorSubject, Subject} from 'rxjs';
 import {ConnectedUser} from '../../../shared/models/users/connected-user';
 import {AuthenticationService} from '../../services/http/authentication.service';
 import {FormBuilder, FormControl} from '@angular/forms';
-import {ThemeService} from '../../services/theme.service';
+import {ThemeService} from '../../services/states/theme.service';
 import {Router} from '@angular/router';
 
 @Component({

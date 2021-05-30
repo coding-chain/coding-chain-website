@@ -19,7 +19,7 @@
                   [showNavigationArrows]="false" [showNavigationIndicators]="false" class="w-100">
       <ng-template *ngFor="let testsSlide of testsMatrix; let i=index" ngbSlide>
         <div *ngFor="let testItem of testsMatrix[i]; let j=index" class="row">
-          <app-steps-test-edit-item (testDelete)="onTestDelete(i,j)" [readonly]="readonly" [testGrp]="testItem.form"
+          <app-steps-test-edit-item (testDelete)="onTestDelete(i,j)"  [testGrp]="testItem.form"
                                     [test]="testItem.item"
                                     [theme]="theme" class="col-12 my-2 mx-auto  ">
           </app-steps-test-edit-item>

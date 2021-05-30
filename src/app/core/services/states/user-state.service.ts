@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import * as _ from 'lodash';
-import {AuthenticationService} from './http/authentication.service';
-import {ConnectedUser} from '../../shared/models/users/connected-user';
+import {AuthenticationService} from '../http/authentication.service';
+import {ConnectedUser} from '../../../shared/models/users/connected-user';
 import {map} from 'rxjs/operators';
 
 @Injectable({

@@ -1,1 +1,32 @@
-<p>participation-page works!</p>
+<div class=" container-fluid " cdkDropListGroup *ngIf=" participation$ | async">
+  <div class="row pipeline-container">
+    <div class="col-2">
+      STEP
+    </div>
+    <div class="col-8">
+      <div>
+        <app-participation-pipeline-functions-list (functionUpdate)="onPipelineFunctionAdded($event)"
+                                                   [functions]="pipelineFunctions">
+
+        </app-participation-pipeline-functions-list>
+      </div>
+    </div>
+    <div class="col-2">
+
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+
+  <div class="row-100">
+    <app-participation-functions-list
+      [theme]="theme"
+      [functions]="stackFunctions"
+      [language]="participation.step.language"
+      (addFunction)="onStackFunctionAdded($event)"
+      (removeFunction)="onStackFunctionRemoved($event)"
+      [functionCreatorId]="currentUser.id">
+    </app-participation-functions-list>
+  </div>
+
+</div>
+

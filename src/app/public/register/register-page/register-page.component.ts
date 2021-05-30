@@ -7,7 +7,7 @@ import {SwalUtils} from '../../../shared/utils/swal.utils';
 import {catchError, map, switchMap} from 'rxjs/operators';
 import {of} from 'rxjs';
 import {ConnectedUser} from '../../../shared/models/users/connected-user';
-import {UserStateService} from '../../../core/services/user-state.service';
+import {UserStateService} from '../../../core/services/states/user-state.service';
 
 @Component({
   selector: 'app-register-page',

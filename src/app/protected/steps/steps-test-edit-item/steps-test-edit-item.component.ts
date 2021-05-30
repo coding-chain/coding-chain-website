@@ -1,9 +1,11 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ITestEdition} from '../../../shared/models/tests/test-edition';
-import {Theme} from '../../../core/services/theme.service';
+import {Theme} from '../../../core/services/states/theme.service';
 import {MonacoEditorConstructionOptions} from '@materia-ui/ngx-monaco-editor/lib/interfaces';
 import {getDefaultMonacoEditorConfig} from '../../../shared/utils/monaco.utils';
+import {AppFunction} from '../../../shared/models/function-session/responses';
+import {funcValidate} from '../../../shared/validators/function.validator';
 
 @Component({
   selector: 'app-steps-test-edit-item',
@@ -21,6 +23,8 @@ export class StepsTestEditItemComponent implements OnInit {
   inputMonacoOptions: MonacoEditorConstructionOptions;
   outputMonacoOptions: MonacoEditorConstructionOptions;
   inputGeneratorCtrl: FormControl;
+  private inFunc: AppFunction;
+  private outFunc: AppFunction;
 
   constructor(private _fb: FormBuilder) {
   }
@@ -28,8 +32,10 @@ export class StepsTestEditItemComponent implements OnInit {
   ngOnInit(): void {
     this.inputMonacoOptions = getDefaultMonacoEditorConfig(this.test.language.name, this.theme);
     this.outputMonacoOptions = getDefaultMonacoEditorConfig(this.test.language.name, this.theme);
-    this.outputValidatorCtrl = this._fb.control(this.test.outputValidator, [Validators.required]);
-    this.inputGeneratorCtrl = this._fb.control(this.test.inputGenerator, [Validators.required]);
+    this.inFunc = AppFunction.new({code: this.test.inputGenerator, language: this.test.language.name, type: 'inGen'});
+    this.outFunc = AppFunction.new({code: this.test.outputValidator, language: this.test.language.name, type: 'outVal'});
+    this.outputValidatorCtrl = this._fb.control(this.outFunc.editorCode, [Validators.required, funcValidate(this.outFunc)]);
+    this.inputGeneratorCtrl = this._fb.control(this.inFunc.editorCode, [Validators.required, funcValidate(this.inFunc)]);
     this.scoreCtrl = this._fb.control(this.test.score ?? 1, [Validators.min(0)]);
     this.testGrp.setControl('score', this.scoreCtrl);
     this.testGrp.setControl('inputGenerator', this.inputGeneratorCtrl);

@@ -41,6 +41,9 @@
         <button (click)="openTestsDialog()" [matBadge]="step.tests?.length" color="primary" mat-stroked-button
                 matBadgeColor="accent" matBadgePosition="after">Tests
         </button>
+        <mat-error class="hint-error" *ngIf="stepGrp.hasError('minTestsLengthErr')">
+          L'étape doit avoir au moins un test
+        </mat-error>
       </div>
       <div class="col-1  align-items-center">
         <div class="row justify-content-center">
@@ -50,7 +53,8 @@
         </div>
       </div>
       <div class="col-1 text-center">
-        <button (click)="openDetailDialog()" [color]="descriptionCtrl.valid ? 'primary': 'warn'" mat-icon-button [disabled]="languagesCtrl.invalid"
+        <button (click)="openDetailDialog()" [color]="descriptionCtrl.valid ? 'primary': 'warn'" mat-icon-button
+                [disabled]="languagesCtrl.invalid"
                 matTooltip="Détail">
           <mat-icon>zoom_in</mat-icon>
         </button>

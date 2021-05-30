@@ -23,6 +23,8 @@ import {LanguageService} from './language.service';
 import * as _ from 'lodash';
 import {IProgrammingLanguage} from '../../../shared/models/programming-languages/responses';
 import {IObjectUpdateResume} from '../../../shared/models/object-difference';
+import {IStepSession} from '../../../shared/models/participations-session/participation-session';
+import {AppFunction} from '../../../shared/models/function-session/responses';
 
 @Injectable({
   providedIn: 'root'
@@ -61,6 +63,14 @@ export class StepService extends ApiHelperService {
     );
   }
 
+
+  public getFirstTest(id: string): Observable<ITestNavigation | undefined> {
+    return this.getFiltered<ITestNavigation>({url: `${this.apiUrl}/${id}/tests`, page: 1, size: 1}).pipe(
+      map(page => page.result.shift()?.result)
+    );
+  }
+
+
   public getNavigationCursor(query: GetParams<IStepNavigation, IStepsFilter>): PageCursor<IStepNavigation, IStepsFilter> {
     return new PageCursor<IStepNavigation, IStepsFilter>(
       this.getStepNavigationFiltered, {url: this.apiUrl, ...query}
@@ -85,10 +95,6 @@ export class StepService extends ApiHelperService {
       switchMap(createdStep => forkJoin([of(createdStep), this.setTests(createdStep.result.id, stepResumeToSetTestCommand(step))])),
       switchMap((res: [HateoasResponse<IStepNavigation>, any]) => this.toStepResume(res[0].result))
     );
-    // return this.setTests(step.id, stepResumeToSetTestCommand(step)).pipe(
-    //   switchMap(res => this.createOneAndGet(stepResumeToUpdateStepCommand(step))),
-    //   switchMap(createdStep => this.toStepResume(createdStep))
-    // );
   }
 
   public createOneAndGetId(body: ICreateStepCommand): Observable<string> {
@@ -142,6 +148,25 @@ export class StepService extends ApiHelperService {
     return this.updateStepWithComparison(comparison).pipe(
       switchMap(res => this.getById(comparison.editedVersion.id)),
       switchMap(step => this.toStepResume(step))
+    );
+  }
+
+  public getOneStepSession(stepId: string): Observable<IStepSession> {
+    return this.getById(stepId).pipe(
+      switchMap(step => forkJoin({
+        step: of(step),
+        language: this._languageService.getById(step.languageId),
+        test: this.getFirstTest(stepId)
+      })),
+      map(res => {
+          const step = {...res.step, language: res.language} as IStepSession;
+          if (res.test) {
+            step.inGenOutputType = AppFunction.new({code: res.test.inputGenerator, language: res.language.name}).parse().outputType;
+            step.outValParamType = AppFunction.new({code: res.test.outputValidator, language: res.language.name}).parse().inputType;
+          }
+          return step;
+        }
+      )
     );
   }
 

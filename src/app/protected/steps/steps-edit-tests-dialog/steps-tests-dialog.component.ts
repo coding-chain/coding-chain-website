@@ -2,7 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormArray, FormBuilder} from '@angular/forms';
 import {ITournamentEditionStep} from '../../../shared/models/tournaments/tournament-edition';
-import {Theme} from '../../../core/services/theme.service';
+import {Theme} from '../../../core/services/states/theme.service';
 import {BehaviorSubject} from 'rxjs';
 import {delay} from 'rxjs/operators';
 import {ITestNavigation} from '../../../shared/models/tests/responses';

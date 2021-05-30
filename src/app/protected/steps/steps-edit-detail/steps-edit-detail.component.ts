@@ -4,7 +4,7 @@ import {ITournamentEditionStep} from '../../../shared/models/tournaments/tournam
 import {gtCtrlValidator, ltCtrlValidator} from '../../../shared/validators/number.validators';
 import {MonacoEditorConstructionOptions} from '@materia-ui/ngx-monaco-editor/lib/interfaces';
 import {getDefaultMonacoEditorConfig} from '../../../shared/utils/monaco.utils';
-import {Theme} from '../../../core/services/theme.service';
+import {Theme} from '../../../core/services/states/theme.service';
 
 @Component({
   selector: 'app-steps-edit-detail',

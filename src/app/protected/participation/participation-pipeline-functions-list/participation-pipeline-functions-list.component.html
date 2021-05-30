@@ -1,0 +1,12 @@
+<div
+  (cdkDropListDropped)="drop($event)"
+  [cdkDropListData]="_functions"
+  cdkDropList
+  class="row justify-content-start  drag-place-holder">
+  <app-participation-functions-item class="col-2" *ngFor="let functionItem of _functions; let j=index"
+                                    [func]="functionItem" [canEdit]="false" [canRemove]="false"
+                                    cdkDrag
+  >
+  </app-participation-functions-item>
+
+</div>

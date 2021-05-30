@@ -1,0 +1,40 @@
+<div class="row w-100">
+  <div class="col-1">
+    <div class="row mx-auto">
+      <button (click)="carousel.prev()" color="accent" class="mx-auto" mat-icon-button
+              matTooltip="Fonctions précédentes">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+    </div>
+    <div class="row mx-auto">
+      <button mat-stroked-button color="accent" (click)="openFunctionForm()" class="mx-auto"
+              matTooltip="Ajouter une fonction">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div class="col-10  ">
+    <ngb-carousel #carousel [interval]="0" [pauseOnHover]="true"
+                  [showNavigationArrows]="false" [showNavigationIndicators]="false" class="w-100">
+      <ng-template *ngFor="let functionsSlide of functionsMatrix; let i=index" ngbSlide [id]="'slide-'+ i">
+        <div class="row drag-place-holder" (cdkDropListDropped)="drop($event)"
+             [cdkDropListData]="functionsSlide"
+             cdkDropList>
+          <app-participation-functions-item class="col-2" *ngFor="let functionItem of functionsSlide; let j=index"
+                                            [func]="functionItem" (edit)="onFunctionEdit(functionItem)"
+                                            (delete)="onFunctionDeleted(functionItem)" cdkDrag
+          >
+          </app-participation-functions-item>
+        </div>
+      </ng-template>
+    </ngb-carousel>
+  </div>
+  <div class="col-1 text-center">
+    <button (click)="carousel.next()" class="mx-auto" color="accent" mat-icon-button matTooltip="Fonctions suivantes">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+</div>
+
+
+

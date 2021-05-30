@@ -1,6 +1,6 @@
 import {MonacoEditorConstructionOptions} from '@materia-ui/ngx-monaco-editor/lib/interfaces';
 import {AppLanguage} from '../models/programming-languages/responses';
-import {Theme} from '../../core/services/theme.service';
+import {Theme} from '../../core/services/states/theme.service';
 
 export type MonacoTheme = 'vs' | 'vs-dark';
 

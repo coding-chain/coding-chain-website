@@ -13,7 +13,8 @@ import {MatDialogExpanderDirective} from './directives/mat-dialog-expander.direc
 import {MatDialogExpandedContentDirective} from './directives/mat-dialog-expanded-content.directive';
 import {ChartsModule} from 'ng2-charts';
 import {SortedInputComponent} from './components/sorted-input/sorted-input.component';
-import { LanguagesStatsComponent } from './components/languages-stats/languages-stats.component';
+import {LanguagesStatsComponent} from './components/languages-stats/languages-stats.component';
+import {NgScrollbarModule} from 'ngx-scrollbar';
 
 
 @NgModule({
@@ -35,25 +36,27 @@ import { LanguagesStatsComponent } from './components/languages-stats/languages-
     ReactiveFormsModule,
     FormsModule,
     MonacoEditorModule,
+    NgScrollbarModule,
     QuillModule.forRoot()
   ],
-    exports: [
-        ChartsModule,
-        AngularMaterialModule,
-        ReactiveFormsModule,
-        TotalComponent,
-        PagedListComponent,
-        StarRateComponent,
-        SortByArrowsComponent,
-        BootstrapModule,
-        FormsModule,
-        MonacoEditorModule,
-        QuillModule,
-        MatDialogExpanderDirective,
-        MatDialogExpandedContentDirective,
-        SortedInputComponent,
-        LanguagesStatsComponent
-    ]
+  exports: [
+    ChartsModule,
+    AngularMaterialModule,
+    ReactiveFormsModule,
+    TotalComponent,
+    PagedListComponent,
+    StarRateComponent,
+    SortByArrowsComponent,
+    BootstrapModule,
+    FormsModule,
+    MonacoEditorModule,
+    QuillModule,
+    MatDialogExpanderDirective,
+    MatDialogExpandedContentDirective,
+    SortedInputComponent,
+    LanguagesStatsComponent,
+    NgScrollbarModule
+  ]
 })
 export class SharedModule {
 }

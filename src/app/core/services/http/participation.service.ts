@@ -22,7 +22,8 @@ export class ParticipationService extends ApiHelperService {
     this.getParticipationNavigationFiltered = this.getParticipationNavigationFiltered.bind(this);
   }
 
-  public getParticipationNavigationFiltered(obj: GetParams<IParticipationNavigation>): Observable<HateoasPageResult<IParticipationNavigation>> {
+  public getParticipationNavigationFiltered(obj: GetParams<IParticipationNavigation>)
+    : Observable<HateoasPageResult<IParticipationNavigation>> {
     return this.getFiltered(obj);
   }
 
@@ -45,5 +46,13 @@ export class ParticipationService extends ApiHelperService {
         map(res => res.result)
       );
   }
+
+  public createOneAndGetId(body: ICreateParticipationCommand): Observable<string> {
+    return this.createAndGetIds(this.apiUrl, body)
+      .pipe(
+        map(ids => ids.pop())
+      );
+  }
+
 
 }

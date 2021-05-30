@@ -3,7 +3,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import * as _ from 'lodash';
 import {ITournamentEditionStep} from '../../../shared/models/tournaments/tournament-edition';
-import {Theme} from '../../../core/services/theme.service';
+import {Theme} from '../../../core/services/states/theme.service';
 
 export interface IStepsEditDetailDialogData {
   step: ITournamentEditionStep;

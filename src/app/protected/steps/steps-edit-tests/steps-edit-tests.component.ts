@@ -1,11 +1,12 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormArray, FormBuilder} from '@angular/forms';
+import {AbstractControl, FormArray, FormBuilder, ValidationErrors, ValidatorFn} from '@angular/forms';
 import {ITestEdition} from '../../../shared/models/tests/test-edition';
 import {ArrayUtils} from '../../../shared/utils/array.utils';
 import {ITournamentEditionStep} from '../../../shared/models/tournaments/tournament-edition';
 import {ITestNavigation} from '../../../shared/models/tests/responses';
-import {Theme} from '../../../core/services/theme.service';
+import {Theme} from '../../../core/services/states/theme.service';
 import {ItemWithForm} from '../../../shared/models/forms';
+import {AppFunction} from '../../../shared/models/function-session/responses';
 
 
 @Component({
@@ -80,4 +81,5 @@ export class StepsEditTestsComponent implements OnInit {
   private toTestEditionGrp(test?: ITestNavigation): ItemWithForm<ITestEdition> {
     return {item: this.toTestEdition(test) as ITestEdition, form: this._fb.group({})};
   }
+
 }

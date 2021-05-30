@@ -1,6 +1,8 @@
 import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn} from '@angular/forms';
 import {DateUtils} from '../utils/date.utils';
 
+export type validationErrors = 'noDateCtrl' | 'noStartDate' | 'startDateLower';
+
 export function validateDateBetween(startCtrl: FormControl, endCtrl: FormControl): ValidatorFn {
   return (form: FormGroup): ValidationErrors | null => {
     if (!startCtrl || !endCtrl) {

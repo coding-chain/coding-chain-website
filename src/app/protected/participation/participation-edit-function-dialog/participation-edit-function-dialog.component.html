@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>{{function.name}}</h1>
+<div appMatDialogExpanderDirective class="container-fluid mx-auto " mat-dialog-content>
+  <app-participation-edit-function-form  [func]="function" [form]="formGroup"
+                                        [theme]="theme"></app-participation-edit-function-form>
+</div>
+
+<div mat-dialog-actions>
+  <button (click)="onSaveClicked()"  [disabled]="formGroup.invalid" mat-button>Valider
+  </button>
+  <button mat-button mat-dialog-close>Fermer</button>
+</div>
+

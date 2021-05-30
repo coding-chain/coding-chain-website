@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {UserStateService} from '../../../core/services/user-state.service';
+import {UserStateService} from '../../../core/services/states/user-state.service';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 

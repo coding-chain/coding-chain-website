@@ -10,7 +10,7 @@ import {IProgrammingLanguageNavigation} from '../../../shared/models/programming
 import {ITournamentEditionStep} from '../../../shared/models/tournaments/tournament-edition';
 import {dialogHeight, dialogWidth} from '../../../shared/utils/dialogs.utils';
 import {ITestNavigation} from '../../../shared/models/tests/responses';
-import {ThemeService} from '../../../core/services/theme.service';
+import {ThemeService} from '../../../core/services/states/theme.service';
 import {map} from 'rxjs/operators';
 
 
@@ -108,6 +108,7 @@ export class TournamentStepEditItemComponent implements OnInit {
       this.step.language = this.languagesCtrl.value;
       this.step.score = res.score;
     });
+    this.stepGrp.setValidators(ctrl => this.step.tests.length <= 0 ? {minTestsLengthErr: true} : null);
   }
 
   delete(): void {

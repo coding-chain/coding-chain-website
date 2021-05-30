@@ -3,7 +3,7 @@ import {PageCursor} from '../../../shared/models/pagination/page-cursor';
 import {BehaviorSubject} from 'rxjs';
 import {ConnectedUser} from '../../../shared/models/users/connected-user';
 import {LanguageService} from '../../../core/services/http/language.service';
-import {UserStateService} from '../../../core/services/user-state.service';
+import {UserStateService} from '../../../core/services/states/user-state.service';
 import {GetParams} from '../../../shared/models/http/get.params';
 import {ITeamFilter} from '../../../shared/models/teams/filters';
 import {ITeamNavigation, ITeamWithMembersResume} from '../../../shared/models/teams/responses';

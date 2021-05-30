@@ -3,7 +3,7 @@ import {PublicUser} from '../../../shared/models/users/responses';
 import {connectedUserWithTeamToMember, IMemberResume, ITeamWithMembersResume} from '../../../shared/models/teams/responses';
 import {PageCursor} from '../../../shared/models/pagination/page-cursor';
 import {IUsersFilter} from '../../../shared/models/users/filters';
-import {BehaviorSubject, of, Subject} from 'rxjs';
+import {BehaviorSubject, of} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TeamService} from '../../../core/services/http/team.service';
 import {UserService} from '../../../core/services/http/user.service';
@@ -11,11 +11,13 @@ import {GetParams} from '../../../shared/models/http/get.params';
 import {switchMap} from 'rxjs/operators';
 import * as _ from 'lodash';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
-import {UserStateService} from '../../../core/services/user-state.service';
+import {UserStateService} from '../../../core/services/states/user-state.service';
 import {ConnectedUser} from '../../../shared/models/users/connected-user';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import Swal from 'sweetalert2';
 import {SwalUtils} from '../../../shared/utils/swal.utils';
+import {ITournamentStepNavigation} from '../../../shared/models/tournaments/responses';
+import {ParticipationService} from '../../../core/services/http/participation.service';
 
 export interface IMovableMember extends IMemberResume {
   canMove: boolean;
@@ -30,7 +32,7 @@ export class TeamsEditComponent implements OnInit {
 
   teamId: string;
   team: ITeamWithMembersResume;
-  originalTeam: ITeamWithMembersResume =  {name: '', members: []} as ITeamWithMembersResume;
+  originalTeam: ITeamWithMembersResume = {name: '', members: []} as ITeamWithMembersResume;
   users: IMovableMember[] = [];
   team$ = new BehaviorSubject<ITeamWithMembersResume>(this.originalTeam);
   teamMembers: IMovableMember[] = [];
@@ -38,6 +40,7 @@ export class TeamsEditComponent implements OnInit {
   users$ = new BehaviorSubject<IMemberResume[]>([]);
   connectedUser: ConnectedUser;
   teamGrp: FormGroup;
+  tournamentStep?: ITournamentStepNavigation;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -45,8 +48,11 @@ export class TeamsEditComponent implements OnInit {
     private readonly teamService: TeamService,
     private readonly userService: UserService,
     private readonly _userStateService: UserStateService,
+    private readonly _participationService: ParticipationService,
     private readonly _fb: FormBuilder
   ) {
+    this.tournamentStep = this.router.getCurrentNavigation()?.extras.state as ITournamentStepNavigation;
+    console.log(this.tournamentStep);
   }
 
   ngOnInit(): void {
@@ -56,6 +62,7 @@ export class TeamsEditComponent implements OnInit {
       this.connectedUser = user;
       this.searchUser({filterObj: {}});
     });
+
     this.route.params.pipe(switchMap(params => {
         if (params.id) {
           return this.teamService.getOneResumeById(params.id);
@@ -114,18 +121,30 @@ export class TeamsEditComponent implements OnInit {
     const editedTeam = _.cloneDeep(this.team) as ITeamWithMembersResume;
     editedTeam.members = this.teamMembers;
     this.teamService.upsertFullTeam(this.originalTeam, editedTeam).subscribe(team => {
-      Swal.fire(SwalUtils.successOptions('Modifications d\'équipe sauvegardées')).then(closed => {
-        if (!this.team?.id) {
-          this._userStateService.reloadUser$().subscribe(user => {
-            this.router.navigate(['/teams', team.id, 'edit']);
-          });
-        }
-        if (!team.members.find(m => m.isAdmin && m.userId === this.connectedUser.id)) {
-          this.router.navigate(['/teams']);
-          this._userStateService.reloadUser();
-        }
-        this.setTeam(team);
-      });
+      if (this.tournamentStep) {
+        Swal.fire(SwalUtils.successOptions('Equipe créée fermez la fenêtre pour être redirigé vers l\'étape du tournoi')).then(closed => {
+          this._participationService
+            .createOneAndGetId({teamId: team.id, stepId: this.tournamentStep.stepId, tournamentId: this.tournamentStep.tournamentId})
+            .subscribe(participationId => {
+              this._userStateService.reloadUser$().subscribe(user => {
+                this.router.navigate(['/participations', participationId]);
+              });
+            });
+        });
+      } else {
+        Swal.fire(SwalUtils.successOptions(this.team?.id ? 'Modifications d\'équipe sauvegardées' : 'Equipe créée')).then(closed => {
+          if (!this.team?.id) {
+            this._userStateService.reloadUser$().subscribe(user => {
+              this.router.navigate(['/teams', team.id, 'edit']);
+            });
+          }
+          if (!team.members.find(m => m.isAdmin && m.userId === this.connectedUser.id)) {
+            this.router.navigate(['/teams']);
+            this._userStateService.reloadUser();
+          }
+          this.setTeam(team);
+        });
+      }
     }, err => Swal.fire(SwalUtils.errorOptions('Erreur lors de la sauvegarde de l\'équipe.')));
   }
 

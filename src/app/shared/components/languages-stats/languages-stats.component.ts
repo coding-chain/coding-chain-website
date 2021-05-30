@@ -3,7 +3,7 @@ import {ChartDataSets, ChartOptions, ChartType} from 'chart.js';
 import {Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip} from 'ng2-charts';
 import {IProgrammingLanguage} from '../../models/programming-languages/responses';
 import {ObjectUtils} from '../../utils/object.utils';
-import {Theme} from '../../../core/services/theme.service';
+import {Theme} from '../../../core/services/states/theme.service';
 
 @Component({
   selector: 'app-languages-stats',

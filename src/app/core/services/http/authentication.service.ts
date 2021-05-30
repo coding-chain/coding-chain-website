@@ -5,7 +5,7 @@ import {EMPTY, forkJoin, Observable, of} from 'rxjs';
 import {ApiHelperService} from './api-helper.service';
 import {catchError, map, switchMap} from 'rxjs/operators';
 import {LoginUser} from '../../../shared/models/users/login-user';
-import {PublicUser, UserToken} from '../../../shared/models/users/responses';
+import {PublicUser, Token} from '../../../shared/models/users/responses';
 import {RegisterUserCommand} from '../../../shared/models/users/requests';
 import {ConnectedUser} from '../../../shared/models/users/connected-user';
 import {RightService} from './right.service';
@@ -84,7 +84,7 @@ export class AuthenticationService extends ApiHelperService {
   }
 
   login(user: LoginUser): Observable<ConnectedUser> {
-    return this.http.post<UserToken>(`${this.apiUrl}/authentication`, user).pipe(
+    return this.http.post<Token>(`${this.apiUrl}/authentication`, user).pipe(
       switchMap(token => {
         this.setToken(token.token);
         this.setRememberMe(user.rememberMe);

@@ -6,7 +6,7 @@ import {ParticipationPageComponent} from './participation-page/participation-pag
 const routes: Routes = [
   {
     path: '', component: ParticipationRootComponent, children: [
-      {path: '', component: ParticipationPageComponent}
+      {path: ':id', component: ParticipationPageComponent}
     ]
   }
 ];

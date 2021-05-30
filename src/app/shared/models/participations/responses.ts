@@ -4,7 +4,11 @@ export interface IParticipationNavigation {
   tournamentId: string;
   stepId: string;
   startDate: Date;
-  endDate: Date;
+  endDate?: Date;
   calculatedScore: number;
-  functionsIde: string[];
+  functionsIds: string[];
+}
+
+export interface IParticipation extends IParticipationNavigation{
+  functions: string[];
 }

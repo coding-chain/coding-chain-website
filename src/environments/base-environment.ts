@@ -6,6 +6,7 @@ export class BaseEnvironment {
   webStorageTokenKey = 'token';
   rememberMeKey = 'rememberMe';
   themeKey = 'theme';
+  realTimeConnectionTimeout: number = 60 * 60 * 1000;
 
   constructor(env?: Partial<BaseEnvironment>) {
     _.assign(this, env);

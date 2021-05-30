@@ -1,8 +1,8 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {IProgrammingLanguageNavigation} from '../../../shared/models/programming-languages/responses';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
-import {ThemeService} from '../../../core/services/theme.service';
+import {ThemeService} from '../../../core/services/states/theme.service';
 import {IStepsEditDetailDialogData, StepsEditDetailDialogComponent} from '../steps-edit-detail-dialog/steps-edit-detail-dialog.component';
 import {dialogHeight, dialogWidth} from '../../../shared/utils/dialogs.utils';
 import {IStepsTestsDialogData, StepsTestsDialogComponent} from '../steps-edit-tests-dialog/steps-tests-dialog.component';
@@ -65,13 +65,13 @@ export class StepsEditItemComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: (ITestNavigation[] | undefined)) => {
       if (result) {
         this.step.tests = result;
+        this.stepGrp.updateValueAndValidity();
       }
     });
   }
 
 
   ngOnInit(): void {
-
     this.step.difficulty ??= 1;
     this.nameCtrl = this._fb.control(this.step.name, [
       Validators.required,
@@ -87,17 +87,19 @@ export class StepsEditItemComponent implements OnInit {
       languageId: this.languagesCtrl,
       score: this.scoreCtrl
     });
-
     if (this.step.isPublished) {
       this.stepGrp.disable();
     }
     this.stepGrp.setControl('description', this.descriptionCtrl);
+
     this.stepGrp.valueChanges.subscribe((res: IStepResume) => {
       this.step.name = res.name;
       this.step.description = res.description;
       this.step.languageId = res.languageId;
       this.step.score = res.score;
+      this.validateTestsLength();
     });
+    this.stepGrp.setValidators((control => this.validateTestsLength()));
   }
 
   delete(): void {
@@ -106,5 +108,12 @@ export class StepsEditItemComponent implements OnInit {
 
   saveStep(): void {
     this.stepSave.emit();
+  }
+
+
+  private validateTestsLength(): ValidationErrors {
+    if (this.step.tests.length <= 0) {
+      return {minTestsLengthError: true};
+    }
   }
 }

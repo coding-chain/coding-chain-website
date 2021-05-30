@@ -8,6 +8,7 @@ import {ProtectedRoutingModule} from './protected-routing.module';
   declarations: [
     ProtectedRootComponent
   ],
+  exports: [],
   imports: [
     CommonModule,
     ProtectedRoutingModule

@@ -6,6 +6,6 @@ export interface PublicUser {
   teamIds: string[];
 }
 
-export interface UserToken {
+export interface Token {
   token: string;
 }

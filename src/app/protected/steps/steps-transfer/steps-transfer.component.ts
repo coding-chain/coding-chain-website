@@ -8,7 +8,7 @@ import {IStepsFilter} from '../../../shared/models/steps/filters';
 import {LanguageService} from '../../../core/services/http/language.service';
 import {StepService} from '../../../core/services/http/step.service';
 import {GetParams} from '../../../shared/models/http/get.params';
-import {Theme, ThemeService} from '../../../core/services/theme.service';
+import {Theme, ThemeService} from '../../../core/services/states/theme.service';
 
 interface IMovableStepNavigation extends IStepNavigation {
   canMove: boolean;
