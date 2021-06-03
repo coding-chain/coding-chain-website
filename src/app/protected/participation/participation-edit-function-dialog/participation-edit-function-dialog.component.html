@@ -5,7 +5,7 @@
 </div>
 
 <div mat-dialog-actions>
-  <button (click)="onSaveClicked()"  [disabled]="formGroup.invalid" mat-button>Valider
+  <button *ngIf="!isReadonly" (click)="onSaveClicked()"  [disabled]="formGroup.invalid" mat-button >Valider
   </button>
   <button mat-button mat-dialog-close>Fermer</button>
 </div>

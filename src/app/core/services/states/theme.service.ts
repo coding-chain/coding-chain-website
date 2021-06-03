@@ -3,8 +3,15 @@ import {Subject} from 'rxjs';
 import {environment} from '../../../../environments/environment';
 import {ThemeService as ChartsThemeService} from 'ng2-charts';
 import {ChartOptions} from 'chart.js';
+import _ from 'lodash';
 
 export type Theme = 'dark' | 'light';
+
+export interface IThemeColors {
+  primary: string;
+  accent: string;
+  warn: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +19,22 @@ export type Theme = 'dark' | 'light';
 export class ThemeService {
 
   themeSubject$ = new Subject<Theme>();
+  themeColors$ = new Subject<IThemeColors>();
+
   private themeKey = environment.themeKey;
 
   constructor(private readonly _chartsThemeService: ChartsThemeService) {
 
+  }
+
+  private _colors: IThemeColors;
+
+  get colors(): IThemeColors {
+    return this._colors;
+  }
+
+  get colorsArray(): string[] {
+    return [this.colors.accent, this.colors.primary, this.colors.warn];
   }
 
   get theme(): Theme {
@@ -32,6 +51,11 @@ export class ThemeService {
 
   public publishTheme(): void {
     this.themeSubject$.next(this.theme);
+  }
+
+  public updateColors(colors: IThemeColors): void {
+    this._colors = colors;
+    this.themeColors$.next(_.clone(colors));
   }
 
   private setTheme(theme: Theme): void {

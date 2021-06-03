@@ -16,7 +16,7 @@ import {
   stepResumeToSetTestCommand,
   stepResumeToUpdateStepCommand
 } from '../../../shared/models/steps/commands';
-import {ITestNavigation} from '../../../shared/models/tests/responses';
+import {IPublicTestNavigation, ITestNavigation} from '../../../shared/models/tests/responses';
 import {IStepsFilter} from '../../../shared/models/steps/filters';
 import {HateoasPageResponse} from '../../../shared/models/pagination/hateoas-page-response';
 import {LanguageService} from './language.service';
@@ -24,7 +24,7 @@ import * as _ from 'lodash';
 import {IProgrammingLanguage} from '../../../shared/models/programming-languages/responses';
 import {IObjectUpdateResume} from '../../../shared/models/object-difference';
 import {IStepSession} from '../../../shared/models/participations-session/participation-session';
-import {AppFunction} from '../../../shared/models/function-session/responses';
+import {AppFunction} from '../../../shared/models/function-session/app-function';
 
 @Injectable({
   providedIn: 'root'
@@ -151,19 +151,23 @@ export class StepService extends ApiHelperService {
     );
   }
 
+  public getPublicTests(stepId: string): Observable<IPublicTestNavigation[]>{
+    return this.fetchAll<IPublicTestNavigation>({url: `${this.apiUrl}/${stepId}/publictests`}).pipe(
+      map(tests => tests.map(t => {
+        return t.result;
+      }))
+    );
+  }
+
   public getOneStepSession(stepId: string): Observable<IStepSession> {
     return this.getById(stepId).pipe(
       switchMap(step => forkJoin({
         step: of(step),
         language: this._languageService.getById(step.languageId),
-        test: this.getFirstTest(stepId)
+        tests: this.getPublicTests(stepId)
       })),
       map(res => {
-          const step = {...res.step, language: res.language} as IStepSession;
-          if (res.test) {
-            step.inGenOutputType = AppFunction.new({code: res.test.inputGenerator, language: res.language.name}).parse().outputType;
-            step.outValParamType = AppFunction.new({code: res.test.outputValidator, language: res.language.name}).parse().inputType;
-          }
+          const step = {...res.step, language: res.language, tests: res.tests} as IStepSession;
           return step;
         }
       )

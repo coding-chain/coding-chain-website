@@ -1,3 +1,5 @@
+
+
 export interface IParticipationSessionNavigation {
   id: string;
   teamId: string;
@@ -7,6 +9,7 @@ export interface IParticipationSessionNavigation {
   endDate?: Date;
   calculatedScore: number;
   functionsIds: string[];
+  passedTestsIds: string[];
   lastError?: string;
   lastOutput?: string;
   processStartTime?: Date;

@@ -26,11 +26,13 @@ export interface IUpdateStepCommand {
 export interface IAddTestCommand {
   outputValidator: string;
   inputGenerator: string;
+  name: string;
   score: number;
 }
 
 export interface ISetTestCommand {
   id?: string;
+  name: string;
   outputValidator: string;
   inputGenerator: string;
   score: number;
@@ -43,6 +45,7 @@ export interface ISetTestsCommand {
 export function testNavigationToSetTestCommand(test: ITestNavigation): ISetTestCommand {
   return {
     id: test.id,
+    name: test.name,
     outputValidator: test.outputValidator,
     score: test.score,
     inputGenerator: test.inputGenerator

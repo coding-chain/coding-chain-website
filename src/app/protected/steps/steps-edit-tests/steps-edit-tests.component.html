@@ -1,36 +1,41 @@
-<!--<div class="row">-->
-<!--  <button *ngIf="testsMatrix.length" mat-stroked-button class="w-100" (click)="addTest()">-->
-<!--    Ajouter un test-->
-<!--    <mat-icon>add</mat-icon>-->
-<!--  </button>-->
-<!--</div>-->
 <div class="row m-0 h-100 justify-content-center">
-  <div class="d-flex align-items-center ">
-    <button (click)="carousel.prev()" color="accent" mat-icon-button matTooltip="Tests précédents">
-      <mat-icon>chevron_left</mat-icon>
-    </button>
+  <div class="col">
+    <div class="row">
+      <div class="d-flex align-items-center ">
+        <button (click)="carousel.prev()" color="accent" mat-icon-button matTooltip="Tests précédents">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+      </div>
+      <div class="col-11  p-0 ">
+        <button (click)="addTest()" *ngIf="!readonly" class="mx-auto w-100" mat-stroked-button>
+          Ajouter un test
+          <mat-icon>add</mat-icon>
+        </button>
+        <ngb-carousel #carousel [interval]="0" [pauseOnHover]="true"
+                      [showNavigationArrows]="false" [showNavigationIndicators]="false" class="w-100">
+          <ng-template *ngFor="let testsSlide of testsMatrix; let i=index" ngbSlide>
+            <div *ngFor="let testItem of testsMatrix[i]; let j=index" class="row">
+              <app-steps-test-edit-item (testDelete)="onTestDelete(i,j)" [testGrp]="testItem.form"
+                                        [test]="testItem.item"
+                                        [theme]="theme" class="col-12 my-2 mx-auto  ">
+              </app-steps-test-edit-item>
+            </div>
+          </ng-template>
+        </ngb-carousel>
+      </div>
+      <div class="d-flex align-items-center ">
+        <button (click)="carousel.next()" class="my-auto" color="accent" mat-icon-button matTooltip="Tests suivants">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <mat-error *ngIf="testsArray.errors?.allSameTypesErr">
+        Les tests n'ont pas la même signature inGenerator (outType) : {{testsArray.errors.allSameTypesErr.in}},
+        outValidator (inType) : {{testsArray.errors.allSameTypesErr.out}}
+      </mat-error>
+    </div>
   </div>
-  <div class="col-11  p-0 ">
-    <button (click)="addTest()" *ngIf="!readonly" class="mx-auto w-100" mat-stroked-button>
-      Ajouter un test
-      <mat-icon>add</mat-icon>
-    </button>
-    <ngb-carousel #carousel [interval]="0" [pauseOnHover]="true"
-                  [showNavigationArrows]="false" [showNavigationIndicators]="false" class="w-100">
-      <ng-template *ngFor="let testsSlide of testsMatrix; let i=index" ngbSlide>
-        <div *ngFor="let testItem of testsMatrix[i]; let j=index" class="row">
-          <app-steps-test-edit-item (testDelete)="onTestDelete(i,j)"  [testGrp]="testItem.form"
-                                    [test]="testItem.item"
-                                    [theme]="theme" class="col-12 my-2 mx-auto  ">
-          </app-steps-test-edit-item>
-        </div>
-      </ng-template>
-    </ngb-carousel>
-  </div>
-  <div class="d-flex align-items-center ">
-    <button (click)="carousel.next()" class="my-auto" color="accent" mat-icon-button matTooltip="Tests suivants">
-      <mat-icon>chevron_right</mat-icon>
-    </button>
 
-  </div>
 </div>
+

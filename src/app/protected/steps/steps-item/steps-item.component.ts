@@ -18,9 +18,6 @@ export class StepsItemComponent implements OnInit {
   constructor(public dialog: MatDialog) {
   }
 
-  get languageColor(): string {
-    return this.theme === 'dark' ? this.step.language.color.dark : this.step.language.color.light;
-  }
 
   ngOnInit(): void {
     console.log(this.step);

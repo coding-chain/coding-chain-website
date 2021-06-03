@@ -15,6 +15,7 @@ import {ChartsModule} from 'ng2-charts';
 import {SortedInputComponent} from './components/sorted-input/sorted-input.component';
 import {LanguagesStatsComponent} from './components/languages-stats/languages-stats.component';
 import {NgScrollbarModule} from 'ngx-scrollbar';
+import { LanguageChipComponent } from './components/language-chip/language-chip.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import {NgScrollbarModule} from 'ngx-scrollbar';
     MatDialogExpanderDirective,
     MatDialogExpandedContentDirective,
     SortedInputComponent,
-    LanguagesStatsComponent
+    LanguagesStatsComponent,
+    LanguageChipComponent
   ],
   imports: [
     ChartsModule,
@@ -39,24 +41,25 @@ import {NgScrollbarModule} from 'ngx-scrollbar';
     NgScrollbarModule,
     QuillModule.forRoot()
   ],
-  exports: [
-    ChartsModule,
-    AngularMaterialModule,
-    ReactiveFormsModule,
-    TotalComponent,
-    PagedListComponent,
-    StarRateComponent,
-    SortByArrowsComponent,
-    BootstrapModule,
-    FormsModule,
-    MonacoEditorModule,
-    QuillModule,
-    MatDialogExpanderDirective,
-    MatDialogExpandedContentDirective,
-    SortedInputComponent,
-    LanguagesStatsComponent,
-    NgScrollbarModule
-  ]
+    exports: [
+        ChartsModule,
+        AngularMaterialModule,
+        ReactiveFormsModule,
+        TotalComponent,
+        PagedListComponent,
+        StarRateComponent,
+        SortByArrowsComponent,
+        BootstrapModule,
+        FormsModule,
+        MonacoEditorModule,
+        QuillModule,
+        MatDialogExpanderDirective,
+        MatDialogExpandedContentDirective,
+        SortedInputComponent,
+        LanguagesStatsComponent,
+        NgScrollbarModule,
+        LanguageChipComponent
+    ]
 })
 export class SharedModule {
 }

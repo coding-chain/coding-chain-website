@@ -21,7 +21,7 @@ const themeMapping: IMonacoThemeMapping[] = [
   {appTheme: 'light', monacoTheme: 'vs'}
 ];
 const languageMapping: IMonacoLanguageMapping[] = [
-  {appLanguage: 'csharp', monacoLanguage: 'csharp'}
+  {appLanguage: 'CSharp', monacoLanguage: 'csharp'}
 ];
 
 

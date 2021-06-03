@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, NgZone} from '@angular/core';
 import {environment} from '../../../../environments/environment';
 import {from, Observable, of, Subject} from 'rxjs';
 import {HubConnection} from '@microsoft/signalr/dist/esm/HubConnection';
@@ -8,15 +8,25 @@ import {switchMap, tap} from 'rxjs/operators';
 import {
   IConnectedUserAddedEvent,
   IConnectedUserRemovedEvent,
+  IConnectedUserUpdatedEvent,
   IParticipationFunctionAddedEvent,
   IParticipationFunctionRemovedEvent,
   IParticipationFunctionUpdatedEvent,
   IProcessEndEvent,
-  IProcessStartEvent
+  IProcessStartEvent,
+  IReorderedFunctionsEvent
 } from '../../../shared/models/participations-session/events';
 import {ParticipationSessionService} from '../http/participation-session.service';
-import {AppFunction} from '../../../shared/models/function-session/responses';
-import {IParticipationSession} from '../../../shared/models/participations-session/participation-session';
+import {IFunctionSessionNavigation} from '../../../shared/models/function-session/responses';
+import {
+  IParticipationExecutionResult,
+  IParticipationExecutionStart,
+  IUserSession,
+  ParticipationSession
+} from '../../../shared/models/participations-session/participation-session';
+import {IUserSessionNavigation} from '../../../shared/models/user-session/responses';
+import {AppFunction} from '../../../shared/models/function-session/app-function';
+import {FunctionFactory} from '../../../shared/models/function-session/function-factory';
 
 
 @Injectable({
@@ -24,13 +34,15 @@ import {IParticipationSession} from '../../../shared/models/participations-sessi
 })
 export class ParticipationSessionStateService {
 
-  public connectedUser = new Subject<IConnectedUserAddedEvent>();
-  public disconnectedUser = new Subject<IConnectedUserRemovedEvent>();
+  public connectedUser = new Subject<IUserSession>();
+  public disconnectedUser = new Subject<string>();
   public addedFunction = new Subject<AppFunction>();
   public removedFunction = new Subject<IParticipationFunctionRemovedEvent>();
   public updatedFunction = new Subject<AppFunction>();
-  public processStart = new Subject<IProcessStartEvent>();
-  public processEnd = new Subject<IProcessEndEvent>();
+  public reorderedFunctions = new Subject<AppFunction[]>();
+  public updatedConnectedUser = new Subject<IUserSessionNavigation>();
+  public processStart = new Subject<IParticipationExecutionStart>();
+  public processEnd = new Subject<IParticipationExecutionResult>();
   private readonly connectionTimeout = environment.realTimeConnectionTimeout;
   private readonly onConnectedUserMethod = 'OnConnectedUser';
   private readonly onDisconnectedUserMethod = 'OnDisconnectedUser';
@@ -39,18 +51,23 @@ export class ParticipationSessionStateService {
   private readonly onFunctionUpdated = 'OnFunctionUpdated';
   private readonly onProcessStart = 'OnProcessStart';
   private readonly onProcessEnd = 'OnProcessEnd';
+  private readonly onUpdatedConnectedUser = 'OnUpdatedConnectedUser';
+  private readonly onFunctionsReordered = 'OnFunctionsReordered';
   private hubUrl = `${environment.apiUrl}/participationsessionshub`;
   private hubConnection: HubConnection;
-  private _participation: IParticipationSession;
+  private _participation: ParticipationSession;
 
   constructor(
     private readonly _authService: AuthenticationService,
+    private readonly _zone: NgZone,
     private readonly _participationSessionService: ParticipationSessionService) {
   }
 
-  public startConnection(participationId: string): Observable<IParticipationSession> {
+  public startConnection(participationId: string): Observable<ParticipationSession> {
+
     let start$ = this._participationSessionService.getToken(participationId).pipe(
       switchMap(token => {
+        console.log('TOKEN', token);
         if (this.hubConnection) {
           return of(null);
         }
@@ -64,18 +81,25 @@ export class ParticipationSessionStateService {
 
     start$ = start$.pipe(
       switchMap(connected => {
+        console.log('CONNECTED', connected);
         this.listen();
         return this.connectedUser.asObservable().pipe(
-          switchMap(connectedUser => this._participationSessionService.getParticipation(participationId))
+          switchMap(connectedUser => {
+            console.log('STATE CONNECTED USER', connectedUser);
+            return this._participationSessionService.getParticipation(participationId);
+          })
         );
       }),
-      tap(participation => this._participation = participation)
+      tap(participation => this._zone.run(() => this._participation = participation))
     );
-    return start$;
+    return new Observable<ParticipationSession>(subscriber => start$.subscribe(res => {
+      this._zone.run(() => subscriber.next(res));
+    }));
   }
 
   public stopConnection(): Observable<void> {
-    const stopConnection$ = from(this.hubConnection.stop());
+    this._participation = null;
+    const stopConnection$ = from(this.hubConnection ? this.hubConnection.stop() : of(null));
     this.hubConnection = undefined;
     return stopConnection$;
   }
@@ -83,58 +107,111 @@ export class ParticipationSessionStateService {
   private listen(): void {
     this.listenConnectedUser();
     this.listenDisconnectedUser();
+    this.listenUpdatedUser();
     this.listenRemovedFunction();
     this.listenAddedFunction();
     this.listenUpdatedFunction();
     this.listenProcessStart();
+    this.listenReorderedFunctions();
     this.listenProcessEnd();
   }
 
   private listenConnectedUser(): void {
     this.hubConnection.on(this.onConnectedUserMethod, (event: IConnectedUserAddedEvent) => {
-      this.connectedUser.next(event);
+      console.log('ON CONNECTED USER', event);
+      if (!this._participation?.id) {
+        console.log('INIT CONNECTED USER', event);
+        this._zone.run(() => this.connectedUser.next(null));
+      }
+      this._participationSessionService.getUserSession(this._participation.id, event.userId).subscribe(user => {
+        this._zone.run(() => this.connectedUser.next(user));
+      });
     });
   }
 
   private listenDisconnectedUser(): void {
     this.hubConnection.on(this.onDisconnectedUserMethod, (event: IConnectedUserRemovedEvent) => {
-      this.disconnectedUser.next(event);
+      this._zone.run(() => this.disconnectedUser.next(event.userId));
+    });
+  }
+
+  private listenReorderedFunctions(): void {
+    this.hubConnection.on(this.onFunctionsReordered, (event: IReorderedFunctionsEvent) => {
+      this._participationSessionService.getFunctions(this._participation.id, event).subscribe(functions => {
+        const reorderedFunctions = functions.map(f => this.toAppFunction(f));
+        this._zone.run(() => this.reorderedFunctions.next(reorderedFunctions));
+      });
+    });
+  }
+
+
+  private listenUpdatedUser(): void {
+    this.hubConnection.on(this.onUpdatedConnectedUser, (event: IConnectedUserUpdatedEvent) => {
+      this._participationSessionService.getUser(this._participation.id, event.userId)
+        .subscribe(user => this._zone.run(() => this.updatedConnectedUser.next(user)));
     });
   }
 
   private listenAddedFunction(): void {
     this.hubConnection.on(this.onFunctionAdded, (event: IParticipationFunctionAddedEvent) => {
       this._participationSessionService.getFunctionById(this._participation.id, event.functionId)
-        .subscribe(func => this.addedFunction.next(
-          AppFunction.new({...func, language: this._participation.step.language.name}).parse()
-        ));
+        .subscribe(func => {
+          const addedFunction = this.toAppFunction(func);
+          this._zone.run(() => this.addedFunction.next(addedFunction));
+        });
     });
   }
 
+
   private listenRemovedFunction(): void {
     this.hubConnection.on(this.onFunctionRemoved, (event: IParticipationFunctionRemovedEvent) => {
-      this.removedFunction.next(event);
+      this._zone.run(() => this.removedFunction.next(event));
     });
   }
 
   private listenUpdatedFunction(): void {
     this.hubConnection.on(this.onFunctionUpdated, (event: IParticipationFunctionUpdatedEvent) => {
       this._participationSessionService.getFunctionById(this._participation.id, event.functionId)
-        .subscribe(func => this.updatedFunction.next(
-          AppFunction.new({...func, language: this._participation.step.language.name}).parse()
-        ));
+        .subscribe(func => {
+          const updatedFunc = this.toAppFunction(func);
+          this._zone.run(() => this.updatedFunction.next(updatedFunc));
+        });
     });
   }
 
   private listenProcessStart(): void {
     this.hubConnection.on(this.onProcessStart, (event: IProcessStartEvent) => {
-      this.processStart.next(event);
+      this._participationSessionService.getSessionById(this._participation.id).subscribe(participation => {
+        const executionStart: IParticipationExecutionStart = {
+          processStartTime: participation.processStartTime,
+        };
+        this._zone.run(() => this.processStart.next(executionStart));
+      });
     });
   }
 
   private listenProcessEnd(): void {
     this.hubConnection.on(this.onProcessEnd, (event: IProcessEndEvent) => {
-      this.processEnd.next(event);
+      this._participationSessionService.getSessionById(this._participation.id).subscribe(participation => {
+        const executionResult: IParticipationExecutionResult = {
+          processStartTime: participation.processStartTime,
+          lastError: participation.lastError,
+          lastOutput: participation.lastOutput,
+          passedTestsIds: participation.passedTestsIds,
+          endDate: participation.endDate
+        };
+        this._zone.run(() => this.processEnd.next(executionResult));
+      });
     });
   }
+
+  private toAppFunction(func: IFunctionSessionNavigation): AppFunction {
+    return FunctionFactory.new({
+      ...func,
+      language: this._participation.step.language.name,
+      type: 'pipeline',
+      header: this._participation.step.headerCode
+    }).parse();
+  }
+
 }

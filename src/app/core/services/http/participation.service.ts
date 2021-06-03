@@ -9,6 +9,7 @@ import {IParticipationNavigation} from '../../../shared/models/participations/re
 import {PageCursor} from '../../../shared/models/pagination/page-cursor';
 import {GetParams} from '../../../shared/models/http/get.params';
 import {ICreateParticipationCommand} from '../../../shared/models/participations/commands';
+import {IParticipationFilter} from '../../../shared/models/participations/filters';
 
 @Injectable({
   providedIn: 'root'
@@ -19,12 +20,19 @@ export class ParticipationService extends ApiHelperService {
 
   constructor(http: HttpClient) {
     super(http);
-    this.getParticipationNavigationFiltered = this.getParticipationNavigationFiltered.bind(this);
+    this.getParticipationNavigationPaginatedFiltered = this.getParticipationNavigationPaginatedFiltered.bind(this);
   }
 
-  public getParticipationNavigationFiltered(obj: GetParams<IParticipationNavigation>)
+  public getParticipationNavigationPaginatedFiltered(obj: GetParams<IParticipationNavigation, IParticipationFilter>)
     : Observable<HateoasPageResult<IParticipationNavigation>> {
     return this.getFiltered(obj);
+  }
+
+  public getAllParticipationNavigationFiltered(obj: GetParams<IParticipationNavigation, IParticipationFilter>)
+    : Observable<IParticipationNavigation[]> {
+    return this.fetchAll<IParticipationNavigation, IParticipationNavigation, IParticipationFilter>({url: this.apiUrl, ...obj}).pipe(
+      map(participations => participations.map(p => p.result))
+    );
   }
 
   public getById(id: string): Observable<IParticipationNavigation | undefined> {
@@ -34,9 +42,10 @@ export class ParticipationService extends ApiHelperService {
       );
   }
 
-  public getCursor(query: GetParams<IParticipationNavigation>): PageCursor<IParticipationNavigation, IParticipationNavigation> {
-    return new PageCursor<IParticipationNavigation, IParticipationNavigation>(
-      this.getParticipationNavigationFiltered, {url: this.apiUrl, ...query}
+  public getCursor(query: GetParams<IParticipationNavigation, IParticipationFilter>)
+    : PageCursor<IParticipationNavigation, IParticipationFilter> {
+    return new PageCursor<IParticipationNavigation, IParticipationFilter>(
+      this.getParticipationNavigationPaginatedFiltered, {url: this.apiUrl, ...query}
     );
   }
 

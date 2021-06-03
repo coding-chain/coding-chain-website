@@ -1,0 +1,7 @@
+<mat-card class="d-flex justify-content-between align-items-center w-100 mx-auto">
+  <span class="col">{{test.name}}</span>
+  <mat-icon *ngIf="test.hasPassed" color="accent" matTooltip="Test validé">check_circle
+  </mat-icon>
+  <mat-icon *ngIf="test.hasPassed == false" color="warn" matTooltip="Echec">report</mat-icon>
+</mat-card>
+

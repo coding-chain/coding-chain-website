@@ -6,7 +6,7 @@ import {ITournamentEditionStep} from '../../../shared/models/tournaments/tournam
 import {ITestNavigation} from '../../../shared/models/tests/responses';
 import {Theme} from '../../../core/services/states/theme.service';
 import {ItemWithForm} from '../../../shared/models/forms';
-import {AppFunction} from '../../../shared/models/function-session/responses';
+import {FunctionFactory} from '../../../shared/models/function-session/function-factory';
 
 
 @Component({
@@ -17,7 +17,7 @@ import {AppFunction} from '../../../shared/models/function-session/responses';
 export class StepsEditTestsComponent implements OnInit {
 
   @Input() testsArray: FormArray;
-  @Input() cardCountBySlide = 2;
+  @Input() cardCountBySlide = 1;
   @Input() step: ITournamentEditionStep;
   @Input() theme: Theme;
   @Input() readonly = true;
@@ -34,14 +34,16 @@ export class StepsEditTestsComponent implements OnInit {
     this._tests = this.step.tests.map(t => this.toTestEditionGrp(t));
     this.testsMatrix = ArrayUtils.toMatrix(this._tests, this.cardCountBySlide);
     this.fillTestsArray();
+    this.testsArray.setValidators(this.allTypeSameValidate());
     this.testsArray.valueChanges.subscribe(res => this.testsChange.emit(this._tests.map(testWithGrp => {
       const test = testWithGrp.item;
       return {
         id: test.id,
         stepId: test.stepId,
         score: test.score,
-        outputValidator: test.outputValidator,
-        inputGenerator: test.inputGenerator
+        name: test.name,
+        outputValidator: test.outputFunc.editorCode,
+        inputGenerator: test.inputFunc.editorCode
       };
     })));
     if (!this.readonly && this._tests.length === 0) {
@@ -75,11 +77,44 @@ export class StepsEditTestsComponent implements OnInit {
   }
 
   private toTestEdition(test?: ITestNavigation): Partial<ITestEdition> {
-    return {language: this.step.language, stepId: this.step.stepId, score: 1, stepPublished: this.step.isPublished, ...test};
+    const inFunc = FunctionFactory.new({code: test?.inputGenerator, language: this.step.language.name, type: 'inGen'});
+    const outFunc = FunctionFactory.new({code: test?.outputValidator, language: this.step.language.name, type: 'outVal'});
+    return {
+      language: this.step.language,
+      stepId: this.step.stepId,
+      score: 1,
+      stepPublished: this.step.isPublished,
+      inputFunc: inFunc.parse(),
+      outputFunc: outFunc.parse(),
+      ...test
+    };
   }
 
   private toTestEditionGrp(test?: ITestNavigation): ItemWithForm<ITestEdition> {
     return {item: this.toTestEdition(test) as ITestEdition, form: this._fb.group({})};
+  }
+
+
+  private allTypeSameValidate(): ValidatorFn {
+    return (ctrl: AbstractControl): ValidationErrors | null => {
+      console.log(this._tests);
+      this._tests.forEach(t => {
+        t.item.inputFunc.parse();
+        t.item.outputFunc.parse();
+      });
+      if (this._tests?.length) {
+        const test = this._tests[0].item;
+        const inGenOutType = test.inputFunc.outputType;
+        const outFuncInGen = test.outputFunc.inputType;
+        const allSameTypes = this._tests
+          .every(t => t.item.inputFunc.outputType === inGenOutType && t.item.outputFunc.inputType === outFuncInGen);
+        if (!allSameTypes) {
+          console.log('ERROR', {allSameTypesErr: {in: inGenOutType, out: outFuncInGen}});
+          return {allSameTypesErr: {in: inGenOutType, out: outFuncInGen}};
+        }
+      }
+      return null;
+    };
   }
 
 }

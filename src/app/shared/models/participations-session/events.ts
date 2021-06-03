@@ -17,9 +17,19 @@ export interface IConnectedUserAddedEvent {
 export interface IConnectedUserRemovedEvent {
   userId: string;
 }
-export interface IProcessEndEvent{
+
+export interface IReorderedFunctionsEvent {
+  functionsIds: string[];
+}
+
+export interface IConnectedUserUpdatedEvent {
+  userId: string;
+}
+
+export interface IProcessEndEvent {
   participationId: string;
 }
-export interface IProcessStartEvent{
+
+export interface IProcessStartEvent {
   participationId: string;
 }

@@ -19,10 +19,13 @@
       <ng-template *ngFor="let functionsSlide of functionsMatrix; let i=index" ngbSlide [id]="'slide-'+ i">
         <div class="row drag-place-holder" (cdkDropListDropped)="drop($event)"
              [cdkDropListData]="functionsSlide"
+             [cdkDropListDisabled]="!canDragOrDrop"
              cdkDropList>
-          <app-participation-functions-item class="col-2" *ngFor="let functionItem of functionsSlide; let j=index"
-                                            [func]="functionItem" (edit)="onFunctionEdit(functionItem)"
-                                            (delete)="onFunctionDeleted(functionItem)" cdkDrag
+          <app-participation-functions-item
+            [cdkDragDisabled]="!canDragOrDrop"
+            class="col-2" *ngFor="let functionItem of functionsSlide; let j=index"
+            [func]="functionItem" (edit)="onFunctionEdit(functionItem)"
+            (delete)="onFunctionDeleted(functionItem)" cdkDrag
           >
           </app-participation-functions-item>
         </div>

@@ -1,0 +1,11 @@
+<mat-card class="d-flex justify-content-between align-items-center w-100 mx-auto">
+  <span class="col">{{user.username}}</span>
+  <button *ngIf="user.id !== currentUser.id && currentUser.isParticipationAdmin" mat-icon-button color="accent"
+          (click)="elevate()" matTooltip="Nommer le participant administrateur de la participation">
+    <mat-icon>upgrade</mat-icon>
+  </button>
+  <mat-icon *ngIf="user.isAdmin" color="accent" matTooltip="Administrateur de la participation">supervisor_account
+  </mat-icon>
+  <mat-icon *ngIf="!user.isAdmin" color="primary" matTooltip="Participant">person</mat-icon>
+</mat-card>
+

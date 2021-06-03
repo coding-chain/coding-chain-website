@@ -2,14 +2,16 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {Theme} from '../../../core/services/states/theme.service';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {AppFunction} from '../../../shared/models/function-session/responses';
 import * as _ from 'lodash';
 import {AppLanguage} from '../../../shared/models/programming-languages/responses';
+import {AppFunction} from '../../../shared/models/function-session/app-function';
+import {FunctionFactory} from '../../../shared/models/function-session/function-factory';
 
 
 export interface IParticipationEditFunctionData {
   function: AppFunction;
   theme: Theme;
+  isReadonly: boolean;
 }
 
 @Component({
@@ -23,6 +25,7 @@ export class ParticipationEditFunctionDialogComponent implements OnInit {
   function: AppFunction;
   theme: Theme;
   language: AppLanguage;
+  isReadonly: boolean;
 
   constructor(
     public dialogRef: MatDialogRef<ParticipationEditFunctionDialogComponent>,
@@ -36,8 +39,9 @@ export class ParticipationEditFunctionDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isReadonly = this._data.isReadonly;
     this.theme = this._data.theme;
-    this.function = AppFunction.new(_.cloneDeep(this._data.function)).parse();
+    this.function = FunctionFactory.new(_.cloneDeep(this._data.function)).parse();
     this.formGroup = this._fb.group({});
   }
 

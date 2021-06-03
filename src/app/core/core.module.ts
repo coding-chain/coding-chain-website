@@ -11,10 +11,11 @@ import {AuthenticationService} from './services/http/authentication.service';
 import {UserStateService} from './services/states/user-state.service';
 import {MatButtonModule} from '@angular/material/button';
 import {HateoasInterceptor} from './commons/interceptors/hateoas.interceptor';
+import { ThemeEmitterComponent } from './components/theme-emitter/theme-emitter.component';
 
 
 @NgModule({
-  declarations: [NavBarComponent],
+  declarations: [NavBarComponent, ThemeEmitterComponent],
   imports: [
     HttpClientModule,
     CommonModule,
@@ -22,9 +23,10 @@ import {HateoasInterceptor} from './commons/interceptors/hateoas.interceptor';
     SharedModule,
     MatButtonModule
   ],
-  exports: [
-    NavBarComponent
-  ],
+    exports: [
+        NavBarComponent,
+        ThemeEmitterComponent
+    ],
   providers: [AuthenticationService, UserStateService,
     {
       provide: HTTP_INTERCEPTORS,

@@ -4,6 +4,7 @@ import {IParticipationNavigation} from '../participations/responses';
 import {ITeamParticipation} from '../teams/team-participation';
 import {ObjectUtils} from '../../utils/object.utils';
 import {ITournamentResume} from '../tournaments/tournament-resume';
+import {IUserSession} from '../participations-session/participation-session';
 
 export class ConnectedUser {
   id: string;
@@ -79,5 +80,24 @@ export class ConnectedUser {
     });
     return teamParticipations;
   }
+}
+
+export class ParticipationConnectedUser extends ConnectedUser {
+
+  constructor(props) {
+    super(props);
+  }
+
+  private _canElevate = false;
+
+  get isParticipationAdmin(): boolean {
+    return this._canElevate;
+  }
+
+  updateElevateRight(users: IUserSession[]): ParticipationConnectedUser {
+    this._canElevate = users.find(u => u.isAdmin)?.id === this.id;
+    return this;
+  }
+
 }
 

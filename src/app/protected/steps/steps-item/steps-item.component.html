@@ -5,9 +5,7 @@
         {{step.name}}
       </h3>
       <mat-chip-list>
-        <mat-chip [ngStyle]="{backgroundColor: languageColor}" selected>
-          {{step.language.label}}
-        </mat-chip>
+        <app-language-chip [language]="step.language" [theme]="theme"></app-language-chip>
       </mat-chip-list>
     </div>
     <div class="row justify-content-between w-100 align-items-center">

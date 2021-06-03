@@ -4,15 +4,18 @@
 @import '~quill/dist/quill.snow.css';
 @import "assets/light-theme";
 @import "assets/dark-theme";
+@import "assets/theme-color";
+
 
 .light-theme {
   @include angular-material-theme($light-theme);
+  @include theme-color($light-theme);
 }
 
 .dark-theme {
   @include angular-material-theme($dark-theme);
+  @include theme-color($dark-theme);
 }
-
 html, body {
   height: 100%;
 }
@@ -24,19 +27,7 @@ body {
 
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
-//.ql-toolbar .ql-stroke {
-//  color: white;
-//stroke: #fff;
-//}
-//
-//.ql-toolbar .ql-fill {
-//  fill: #fff;
-//  stroke: none;
-//}
-//
-//.ql-toolbar .ql-picker {
-//  color: #fff;
-//}
+
 .drag-place-holder {
   padding: 5px;
   border: solid 1px #ccc;
@@ -47,4 +38,26 @@ body {
 
 .hint-error{
   font-size: $small-font-size;
+}
+.rotate-l90 {
+  transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+.rotate-r90 {
+  transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+
+.mat-expansion-panel-content > .mat-expansion-panel-body {
+  padding: 5px !important;
 }

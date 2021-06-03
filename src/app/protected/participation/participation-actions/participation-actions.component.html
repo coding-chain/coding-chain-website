@@ -1,0 +1,35 @@
+<div class="row justify-content-around my-2">
+  <div class="col-3">
+    <button *ngIf="participation.previousParticipationStep" (click)="previousParticipationClicked()"
+            [routerLink]="['/participations', participation.previousParticipationStep.id]" color="primary"
+            class="mx-auto" mat-icon-button
+            matTooltip="Etape précédente">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+  </div>
+  <div class="col-6">
+    <button mat-stroked-button color="primary"
+            [disabled]="participationForm.invalid || !connectedUser.isParticipationAdmin || !!participation.processStartTime"
+            (click)="executeClicked()">
+      Exécuter
+    </button>
+  </div>
+  <div class="col-3">
+    <button *ngIf="participation.nextParticipationStep" [disabled]="!participation.endDate"
+            (click)="nextParticipationClicked()" color="primary" class="mx-auto" mat-icon-button
+            matTooltip="Etape suivante">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+</div>
+<mat-progress-bar   *ngIf="participation.processStartTime"  mode="indeterminate" class="row mx-auto"></mat-progress-bar>
+<div class="row justify-content-center">
+  <ng-container *ngIf=" !(isValid$ | async)">
+    <mat-error *ngIf="participationForm.hasError('noFunctionsError')">Pas de fonctions à exécuter</mat-error>
+    <mat-error *ngIf="participationForm.hasError('minFunctionsError')">Vous devez créer plus de {{participation.step.minFunctionsCount - 1}} fonctions</mat-error>
+    <mat-error *ngIf="participationForm.hasError('maxFunctionsError')">Vous devez créer moins de {{participation.step.maxFunctionsCount + 1 }} fonctions</mat-error>
+    <mat-error *ngIf="participationForm.hasError('pipelineTypeError')">Les types ne correspondent pas aux types attendus par
+      les tests
+    </mat-error>
+  </ng-container>
+</div>

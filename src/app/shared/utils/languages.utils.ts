@@ -15,10 +15,10 @@ export interface ILanguageLabel {
 
 
 const colorsMapping: IThemeLanguageColorMapping[] = [
-  {language: 'csharp', color: {light: '#9a67ea', dark: '#320b86'}}
+  {language: 'CSharp', color: {light: '#9a67ea', dark: '#320b86'}}
 ];
 const labelsMapping: ILanguageLabel[] = [
-  {language: 'csharp', label: 'c#'}
+  {language: 'CSharp', label: 'c#'}
 ];
 
 export function getColorByLanguage(language: AppLanguage): IAppColor {

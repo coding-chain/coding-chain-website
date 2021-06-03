@@ -1,7 +1,7 @@
 import {LanguageLabel} from '../../utils/languages.utils';
 import {IAppColor} from '../../utils/colors.utils';
 
-export type AppLanguage = 'csharp';
+export type AppLanguage = 'CSharp';
 
 export interface IProgrammingLanguageNavigation {
   id: string;

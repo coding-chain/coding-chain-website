@@ -3,7 +3,7 @@
     {{func.name}}
   </div>
   <mat-divider></mat-divider>
-  <div class="row" >
+  <div class="row align-items-center" >
     <div class="col-3 p-0">
       <mat-icon color="primary" inline="true" class="small-icon">arrow_forward</mat-icon>
     </div>
@@ -26,8 +26,11 @@
       {{func.order}}
     </div>
     <div class="col-4 p-0 text-center">
-      <button mat-icon-button color="accent" [disabled]="!canEdit" (click)="onEditClicked()" class="small-icon">
+      <button mat-icon-button color="accent" *ngIf="canEdit" (click)="onEditClicked()" class="small-icon">
         <mat-icon inline="true" class="small-icon">edit</mat-icon>
+      </button>
+      <button mat-icon-button color="accent" *ngIf="!canEdit" (click)="onDisplayClicked()" class="small-icon">
+        <mat-icon inline="true" class="small-icon">visibility</mat-icon>
       </button>
     </div>
     <div class="col-4 p-0 text-center">

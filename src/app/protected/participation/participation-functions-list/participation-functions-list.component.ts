@@ -11,7 +11,6 @@ import {
   ViewChildren
 } from '@angular/core';
 import {ArrayUtils} from '../../../shared/utils/array.utils';
-import {AppFunction} from '../../../shared/models/function-session/responses';
 import {IProgrammingLanguage} from '../../../shared/models/programming-languages/responses';
 import {CdkDragDrop, CdkDropList, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {MatDialog} from '@angular/material/dialog';
@@ -22,6 +21,8 @@ import {
 } from '../participation-edit-function-dialog/participation-edit-function-dialog.component';
 import {Theme} from '../../../core/services/states/theme.service';
 import {NgbCarousel} from '@ng-bootstrap/ng-bootstrap';
+import {AppFunction} from '../../../shared/models/function-session/app-function';
+import {FunctionFactory} from '../../../shared/models/function-session/function-factory';
 
 @Component({
   selector: 'app-participation-functions-list',
@@ -31,6 +32,7 @@ import {NgbCarousel} from '@ng-bootstrap/ng-bootstrap';
 export class ParticipationFunctionsListComponent implements OnInit, AfterViewInit {
   @ViewChild('carousel') carousel: NgbCarousel;
   @ViewChildren('cdkDropList') dropLists: QueryList<CdkDropList>;
+  @Input() header: string;
   @Input() language: IProgrammingLanguage;
   @Input() functionCreatorId: string;
   @Input() functionsCountBySlide = 6;
@@ -38,6 +40,8 @@ export class ParticipationFunctionsListComponent implements OnInit, AfterViewIni
   @Output() removeFunction = new EventEmitter<AppFunction>();
   @Output() updateFunction = new EventEmitter<AppFunction>();
   @Input() theme: Theme;
+  @Input() canDragOrDrop = false;
+
   slides: number[];
   functionsMatrix: AppFunction[][] = [];
 
@@ -47,7 +51,7 @@ export class ParticipationFunctionsListComponent implements OnInit, AfterViewIni
   private _functions: AppFunction[] = [];
 
   @Input() set functions(functions: AppFunction[]) {
-    this._functions = functions.map(f => AppFunction.new(f).parse());
+    this._functions = functions.map(f => FunctionFactory.new(f).parse());
     this.setMatrix();
   }
 
@@ -68,9 +72,9 @@ export class ParticipationFunctionsListComponent implements OnInit, AfterViewIni
       width: dialogWidth('xl'),
       height: dialogHeight('l'),
       data: {
-        function: func ?? AppFunction.new({language: this.language.name, type: 'pipeline'}),
-        language: this.language.name,
-        theme: this.theme
+        function: func ?? FunctionFactory.new({language: this.language.name, type: 'pipeline', header: this.header}),
+        theme: this.theme,
+        isReadonly: false
       } as IParticipationEditFunctionData
     });
     dialogRef.afterClosed().subscribe((result: (AppFunction | undefined)) => {

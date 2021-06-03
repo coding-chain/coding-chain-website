@@ -69,6 +69,7 @@ export class TournamentStepEditItemComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: (ITestNavigation[] | undefined)) => {
       if (result) {
         this.step.tests = result;
+        this.stepGrp.updateValueAndValidity();
       }
     });
   }
