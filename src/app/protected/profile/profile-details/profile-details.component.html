@@ -33,6 +33,8 @@
         </div>
         <div class="w-50">
           <h2>Mes Tournois</h2>
+          <app-profile-tournament *ngFor="let tournament of tournaments" [tournament]="tournament"
+                             [connectedUser]="user$ | async"></app-profile-tournament>
         </div>
       </div>
 

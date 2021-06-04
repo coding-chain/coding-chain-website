@@ -2,9 +2,10 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {ConnectedUser} from '../../../shared/models/users/connected-user';
-import {UserStateService} from '../../../core/services/user-state.service';
+import {UserStateService} from '../../../core/services/states/user-state.service';
 import {SaveUser} from '../../../shared/models/users/save-user';
 import {eqCtrlsIfExistsValidator, eqCtrlsValidator} from '../../../shared/validators/value.validators';
+import {UserService} from '../../../core/services/http/user.service';
 
 @Component({
   selector: 'app-profile-edit',
@@ -27,7 +28,7 @@ export class ProfileEditComponent implements OnInit {
     return this.userForm.valid;
   }
 
-  constructor(private userStateService: UserStateService, private fb: FormBuilder) {
+  constructor(private userStateService: UserStateService, private fb: FormBuilder, private userService: UserService) {
   }
 
   ngOnInit(): void {
@@ -63,7 +64,7 @@ export class ProfileEditComponent implements OnInit {
     this.user.email = this.emailCtrl.value;
     this.user.username = this.usernameCtrl.value;
     this.user.password = this.pwdCtrl.value;
-    // TODO this.userService.saveUser(this.user);
+    // this.userService.update(this.user); // TODO
   }
 
 }

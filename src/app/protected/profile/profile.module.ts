@@ -7,6 +7,8 @@ import {ProfileEditComponent} from './profile-edit/profile-edit.component';
 import {ProfileDetailsComponent} from './profile-details/profile-details.component';
 import {SharedModule} from '../../shared/shared.module';
 import {ProfileTeamsComponent} from './profile-teams/profile-teams.component';
+import {ProfileTournamentComponent} from './profile-tournament/profile-tournament.component';
+import {StepsModule} from '../steps/steps.module';
 
 
 @NgModule({
@@ -14,12 +16,14 @@ import {ProfileTeamsComponent} from './profile-teams/profile-teams.component';
     ProfileRootComponent,
     ProfileEditComponent,
     ProfileDetailsComponent,
-    ProfileTeamsComponent
+    ProfileTeamsComponent,
+    ProfileTournamentComponent
   ],
   imports: [
     CommonModule,
     ProfileRoutingModule,
-    SharedModule
+    SharedModule,
+    StepsModule
   ]
 })
 export class ProfileModule {

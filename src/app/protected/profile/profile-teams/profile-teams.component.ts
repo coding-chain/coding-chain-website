@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ITeamResume} from '../../../shared/models/teams/responses';
+import {ITeamNavigation} from '../../../shared/models/teams/responses';
 import {ConnectedUser} from '../../../shared/models/users/connected-user';
 
 @Component({
@@ -9,7 +9,7 @@ import {ConnectedUser} from '../../../shared/models/users/connected-user';
 })
 export class ProfileTeamsComponent implements OnInit {
 
-  @Input() team: ITeamResume;
+  @Input() team: ITeamNavigation;
   @Input() connectedUser: ConnectedUser;
 
   @Output() leaveTeam = new EventEmitter();
