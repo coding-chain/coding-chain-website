@@ -109,7 +109,7 @@ export abstract class AppFunction implements IFunctionSessionNavigation {
 
     public copy(other: AppFunction): AppFunction {
         this.id = other.id;
-        this.code = other.code;
+        this.code = other.codeWithoutHeader;
         this.order = other.order;
         this.type = other.type;
         this.language = other.language;
