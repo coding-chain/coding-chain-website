@@ -30,11 +30,13 @@
           <h2>Mes Teams</h2>
           <app-profile-teams *ngFor="let team of teams" [team]="team"
                              [connectedUser]="user$ | async"></app-profile-teams>
+          <app-paged-list [cursor]="teamCursor"></app-paged-list>
         </div>
         <div class="w-50">
           <h2>Mes Tournois</h2>
           <app-profile-tournament *ngFor="let tournament of tournaments" [tournament]="tournament"
                              [connectedUser]="user$ | async"></app-profile-tournament>
+          <app-paged-list [cursor]="tournamentCursor"></app-paged-list>
         </div>
       </div>
 

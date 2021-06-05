@@ -7,7 +7,8 @@ import {TournamentService} from '../../../core/services/http/tournament.service'
 import {PageCursor} from '../../../shared/models/pagination/page-cursor';
 import {ITournamentNavigation} from '../../../shared/models/tournaments/responses';
 import {ITournamentsFilter} from '../../../shared/models/tournaments/filters';
-import {ITeamNavigation} from '../../../shared/models/teams/responses';
+import {ITeamNavigation, ITeamWithMembersResume} from '../../../shared/models/teams/responses';
+import {ITeamFilter} from '../../../shared/models/teams/filters';
 
 @Component({
   selector: 'app-profile-details',
@@ -18,9 +19,10 @@ export class ProfileDetailsComponent implements OnInit {
   user$: Subject<ConnectedUser>;
   teams: ITeamNavigation[] = [];
   tournaments: ITournamentNavigation[] = [];
-  private tournamentCursor: PageCursor<ITournamentNavigation, ITournamentsFilter>;
+  tournamentCursor: PageCursor<ITournamentNavigation, ITournamentsFilter>;
+  teamCursor: PageCursor<ITeamWithMembersResume, ITeamFilter>;
 
-  constructor(private userStateService: UserStateService, private teamsService: TeamService,
+  constructor(private userStateService: UserStateService, private teamService: TeamService,
               private tournamentService: TournamentService) {
   }
 
@@ -28,16 +30,15 @@ export class ProfileDetailsComponent implements OnInit {
     this.user$ = this.userStateService.userSubject$;
 
     this.user$.subscribe(user => {
-
       this.tournamentCursor = this.tournamentService.getTournamentNavigationCursor({filterObj: {participantId: user.id}});
       this.tournamentCursor.resultsSubject$.subscribe(tournament => this.tournaments = tournament);
       this.tournamentCursor.current();
-      user.teams.forEach(team => {
-        this.teamsService.getOneById(team.teamId).subscribe(t => {
-          this.teams.push(t);
-        });
-      });
 
+      this.teamCursor = this.teamService.getResumeCursor({filterObj: {memberId: user.id}});
+      this.teamCursor.resultsSubject$.subscribe(team => {
+        this.teams = team;
+      });
+      this.teamCursor.current();
     });
   }
 }

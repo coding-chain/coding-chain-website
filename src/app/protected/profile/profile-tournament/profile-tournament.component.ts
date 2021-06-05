@@ -22,10 +22,5 @@ export class ProfileTournamentComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.tournamentLanguages = this.tournament.steps.map(s => s.language);
-  }
-
-  leave(): void {
-    // TODO this.leaveTournament.emit();
   }
 }
