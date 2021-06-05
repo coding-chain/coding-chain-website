@@ -1,4 +1,4 @@
-<mat-card class="w-100">
+<mat-card class="w-100" style="box-sizing: border-box">
   <mat-card-title class="d-flex justify-content-center">Profil</mat-card-title>
   <mat-card-content>
     <ng-container *ngIf="user$ | async as user">
@@ -25,14 +25,14 @@
         </div>
       </div>
       <button color="primary" mat-raised-button [routerLink]="['/profile/edit']">Editer mon profil</button>
-      <div class="row w-100 mt-4 ml-2">
-        <div class="w-50 mt-1">
+      <div class="row w-100 py-2 justify-content-center px-2 mx-0" style="box-sizing: border-box">
+        <div class="w-50 px-2">
           <h2>Mes Teams</h2>
           <app-profile-teams *ngFor="let team of teams" [team]="team"
                              [connectedUser]="user$ | async"></app-profile-teams>
           <app-paged-list [cursor]="teamCursor"></app-paged-list>
         </div>
-        <div class="w-50">
+        <div class="w-50 px-2">
           <h2>Mes Tournois</h2>
           <app-profile-tournament *ngFor="let tournament of tournaments" [tournament]="tournament"
                              [connectedUser]="user$ | async"></app-profile-tournament>

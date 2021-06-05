@@ -1,7 +1,7 @@
-<mat-card class="row w-100 mb-2">
+<mat-card class="w-100 mb-2">
   <div class="col-12">
     <div class="row justify-content-between">
-      <h2 class="col-3">{{team.name}}</h2>
+      <h2 class="my-0 col-3">{{team.name}}</h2>
       <div *ngIf="connectedUser.isTeamAdmin(team.id)" class="col-1">
         <button  mat-icon-button color="accent"
                  [routerLink]="['/teams',team.id, 'edit']"
