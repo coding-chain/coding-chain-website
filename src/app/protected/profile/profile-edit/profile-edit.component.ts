@@ -6,6 +6,10 @@ import {UserStateService} from '../../../core/services/states/user-state.service
 import {SaveUser} from '../../../shared/models/users/save-user';
 import {eqCtrlsIfExistsValidator, eqCtrlsValidator} from '../../../shared/validators/value.validators';
 import {UserService} from '../../../core/services/http/user.service';
+import {switchMap} from 'rxjs/operators';
+import {AuthenticationService} from '../../../core/services/http/authentication.service';
+import Swal from 'sweetalert2';
+import {SwalUtils} from '../../../shared/utils/swal.utils';
 
 @Component({
   selector: 'app-profile-edit',
@@ -28,7 +32,7 @@ export class ProfileEditComponent implements OnInit {
     return this.userForm.valid;
   }
 
-  constructor(private userStateService: UserStateService, private fb: FormBuilder, private userService: UserService) {
+  constructor(private userStateService: UserStateService, private fb: FormBuilder, private authenticationService: AuthenticationService) {
   }
 
   ngOnInit(): void {
@@ -61,10 +65,15 @@ export class ProfileEditComponent implements OnInit {
   }
 
   onSubmitUser(): void {
-    this.user.email = this.emailCtrl.value;
-    this.user.username = this.usernameCtrl.value;
-    this.user.password = this.pwdCtrl.value;
-    // this.userService.update(this.user); // TODO
+    this.authenticationService.updateMe({
+      username: this.usernameCtrl.value,
+      email: this.emailCtrl.value,
+      password: this.pwdCtrl.value
+    }).subscribe(
+      user => {
+        this.userStateService.updateUser(user);
+        Swal.fire( SwalUtils.successOptions('Vos informations on bien été mise à jour'));
+      }
+    );
   }
-
 }

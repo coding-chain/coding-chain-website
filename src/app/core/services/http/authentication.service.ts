@@ -6,7 +6,7 @@ import {ApiHelperService} from './api-helper.service';
 import {catchError, map, switchMap} from 'rxjs/operators';
 import {LoginUser} from '../../../shared/models/users/login-user';
 import {PublicUser, Token} from '../../../shared/models/users/responses';
-import {RegisterUserCommand} from '../../../shared/models/users/requests';
+import {EditUserCommand, RegisterUserCommand} from '../../../shared/models/users/requests';
 import {ConnectedUser} from '../../../shared/models/users/connected-user';
 import {RightService} from './right.service';
 import {TeamService} from './team.service';
@@ -99,6 +99,14 @@ export class AuthenticationService extends ApiHelperService {
 
   private setRememberMe(rememberMe: boolean): void {
     localStorage.setItem(this.rememberMeKey, String(rememberMe));
+  }
+
+  public updateMe(body: EditUserCommand): Observable<ConnectedUser> {
+    return this.http.put(`${this.apiUrl}/me`, body).pipe(
+      switchMap(_ => {
+        return this.getMe();
+      })
+    );
   }
 
 

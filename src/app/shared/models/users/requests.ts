@@ -8,3 +8,9 @@ export interface RegisterUserCommand {
   email: string;
   username: string;
 }
+
+export interface EditUserCommand {
+  password: string;
+  email: string;
+  username: string;
+}
