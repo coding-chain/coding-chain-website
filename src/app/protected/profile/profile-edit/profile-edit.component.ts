@@ -9,6 +9,7 @@ import {AuthenticationService} from '../../../core/services/http/authentication.
 import Swal from 'sweetalert2';
 import {SwalUtils} from '../../../shared/utils/swal.utils';
 
+
 @Component({
   selector: 'app-profile-edit',
   templateUrl: './profile-edit.component.html',
@@ -23,6 +24,8 @@ export class ProfileEditComponent implements OnInit {
   emailCtrl: FormControl;
   pwdCtrl: FormControl;
   confirmPwdCtrl: FormControl;
+  hidePassword: boolean;
+  hideConfirmPassword: boolean;
 
   user: SaveUser = {username: '', email: '', password: ''};
 
@@ -31,6 +34,8 @@ export class ProfileEditComponent implements OnInit {
   }
 
   constructor(private userStateService: UserStateService, private fb: FormBuilder, private authenticationService: AuthenticationService) {
+    this.hidePassword = true;
+    this.hideConfirmPassword = true;
   }
 
   ngOnInit(): void {
