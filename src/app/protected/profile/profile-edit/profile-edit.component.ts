@@ -5,8 +5,6 @@ import {ConnectedUser} from '../../../shared/models/users/connected-user';
 import {UserStateService} from '../../../core/services/states/user-state.service';
 import {SaveUser} from '../../../shared/models/users/save-user';
 import {eqCtrlsIfExistsValidator, eqCtrlsValidator} from '../../../shared/validators/value.validators';
-import {UserService} from '../../../core/services/http/user.service';
-import {switchMap} from 'rxjs/operators';
 import {AuthenticationService} from '../../../core/services/http/authentication.service';
 import Swal from 'sweetalert2';
 import {SwalUtils} from '../../../shared/utils/swal.utils';

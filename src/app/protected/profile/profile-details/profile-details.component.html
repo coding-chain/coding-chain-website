@@ -1,7 +1,7 @@
 <mat-card class="w-100" style="box-sizing: border-box">
   <mat-card-title class="d-flex justify-content-center">Profil</mat-card-title>
   <mat-card-content>
-    <ng-container *ngIf="user$ | async as user">
+    <ng-container *ngIf="connectedUser$ | async as user">
       <div class="ml-4">
         <div class="row mb-2">
           <span class="mat-body-1 mr-2"><b>Username :</b></span>
@@ -25,17 +25,17 @@
         </div>
       </div>
       <button color="primary" mat-raised-button [routerLink]="['/profile/edit']">Editer mon profil</button>
-      <div class="row w-100 py-2 justify-content-center px-2 mx-0" style="box-sizing: border-box">
+      <div class="row w-100 py-2 justify-content-center px-2 mx-0">
         <div class="w-50 px-2" color="primary">
           <h2>Mes Teams</h2>
           <app-profile-teams *ngFor="let team of teams" [team]="team"
-                             [connectedUser]="user$ | async"></app-profile-teams>
+                             [connectedUser]="connectedUser$ | async" (leaveTeam)="leaveTeam(team)"></app-profile-teams>
           <app-paged-list [cursor]="teamCursor"></app-paged-list>
         </div>
         <div class="w-50 px-2">
           <h2>Mes Tournois</h2>
           <app-profile-tournament *ngFor="let tournament of tournaments" [tournament]="tournament"
-                             [connectedUser]="user$ | async"></app-profile-tournament>
+                             [connectedUser]="connectedUser$ | async"></app-profile-tournament>
           <app-paged-list [cursor]="tournamentCursor"></app-paged-list>
         </div>
       </div>

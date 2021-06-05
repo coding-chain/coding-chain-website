@@ -1,6 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ITeamNavigation} from '../../../shared/models/teams/responses';
+import {ITeamNavigation, ITeamWithMembersResume} from '../../../shared/models/teams/responses';
 import {ConnectedUser} from '../../../shared/models/users/connected-user';
+import Swal from "sweetalert2";
+import {SwalUtils} from '../../../shared/utils/swal.utils';
 
 @Component({
   selector: 'app-profile-teams',
@@ -20,7 +22,7 @@ export class ProfileTeamsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  leave(): void {
-    this.leaveTeam.emit();
-  }
+   leave(): void {
+     this.leaveTeam.emit();
+   }
 }

@@ -9,6 +9,8 @@ import {ITournamentNavigation} from '../../../shared/models/tournaments/response
 import {ITournamentsFilter} from '../../../shared/models/tournaments/filters';
 import {ITeamNavigation, ITeamWithMembersResume} from '../../../shared/models/teams/responses';
 import {ITeamFilter} from '../../../shared/models/teams/filters';
+import Swal from "sweetalert2";
+import {SwalUtils} from '../../../shared/utils/swal.utils';
 
 @Component({
   selector: 'app-profile-details',
@@ -16,8 +18,9 @@ import {ITeamFilter} from '../../../shared/models/teams/filters';
   styles: []
 })
 export class ProfileDetailsComponent implements OnInit {
-  user$: Subject<ConnectedUser>;
-  teams: ITeamNavigation[] = [];
+  connectedUser: ConnectedUser;
+  connectedUser$: Subject<ConnectedUser>;
+  teams: ITeamWithMembersResume[] = [];
   tournaments: ITournamentNavigation[] = [];
   tournamentCursor: PageCursor<ITournamentNavigation, ITournamentsFilter>;
   teamCursor: PageCursor<ITeamWithMembersResume, ITeamFilter>;
@@ -27,9 +30,9 @@ export class ProfileDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.user$ = this.userStateService.userSubject$;
+    this.connectedUser$ = this.userStateService.userSubject$;
 
-    this.user$.subscribe(user => {
+    this.connectedUser$.subscribe(user => {
       this.tournamentCursor = this.tournamentService.getTournamentNavigationCursor({filterObj: {participantId: user.id}});
       this.tournamentCursor.resultsSubject$.subscribe(tournament => this.tournaments = tournament);
       this.tournamentCursor.current();
@@ -39,6 +42,15 @@ export class ProfileDetailsComponent implements OnInit {
         this.teams = team;
       });
       this.teamCursor.current();
+
+      this.connectedUser = user;
     });
+  }
+
+  leaveTeam(team: ITeamWithMembersResume): void {
+    this.teamService.removeTeamMember(team.id, this.connectedUser.id).subscribe(res => {
+      this.userStateService.reloadUser$().subscribe(user => this.teamCursor.current());
+      Swal.fire(SwalUtils.successOptions('Vous avez quitté l\'équipe'));
+    }, error => Swal.fire(SwalUtils.errorOptions('Vous n\'avez pas pu quitter l\'équipe')));
   }
 }
