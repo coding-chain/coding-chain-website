@@ -10,6 +10,12 @@ import Swal from 'sweetalert2';
 import {SwalUtils} from '../../../shared/utils/swal.utils';
 
 
+interface Body {
+  password?: string;
+  username?: string;
+  email?: string;
+}
+
 @Component({
   selector: 'app-profile-edit',
   templateUrl: './profile-edit.component.html',
@@ -40,8 +46,6 @@ export class ProfileEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.user$ = this.userStateService.userSubject$;
-    // TODO put user info into the fields
-
 
     this.usernameCtrl = this.fb.control(this.user?.username,
       [Validators.required, Validators.minLength(6), Validators.maxLength(20)]);
@@ -67,16 +71,43 @@ export class ProfileEditComponent implements OnInit {
     });
   }
 
-  onSubmitUser(): void {
-    this.authenticationService.updateMe({
-      username: this.usernameCtrl.value,
-      email: this.emailCtrl.value,
-      password: this.pwdCtrl.value
-    }).subscribe(
-      user => {
-        this.userStateService.updateUser(user);
-        Swal.fire( SwalUtils.successOptions('Vos informations on bien été mise à jour'));
+  isDisabled(): boolean {
+    let hasChanges = false;
+    if (!!this.pwdCtrl.value || !!this.confirmPwdCtrl.value) {
+      hasChanges = true;
+    }
+
+    this.user$.subscribe(user => {
+      if (this.usernameCtrl.value && this.usernameCtrl.value !== user.username) {
+        hasChanges = true;
       }
-    );
+      if (this.emailCtrl.value && this.emailCtrl.value !== user.email) {
+        hasChanges = true;
+      }
+    });
+
+    return hasChanges;
+  }
+
+  onSubmitUser(): void {
+    const body: Body = {};
+    if (this.pwdCtrl.value) {
+      body.password = this.pwdCtrl.value;
+    }
+    if (this.usernameCtrl.value && this.usernameCtrl.value !== this.user.username) {
+      body.username = this.usernameCtrl.value;
+    }
+    if (this.emailCtrl.value && this.emailCtrl.value !== this.user.email) {
+      body.email = this.emailCtrl.value;
+    }
+    if (body !== {}) {
+      this.authenticationService.updateMe(body).subscribe(
+        user => {
+          this.userStateService.updateUser(user);
+          Swal.fire(SwalUtils.successOptions('Vos informations on bien été mise à jour'));
+        }
+      );
+    }
+
   }
 }

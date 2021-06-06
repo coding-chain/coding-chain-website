@@ -32,12 +32,13 @@
               <div class="row">
                 <div class="col">
                   <mat-form-field appearance="outline" class="w-50 ml-5" id="edit-email">
-                  <mat-label>Email*</mat-label>
-                  <input [formControl]="emailCtrl" id="email-edit" matInput type="email">
-                  <mat-error *ngIf="emailCtrl.dirty && emailCtrl.hasError('email')">L'email doit respecter le format
-                    frederic@esgi.fr
-                  </mat-error>
-                  <mat-error *ngIf="emailCtrl.dirty && emailCtrl.hasError('required')">L'email est obligatoire</mat-error>
+                    <mat-label>Email*</mat-label>
+                    <input [formControl]="emailCtrl" id="email-edit" matInput type="email">
+                    <mat-error *ngIf="emailCtrl.dirty && emailCtrl.hasError('email')">L'email doit respecter le format
+                      frederic@esgi.fr
+                    </mat-error>
+                    <mat-error *ngIf="emailCtrl.dirty && emailCtrl.hasError('required')">L'email est obligatoire
+                    </mat-error>
                   </mat-form-field>
                 </div>
               </div>
@@ -54,8 +55,10 @@
                 <div class="col">
                   <mat-form-field appearance="outline" class="w-50 ml-5" id="edit-pwd">
                     <mat-label>Nouveau mot de passe*</mat-label>
-                    <input [formControl]="pwdCtrl" autocomplete="new-password" id="password-edit" matInput [type]="hidePassword ? 'password' : 'text'">
-                    <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+                    <input [formControl]="pwdCtrl" autocomplete="new-password" id="password-edit" matInput
+                           [type]="hidePassword ? 'password' : 'text'">
+                    <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword"
+                            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
                       <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
                     <mat-error *ngIf="pwdCtrl.dirty && pwdCtrl.hasError('minlength')">Minimum 8 caractères
@@ -70,8 +73,10 @@
                 <div class="col">
                   <mat-form-field appearance="outline" class="w-50 ml-5" id="edit-confirm-pwd">
                     <mat-label>Confirmation*</mat-label>
-                    <input [formControl]="confirmPwdCtrl" id="confirm-password-sign-up" matInput type="password" [type]="hideConfirmPassword ? 'password' : 'text'">
-                    <button mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPassword">
+                    <input [formControl]="confirmPwdCtrl" id="confirm-password-sign-up" matInput type="password"
+                           [type]="hideConfirmPassword ? 'password' : 'text'">
+                    <button mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword"
+                            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPassword">
                       <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
                     <mat-error *ngIf="confirmPwdCtrl.dirty && confirmPwdCtrl.hasError('required')">La confirmation
@@ -90,7 +95,7 @@
         </div>
         <div class="row d-flex justify-content-center mt-2">
           <button
-            [disabled]="!isFormValid"
+            [disabled]="!isFormValid || !isDisabled()"
             class="border-primary mx-2"
             color="primary"
             id="update-user-button"
@@ -101,7 +106,6 @@
           </button>
 
           <button
-            [disabled]="!isFormValid"
             class="border-warn mx-2"
             color="warn"
             id="cancel-user-button"
@@ -109,7 +113,7 @@
             type="submit"
             [routerLink]="['/profile']"
           >
-            Annuler
+            {{!isDisabled() ? 'Retour' : 'Annuler'}}
           </button>
 
         </div>

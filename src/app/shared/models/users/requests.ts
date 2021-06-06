@@ -10,7 +10,7 @@ export interface RegisterUserCommand {
 }
 
 export interface EditUserCommand {
-  password: string;
-  email: string;
-  username: string;
+  password?: string;
+  email?: string;
+  username?: string;
 }

@@ -1,20 +1,35 @@
 <mat-card class="w-100 mb-2">
   <div class="col-12">
     <div class="row justify-content-between">
-      <h2 class="my-0 col-3">{{team.name}}</h2>
-      <div *ngIf="connectedUser.isTeamAdmin(team.id)" class="col-1">
-        <button  mat-icon-button color="accent"
-                 [routerLink]="['/teams',team.id, 'edit']"
-                 matTooltip="Administrer l'équipe">
-          <mat-icon>edit</mat-icon>
-        </button>
+      <div class="col-10">
+        <h2 class="my-0">
+          {{team.name}}
+        </h2>
       </div>
-      <div *ngIf="connectedUser.isTeamMember(team.id) && !connectedUser.isTeamAdmin(team.id)" class="col-1">
-        <button  mat-icon-button
-                 color="warn" (click)="leave()"
-                 matTooltip="Quitter l'équipe">
-          <mat-icon>logout</mat-icon>
-        </button>
+      <div class="col-2">
+        <div
+          *ngIf="connectedUser.isTeamAdmin(team.id)"
+          class="col-1"
+        >
+          <button
+            mat-icon-button
+            color="primary"
+            [routerLink]="['/teams',team.id, 'edit']"
+            matTooltip="Administrer l'équipe"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+        <div *ngIf="connectedUser.isTeamMember(team.id) && !connectedUser.isTeamAdmin(team.id)"
+             class="col-1">
+          <button
+            mat-icon-button
+            color="warn" (click)="leave()"
+            matTooltip="Quitter l'équipe"
+          >
+            <mat-icon>logout</mat-icon>
+          </button>
+        </div>
       </div>
     </div>
   </div>
