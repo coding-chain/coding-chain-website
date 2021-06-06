@@ -9,6 +9,7 @@ import {PublicUser} from '../../../shared/models/users/responses';
 import {GetParams} from '../../../shared/models/http/get.params';
 import {PageCursor} from '../../../shared/models/pagination/page-cursor';
 import {IUsersFilter} from '../../../shared/models/users/filters';
+import {EditUserCommand} from '../../../shared/models/users/requests';
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +40,6 @@ export class UserService extends ApiHelperService {
       tap(res => console.log(res))
     );
   }
-
 
   /*public getUserResumeFiltered(obj: GetParams<PublicUser, IUsersFilter>): Observable<HateoasPageResult<PublicUser>> {
     console.log('getFiltered', this.getFiltered<PublicUser, PublicUser, IUsersFilter>(obj));
