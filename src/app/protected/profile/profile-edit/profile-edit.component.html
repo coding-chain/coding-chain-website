@@ -1,6 +1,6 @@
 <div class="container">
   <mat-card class="w-100 my-3">
-    <mat-card-title class="mb-3 d-flex justify-content-center">Editer mon profil</mat-card-title>
+    <mat-card-title class="mb-3 py-2 d-flex justify-content-center">Editer mon profil</mat-card-title>
     <mat-card-content>
       <form (ngSubmit)="onSubmitUser()" [formGroup]="userForm" class="p-4">
         <div class="d-flex flex-column" id="user-data">
@@ -89,9 +89,27 @@
           </mat-accordion>
         </div>
         <div class="row d-flex justify-content-center mt-2">
-          <button [disabled]="!isFormValid" class="border-primary mx-2" color="primary" id="update-user-button"
-                  mat-stroked-button type="submit">
-            Valider
+          <button
+            [disabled]="!isFormValid"
+            class="border-primary mx-2"
+            color="primary"
+            id="update-user-button"
+            mat-stroked-button
+            type="submit"
+          >
+            Enregister
+          </button>
+
+          <button
+            [disabled]="!isFormValid"
+            class="border-warn mx-2"
+            color="warn"
+            id="cancel-user-button"
+            mat-stroked-button
+            type="submit"
+            [routerLink]="['/profile']"
+          >
+            Annuler
           </button>
 
         </div>
