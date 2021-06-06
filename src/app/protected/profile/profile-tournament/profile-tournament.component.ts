@@ -2,7 +2,8 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ConnectedUser} from '../../../shared/models/users/connected-user';
 import {ITournamentResume} from '../../../shared/models/tournaments/tournament-resume';
 import {IProgrammingLanguage} from '../../../shared/models/programming-languages/responses';
-import {Theme} from '../../../core/services/states/theme.service';
+import {Theme, ThemeService} from '../../../core/services/states/theme.service';
+import {BehaviorSubject} from 'rxjs';
 
 @Component({
   selector: 'app-profile-tournament',
@@ -13,14 +14,18 @@ export class ProfileTournamentComponent implements OnInit {
 
   @Input() tournament: ITournamentResume;
   @Input() connectedUser: ConnectedUser;
-  @Input() theme: Theme;
+  theme: Theme;
   tournamentLanguages: IProgrammingLanguage[];
 
-  @Output() leaveTeam = new EventEmitter();
-
-  constructor() {
+  constructor(private readonly _themeService: ThemeService) {
   }
 
   ngOnInit(): void {
+    this.tournamentLanguages = this.tournament.steps.map(s => s.language);
+
+    this._themeService.themeSubject$.subscribe(theme => {
+      this.theme = theme;
+    });
+    this._themeService.publishTheme();
   }
 }
