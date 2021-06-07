@@ -32,6 +32,7 @@ export class ParticipationSession implements IParticipationSessionNavigation {
   lastError?: string;
   lastOutput?: string;
   processStartTime?: Date;
+  isReady: boolean;
   private _order = 0;
 
   constructor(props: Partial<ParticipationSession>) {
@@ -51,6 +52,7 @@ export class ParticipationSession implements IParticipationSessionNavigation {
     this.lastOutput = props.lastOutput;
     this.processStartTime = props.processStartTime;
     this.endDate = props.endDate;
+    this.isReady = props.isReady;
     this.init();
   }
 
@@ -87,6 +89,10 @@ export interface IParticipationExecutionResult {
   lastOutput?: string;
   processStartTime?: Date;
   endDate?: Date;
+}
+
+export interface IParticipationReadyResult {
+  isReady: boolean;
 }
 
 export interface IParticipationExecutionStart {

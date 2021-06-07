@@ -9,7 +9,7 @@
   </div>
   <div class="col-6">
     <button mat-stroked-button color="primary"
-            [disabled]="participationForm.invalid || !connectedUser.isParticipationAdmin || !!participation.processStartTime"
+            [disabled]="participationForm.invalid || !connectedUser.isParticipationAdmin || !!participation.processStartTime || !participation.isReady"
             (click)="executeClicked()">
       Exécuter
     </button>
@@ -22,13 +22,21 @@
     </button>
   </div>
 </div>
-<mat-progress-bar   *ngIf="participation.processStartTime"  mode="indeterminate" class="row mx-auto"></mat-progress-bar>
+<mat-progress-bar *ngIf="participation.processStartTime || !participation.isReady" mode="indeterminate"
+                  class="row mx-auto"
+                  matTooltip="{{!participation.isReady ? 'Participation en cours de prépartion'  : 'Code en cours d\'exécution' }}"
+                  [color]="!participation.isReady ? 'primary' : 'accent' "></mat-progress-bar>
 <div class="row justify-content-center">
   <ng-container *ngIf=" !(isValid$ | async)">
     <mat-error *ngIf="participationForm.hasError('noFunctionsError')">Pas de fonctions à exécuter</mat-error>
-    <mat-error *ngIf="participationForm.hasError('minFunctionsError')">Vous devez créer plus de {{participation.step.minFunctionsCount - 1}} fonctions</mat-error>
-    <mat-error *ngIf="participationForm.hasError('maxFunctionsError')">Vous devez créer moins de {{participation.step.maxFunctionsCount + 1 }} fonctions</mat-error>
-    <mat-error *ngIf="participationForm.hasError('pipelineTypeError')">Les types ne correspondent pas aux types attendus par
+    <mat-error *ngIf="participationForm.hasError('minFunctionsError')">Vous devez créer plus
+      de {{participation.step.minFunctionsCount - 1}} fonctions
+    </mat-error>
+    <mat-error *ngIf="participationForm.hasError('maxFunctionsError')">Vous devez créer moins
+      de {{participation.step.maxFunctionsCount + 1 }} fonctions
+    </mat-error>
+    <mat-error *ngIf="participationForm.hasError('pipelineTypeError')">Les types ne correspondent pas aux types attendus
+      par
       les tests
     </mat-error>
   </ng-container>

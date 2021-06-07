@@ -13,5 +13,6 @@ export interface IParticipationSessionNavigation {
   lastError?: string;
   lastOutput?: string;
   processStartTime?: Date;
+  isReady: boolean;
 }
 

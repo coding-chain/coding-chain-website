@@ -13,7 +13,6 @@ import {
 import {Theme, ThemeService} from '../../../core/services/states/theme.service';
 import * as _ from 'lodash';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {delay} from 'rxjs/operators';
 import {IPublicTestNavigation} from '../../../shared/models/tests/responses';
 import {ITestSession} from '../../../shared/models/tests-session/test-session';
 import {ParticipationService} from '../../../core/services/http/participation.service';
@@ -48,6 +47,7 @@ export class ParticipationPageComponent implements OnInit, OnDestroy {
   private reorderedFunctionsSub: Subscription;
   private processEndSub: Subscription;
   private processStartSub: Subscription;
+  private readySub: Subscription;
 
   constructor(
     private readonly _participationSessionService: ParticipationSessionService,
@@ -144,6 +144,7 @@ export class ParticipationPageComponent implements OnInit, OnDestroy {
     this.removedFuncSub?.unsubscribe();
     this.processStartSub?.unsubscribe();
     this.processEndSub?.unsubscribe();
+    this.readySub?.unsubscribe();
     return this._participationStateService.stopConnection();
   }
 
@@ -157,6 +158,7 @@ export class ParticipationPageComponent implements OnInit, OnDestroy {
     this.listenAddedFunction();
     this.listenUpdatedFunction();
     this.listenRemovedFunction();
+    this.listenReadyParticipation();
     this.listenCurrentUser(participationId);
   }
 
@@ -175,7 +177,7 @@ export class ParticipationPageComponent implements OnInit, OnDestroy {
   }
 
   private listenDisconnectedUser(): void {
-    this.disconnectedUserSub = this._participationStateService.disconnectedUser.subscribe(userId => {
+    this.disconnectedUserSub = this._participationStateService.disconnectedUser$.subscribe(userId => {
       _.remove(this.users, u => u.id === userId);
       this.users = [...this.users];
       this.currentUser.updateElevateRight(this.users);
@@ -183,7 +185,7 @@ export class ParticipationPageComponent implements OnInit, OnDestroy {
   }
 
   private listenUpdatedUser(): void {
-    this.updatedUserSub = this._participationStateService.updatedConnectedUser.subscribe(user => {
+    this.updatedUserSub = this._participationStateService.updatedConnectedUser$.subscribe(user => {
       const userForUpdate = this.users.find(u => u.id === user.id);
       if (userForUpdate) {
         userForUpdate.isAdmin = user.isAdmin;
@@ -193,7 +195,7 @@ export class ParticipationPageComponent implements OnInit, OnDestroy {
   }
 
   private listenEndedExecution(): void {
-    this.processEndSub = this._participationStateService.processEnd.subscribe(result => {
+    this.processEndSub = this._participationStateService.processEnd$.subscribe(result => {
       this.participation.lastOutput = result.lastOutput;
       this.participation.lastError = result.lastError;
       this.participation.passedTestsIds = result.passedTestsIds;
@@ -212,13 +214,13 @@ export class ParticipationPageComponent implements OnInit, OnDestroy {
   }
 
   private listenStartedExecution(): void {
-    this.processStartSub = this._participationStateService.processStart.subscribe(result => {
+    this.processStartSub = this._participationStateService.processStart$.subscribe(result => {
       this.participation.processStartTime = result.processStartTime;
     });
   }
 
   private listenConnectedUser(): void {
-    this.connectedUserSub = this._participationStateService.connectedUser.subscribe(user => {
+    this.connectedUserSub = this._participationStateService.connectedUser$.subscribe(user => {
       if (!user) {
         return;
       }
@@ -253,7 +255,7 @@ export class ParticipationPageComponent implements OnInit, OnDestroy {
   }
 
   private listenUpdatedFunction(): void {
-    this.updatedFunctionSub = this._participationStateService.updatedFunction.subscribe(func => {
+    this.updatedFunctionSub = this._participationStateService.updatedFunction$.subscribe(func => {
       const existingFunc = [...this.pipelineFunctions, ...this.stackFunctions].find(f => f.id === func.id);
       if (func.order !== existingFunc.order) {
         if (existingFunc.order == null && func.order) {
@@ -281,7 +283,7 @@ export class ParticipationPageComponent implements OnInit, OnDestroy {
   }
 
   private listenAddedFunction(): void {
-    this.addedFunctionsSub = this._participationStateService.addedFunction.subscribe(func => {
+    this.addedFunctionsSub = this._participationStateService.addedFunction$.subscribe(func => {
       this.participation.functions.push(func);
       this.stackFunctions.push(func);
       this.stackFunctions = [...this.stackFunctions];
@@ -289,7 +291,7 @@ export class ParticipationPageComponent implements OnInit, OnDestroy {
   }
 
   private listenReorderedFunctions(): void {
-    this.reorderedFunctionsSub = this._participationStateService.reorderedFunctions.subscribe(functions => {
+    this.reorderedFunctionsSub = this._participationStateService.reorderedFunctions$.subscribe(functions => {
       functions.forEach(f => {
         const existingFunc = this.pipelineFunctions.find(pF => pF.id === f.id);
         if (existingFunc) {
@@ -300,8 +302,14 @@ export class ParticipationPageComponent implements OnInit, OnDestroy {
     });
   }
 
+  private listenReadyParticipation(): void {
+    this.readySub = this._participationStateService.ready$.subscribe(event => {
+      this.participation.isReady = event.isReady;
+    });
+  }
+
   private listenRemovedFunction(): void {
-    this.removedFuncSub = this._participationStateService.removedFunction.subscribe(func => {
+    this.removedFuncSub = this._participationStateService.removedFunction$.subscribe(func => {
       let existingFunc = this.stackFunctions.find(f => f.id === func.functionId);
       if (existingFunc) {
         this.removeFromStack(existingFunc);
