@@ -14,14 +14,15 @@ export interface IMonacoLanguageMapping {
   monacoLanguage: MonacoLanguage;
 }
 
-export type MonacoLanguage = 'csharp';
+export type MonacoLanguage = 'csharp' |'typescript';
 
 const themeMapping: IMonacoThemeMapping[] = [
   {appTheme: 'dark', monacoTheme: 'vs-dark'},
   {appTheme: 'light', monacoTheme: 'vs'}
 ];
 const languageMapping: IMonacoLanguageMapping[] = [
-  {appLanguage: 'CSharp', monacoLanguage: 'csharp'}
+  {appLanguage: 'CSharp', monacoLanguage: 'csharp'},
+  {appLanguage: 'Typescript', monacoLanguage: 'typescript'},
 ];
 
 

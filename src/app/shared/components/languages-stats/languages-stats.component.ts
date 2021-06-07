@@ -20,7 +20,7 @@ export class LanguagesStatsComponent implements OnInit, OnChanges {
   public pieChartOptions: ChartOptions = {
     legend: {display: false}
   };
-  public pieChartLabels: Label[] = ['csharp', 'java'];
+  public pieChartLabels: Label[] = [];
   public pieChartData: ChartDataSets[] = [];
   public pieChartType: ChartType = 'doughnut';
   public pieChartLegend = true;
@@ -35,20 +35,21 @@ export class LanguagesStatsComponent implements OnInit, OnChanges {
     monkeyPatchChartJsLegend();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    this.initChartOptions();
+  }
+
   private initChartOptions(): void {
     const groupedLanguages = ObjectUtils.groupBy(this.languages, l => l.id);
     const data = [];
-    const backgroundColor = [];
+    const backgroundColor: string[] = [];
     groupedLanguages.forEach((value, key) => {
       data.push(value.length);
-      backgroundColor.push(this.theme === 'dark' ? value[0].color.dark : value[0].color.light );
+      this.pieChartLabels.push(value[0].label);
+      backgroundColor.push(this.theme === 'dark' ? value[0].color.dark : value[0].color.light);
     });
     this.pieChartData = [
       {data, backgroundColor},
     ];
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    this.initChartOptions();
   }
 }
