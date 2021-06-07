@@ -33,3 +33,6 @@ export interface IProcessEndEvent {
 export interface IProcessStartEvent {
   participationId: string;
 }
+export interface IParticipationReadyEvent {
+  participationId: string;
+}

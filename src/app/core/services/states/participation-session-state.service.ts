@@ -12,6 +12,7 @@ import {
   IParticipationFunctionAddedEvent,
   IParticipationFunctionRemovedEvent,
   IParticipationFunctionUpdatedEvent,
+  IParticipationReadyEvent,
   IProcessEndEvent,
   IProcessStartEvent,
   IReorderedFunctionsEvent
@@ -21,6 +22,7 @@ import {IFunctionSessionNavigation} from '../../../shared/models/function-sessio
 import {
   IParticipationExecutionResult,
   IParticipationExecutionStart,
+  IParticipationReadyResult,
   IUserSession,
   ParticipationSession
 } from '../../../shared/models/participations-session/participation-session';
@@ -34,18 +36,20 @@ import {FunctionFactory} from '../../../shared/models/function-session/function-
 })
 export class ParticipationSessionStateService {
 
-  public connectedUser = new Subject<IUserSession>();
-  public disconnectedUser = new Subject<string>();
-  public addedFunction = new Subject<AppFunction>();
-  public removedFunction = new Subject<IParticipationFunctionRemovedEvent>();
-  public updatedFunction = new Subject<AppFunction>();
-  public reorderedFunctions = new Subject<AppFunction[]>();
-  public updatedConnectedUser = new Subject<IUserSessionNavigation>();
-  public processStart = new Subject<IParticipationExecutionStart>();
-  public processEnd = new Subject<IParticipationExecutionResult>();
+  public connectedUser$ = new Subject<IUserSession>();
+  public disconnectedUser$ = new Subject<string>();
+  public addedFunction$ = new Subject<AppFunction>();
+  public removedFunction$ = new Subject<IParticipationFunctionRemovedEvent>();
+  public updatedFunction$ = new Subject<AppFunction>();
+  public reorderedFunctions$ = new Subject<AppFunction[]>();
+  public updatedConnectedUser$ = new Subject<IUserSessionNavigation>();
+  public processStart$ = new Subject<IParticipationExecutionStart>();
+  public processEnd$ = new Subject<IParticipationExecutionResult>();
+  public ready$ = new Subject<IParticipationReadyResult>();
   private readonly connectionTimeout = environment.realTimeConnectionTimeout;
   private readonly onConnectedUserMethod = 'OnConnectedUser';
   private readonly onDisconnectedUserMethod = 'OnDisconnectedUser';
+  private readonly onReady = 'OnReady';
   private readonly onFunctionAdded = 'OnFunctionAdded';
   private readonly onFunctionRemoved = 'OnFunctionRemoved';
   private readonly onFunctionUpdated = 'OnFunctionUpdated';
@@ -83,7 +87,7 @@ export class ParticipationSessionStateService {
       switchMap(connected => {
         console.log('CONNECTED', connected);
         this.listen();
-        return this.connectedUser.asObservable().pipe(
+        return this.connectedUser$.asObservable().pipe(
           switchMap(connectedUser => {
             console.log('STATE CONNECTED USER', connectedUser);
             return this._participationSessionService.getParticipation(participationId);
@@ -107,6 +111,7 @@ export class ParticipationSessionStateService {
   private listen(): void {
     this.listenConnectedUser();
     this.listenDisconnectedUser();
+    this.listenParticipationReady();
     this.listenUpdatedUser();
     this.listenRemovedFunction();
     this.listenAddedFunction();
@@ -121,17 +126,28 @@ export class ParticipationSessionStateService {
       console.log('ON CONNECTED USER', event);
       if (!this._participation?.id) {
         console.log('INIT CONNECTED USER', event);
-        this._zone.run(() => this.connectedUser.next(null));
+        this._zone.run(() => this.connectedUser$.next(null));
       }
       this._participationSessionService.getUserSession(this._participation.id, event.userId).subscribe(user => {
-        this._zone.run(() => this.connectedUser.next(user));
+        this._zone.run(() => this.connectedUser$.next(user));
       });
     });
   }
 
   private listenDisconnectedUser(): void {
     this.hubConnection.on(this.onDisconnectedUserMethod, (event: IConnectedUserRemovedEvent) => {
-      this._zone.run(() => this.disconnectedUser.next(event.userId));
+      this._zone.run(() => this.disconnectedUser$.next(event.userId));
+    });
+  }
+
+  private listenParticipationReady(): void {
+    this.hubConnection.on(this.onReady, (event: IParticipationReadyEvent) => {
+      this._participationSessionService.getSessionById(this._participation.id).subscribe(participation => {
+        const isReady: IParticipationReadyResult = {
+          isReady: participation.isReady,
+        };
+        this._zone.run(() => this.ready$.next(isReady));
+      });
     });
   }
 
@@ -139,7 +155,7 @@ export class ParticipationSessionStateService {
     this.hubConnection.on(this.onFunctionsReordered, (event: IReorderedFunctionsEvent) => {
       this._participationSessionService.getFunctions(this._participation.id, event).subscribe(functions => {
         const reorderedFunctions = functions.map(f => this.toAppFunction(f));
-        this._zone.run(() => this.reorderedFunctions.next(reorderedFunctions));
+        this._zone.run(() => this.reorderedFunctions$.next(reorderedFunctions));
       });
     });
   }
@@ -148,7 +164,7 @@ export class ParticipationSessionStateService {
   private listenUpdatedUser(): void {
     this.hubConnection.on(this.onUpdatedConnectedUser, (event: IConnectedUserUpdatedEvent) => {
       this._participationSessionService.getUser(this._participation.id, event.userId)
-        .subscribe(user => this._zone.run(() => this.updatedConnectedUser.next(user)));
+        .subscribe(user => this._zone.run(() => this.updatedConnectedUser$.next(user)));
     });
   }
 
@@ -157,7 +173,7 @@ export class ParticipationSessionStateService {
       this._participationSessionService.getFunctionById(this._participation.id, event.functionId)
         .subscribe(func => {
           const addedFunction = this.toAppFunction(func);
-          this._zone.run(() => this.addedFunction.next(addedFunction));
+          this._zone.run(() => this.addedFunction$.next(addedFunction));
         });
     });
   }
@@ -165,7 +181,7 @@ export class ParticipationSessionStateService {
 
   private listenRemovedFunction(): void {
     this.hubConnection.on(this.onFunctionRemoved, (event: IParticipationFunctionRemovedEvent) => {
-      this._zone.run(() => this.removedFunction.next(event));
+      this._zone.run(() => this.removedFunction$.next(event));
     });
   }
 
@@ -174,7 +190,7 @@ export class ParticipationSessionStateService {
       this._participationSessionService.getFunctionById(this._participation.id, event.functionId)
         .subscribe(func => {
           const updatedFunc = this.toAppFunction(func);
-          this._zone.run(() => this.updatedFunction.next(updatedFunc));
+          this._zone.run(() => this.updatedFunction$.next(updatedFunc));
         });
     });
   }
@@ -185,7 +201,7 @@ export class ParticipationSessionStateService {
         const executionStart: IParticipationExecutionStart = {
           processStartTime: participation.processStartTime,
         };
-        this._zone.run(() => this.processStart.next(executionStart));
+        this._zone.run(() => this.processStart$.next(executionStart));
       });
     });
   }
@@ -200,7 +216,7 @@ export class ParticipationSessionStateService {
           passedTestsIds: participation.passedTestsIds,
           endDate: participation.endDate
         };
-        this._zone.run(() => this.processEnd.next(executionResult));
+        this._zone.run(() => this.processEnd$.next(executionResult));
       });
     });
   }
