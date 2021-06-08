@@ -16,7 +16,7 @@ import {
   tournamentEditionToUpdateTournamentCommand
 } from '../../../shared/models/tournaments/commands';
 import {ITournamentsFilter} from '../../../shared/models/tournaments/filters';
-import {ITournamentResume} from '../../../shared/models/tournaments/tournament-resume';
+import {ITournamentResume, ITournamentResumeStep} from '../../../shared/models/tournaments/tournament-resume';
 import {HateoasPageResponse} from '../../../shared/models/pagination/hateoas-page-response';
 import * as _ from 'lodash';
 import {StepService} from './step.service';
@@ -29,6 +29,7 @@ import {TestService} from './test.service';
 import {ITestNavigation} from '../../../shared/models/tests/responses';
 import {cloneStepResume, IStepResume} from '../../../shared/models/steps/responses';
 import {ObjectUtils} from '../../../shared/utils/object.utils';
+import {ITournamentDetail} from '../../../shared/models/tournaments/tournaments-detail';
 
 @Injectable({
   providedIn: 'root'
@@ -122,6 +123,20 @@ export class TournamentService extends ApiHelperService {
       }),
       catchError(err => EMPTY)
     );
+  }
+
+  public getOneTournamentDetail(id: string): Observable<ITournamentDetail> {
+    return this.getById(id).pipe(
+      switchMap(t => forkJoin({tournament: of(t), languages: this._languageService.getAll(), steps: this.getAllTournamentsSteps(t.id)})),
+      map(tournament => {
+        const tournamentSteps = this.getTournamentStepResume(tournament.languages, tournament.steps);
+        return {steps: tournamentSteps, ...tournament.tournament};
+      })
+    );
+  }
+  private getTournamentStepResume(languages: IProgrammingLanguage[], tournamentSteps: ITournamentStepNavigation[])
+    : ITournamentResumeStep[] {
+    return tournamentSteps.map(step => ({language: languages.find(l => l.id === step.languageId), ...step}));
   }
 
   public getTournamentEdition(id: string): Observable<ITournamentEdition> {
@@ -277,6 +292,7 @@ export class TournamentService extends ApiHelperService {
     });
     return tournaments;
   }
+
 
   private getTournamentsWithSteps(tournaments: ITournamentResume[], languages: IProgrammingLanguageNavigation[]): Observable<any> {
     const steps$ = tournaments

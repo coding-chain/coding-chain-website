@@ -2,7 +2,7 @@ import {Component, Renderer2} from '@angular/core';
 import {NavigationEnd, NavigationStart, Router} from '@angular/router';
 import {UserStateService} from './core/services/states/user-state.service';
 import {ThemeService} from './core/services/states/theme.service';
-import * as confetti from 'canvas-confetti';
+import {TournamentService} from './core/services/http/tournament.service';
 
 @Component({
   selector: 'app-root',
@@ -12,8 +12,10 @@ import * as confetti from 'canvas-confetti';
 export class AppComponent {
   loading: boolean;
 
-  constructor(private readonly router: Router, private readonly userStateService: UserStateService, private readonly _themeService: ThemeService, private readonly _renderer: Renderer2) {
-
+  constructor(private readonly router: Router,
+              private readonly userStateService: UserStateService,
+              private readonly _themeService: ThemeService,
+              private readonly _renderer: Renderer2) {
     this.userStateService.loadUser();
     this.loading = false;
     this._themeService.themeSubject$.subscribe(theme => {

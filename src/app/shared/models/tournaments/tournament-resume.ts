@@ -13,6 +13,8 @@ export interface ITournamentResume extends ITournamentNavigation {
   participations: IParticipationNavigation[];
 }
 
+
+
 export interface ITournamentResumeStep extends ITournamentStepNavigation {
   id: string;
   isOptional: boolean;

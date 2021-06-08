@@ -22,6 +22,8 @@ export interface IStepResume extends IStepNavigation {
   tests: ITestNavigation[];
 }
 
+
+
 export function cloneStepNavigation(s: IStepNavigation): IStepNavigation {
   return {
     minFunctionsCount: s.minFunctionsCount,

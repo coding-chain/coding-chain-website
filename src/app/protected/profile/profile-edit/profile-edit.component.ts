@@ -1,10 +1,10 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {ConnectedUser} from '../../../shared/models/users/connected-user';
 import {UserStateService} from '../../../core/services/states/user-state.service';
 import {SaveUser} from '../../../shared/models/users/save-user';
-import {eqCtrlsIfExistsValidator, eqCtrlsValidator} from '../../../shared/validators/value.validators';
+import {eqCtrlsIfExistsValidator} from '../../../shared/validators/value.validators';
 import {AuthenticationService} from '../../../core/services/http/authentication.service';
 import Swal from 'sweetalert2';
 import {SwalUtils} from '../../../shared/utils/swal.utils';
@@ -35,13 +35,13 @@ export class ProfileEditComponent implements OnInit {
 
   user: SaveUser = {username: '', email: '', password: ''};
 
-  get isFormValid(): boolean {
-    return this.userForm.valid;
-  }
-
   constructor(private userStateService: UserStateService, private fb: FormBuilder, private authenticationService: AuthenticationService) {
     this.hidePassword = true;
     this.hideConfirmPassword = true;
+  }
+
+  get isFormValid(): boolean {
+    return this.userForm.valid;
   }
 
   ngOnInit(): void {
