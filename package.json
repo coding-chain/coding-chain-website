@@ -6,6 +6,7 @@
     "start": " ng serve",
     "copyGeneratedClient": "copyfiles -f ../coding-chain-api/coding_chain_api_ts_client/api.generated.clients.ts src/app/core/coding_chain_api_ts_client",
     "build": "ng build",
+    "build-docker-local": "ng build --configuration=docker-local",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

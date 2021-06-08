@@ -134,6 +134,7 @@ export class TournamentService extends ApiHelperService {
       })
     );
   }
+
   private getTournamentStepResume(languages: IProgrammingLanguage[], tournamentSteps: ITournamentStepNavigation[])
     : ITournamentResumeStep[] {
     return tournamentSteps.map(step => ({language: languages.find(l => l.id === step.languageId), ...step}));
