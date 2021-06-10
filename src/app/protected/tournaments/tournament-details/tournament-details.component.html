@@ -1,0 +1,74 @@
+<mat-card class="w-100">
+  <div class="row d-flex justify-content-center">
+      <h2>Détails du tournois</h2>
+  </div>
+
+  <div>
+    <h3 class="row mb-4">
+      <div class="col-6 px-0">
+        <span class="mr-1"><b>Nom :</b></span>
+        <span>{{tournament.name}}</span>
+      </div>
+      <div class="col-6 px-0 d-flex justify-content-end">
+        <mat-chip-list>
+          <mat-chip
+            [color]="tournament.isPublished ? 'primary' : 'warn'"
+            selected
+          >
+            {{tournament.isPublished ? 'Publié' : 'Non-publié'}}
+          </mat-chip>
+        </mat-chip-list>
+      </div>
+    </h3>
+
+    <div class="mb-4">
+      <h3 class="row mb-2">
+        <span><b>Période :</b></span>
+      </h3>
+
+      <div class="row mb-2 px-3">
+        <mat-progress-bar
+          [color]="'primary'"
+          [mode]="'determinate'"
+          [value]="progressCursor"
+          [bufferValue]="75">
+        </mat-progress-bar>
+      </div>
+
+      <h4 class="row mb-2">
+        <div class="col-6 px-0">
+          <span class="mr-1"><b>Début : </b></span>
+          <span>{{startDateTournament}}</span>
+        </div>
+        <div class="col-6 px-0 d-flex justify-content-end">
+          <span class="mr-1"><b>Fin : </b></span>
+          <span>{{endDateTournament}}</span>
+        </div>
+      </h4>
+    </div>
+
+    <div class="mb-4">
+      <h3 class="row mb-3">
+        <span><b>Répartition des langages :</b></span>
+      </h3>
+      <div class="text-center">
+        <app-languages-stats
+          [languages]="tournamentLanguages"
+          [theme]="theme"
+        >
+        </app-languages-stats>
+      </div>
+    </div>
+
+    <div>
+      <h3 class="row mb-2">
+        <span><b>Description :</b></span>
+      </h3>
+      <div [innerHTML]="tournament.description"></div>
+    </div>
+  </div>
+
+</mat-card>
+
+
+

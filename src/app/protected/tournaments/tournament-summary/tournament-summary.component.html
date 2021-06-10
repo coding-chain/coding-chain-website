@@ -1,0 +1,16 @@
+<ng-container *ngIf="tournament">
+  <mat-card class="w-100">
+    <mat-card-title class="py-2 d-flex justify-content-center">Tournois</mat-card-title>
+    <mat-card-content class="p-4">
+
+      <!-- Details of tournament-->
+      <div class="row">
+        <div class="col-6">
+          <app-tournament-details [tournament]="tournament"></app-tournament-details>
+        </div>
+      </div>
+      <!-- /Details of tournament-->
+
+    </mat-card-content>
+  </mat-card>
+</ng-container>
