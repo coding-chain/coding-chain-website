@@ -3,14 +3,20 @@
     <mat-card-title class="py-2 d-flex justify-content-center">Tournois</mat-card-title>
     <mat-card-content class="p-4">
 
-      <!-- Details of tournament-->
-      <div class="row">
+      <div class="row mb-4">
         <div class="col-6">
           <app-tournament-summary-details [tournament]="tournament"></app-tournament-summary-details>
         </div>
+        <div class="col-6">
+          <app-tournament-summary-teams-list></app-tournament-summary-teams-list>
+        </div>
       </div>
-      <!-- /Details of tournament-->
 
+      <div class="row">
+        <div class="col-12">
+          <app-tournament-summary-steps-list></app-tournament-summary-steps-list>
+        </div>
+      </div>
     </mat-card-content>
   </mat-card>
 </ng-container>
