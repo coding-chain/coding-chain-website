@@ -22,6 +22,7 @@ import {TournamentSummaryDetailsComponent} from './tournament-summary-details/to
 import {TournamentSummaryComponent} from './tournament-summary/tournament-summary.component';
 import {TournamentSummaryStepsListComponent} from './tournament-summary-steps-list/tournament-summary-steps-list.component';
 import {TournamentSummaryTeamsListComponent} from './tournament-summary-teams-list/tournament-summary-teams-list.component';
+import {TournamentSummaryStepComponent} from './tournament-summary-step/tournament-summary-step.component';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import {TournamentSummaryTeamsListComponent} from './tournament-summary-teams-li
     TournamentSummaryComponent,
     TournamentSummaryDetailsComponent,
     TournamentSummaryStepsListComponent,
+    TournamentSummaryStepComponent,
     TournamentSummaryTeamsListComponent
   ],
   imports: [

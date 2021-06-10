@@ -1,0 +1,27 @@
+<mat-card class="w-100">
+  <div class="row">
+    <div class="col-6">
+      <h3><b>{{step.name}}</b></h3>
+    </div>
+    <div class="col-6 d-flex justify-content-end">
+      <app-star-rate
+        [(rate)]="step.difficulty"
+        [disabled]="step.isPublished"
+        [maxRate]="5"
+        dim="15px"
+      >
+      </app-star-rate>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-6">
+      <mat-chip-list>
+<!--        <app-language-chip [theme]="theme" [language]="step.language" ></app-language-chip>-->
+      </mat-chip-list>
+    </div>
+    <div class="col-6 d-flex justify-content-end">
+    </div>
+  </div>
+  <p>my step</p>
+</mat-card>
