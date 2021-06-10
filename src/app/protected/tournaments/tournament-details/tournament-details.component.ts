@@ -18,6 +18,7 @@ export class TournamentDetailsComponent implements OnInit {
   theme: Theme;
   tournamentLanguages: IProgrammingLanguage[];
   progressCursor: number;
+  remainingDays: number;
 
   constructor(private readonly _themeService: ThemeService) {
   }
@@ -31,7 +32,7 @@ export class TournamentDetailsComponent implements OnInit {
     this.tournamentLanguages = this.tournament.steps.map(s => s.language);
     this.startDateTournament = DateUtils.dateToString(this.tournament.startDate);
     this.endDateTournament = DateUtils.dateToString(this.tournament.endDate);
-    this.test();
+    this.remainingDays = this.calculateRemainingDays();
     this.progressCursor = this.progressTournamentDate(this.tournament.startDate, this.tournament.endDate);
   }
 
@@ -39,7 +40,7 @@ export class TournamentDetailsComponent implements OnInit {
     return (new Date().getTime() - start.getTime()) / (end.getTime() - start.getTime()) * 100;
   }
 
-  private test(): void {
-    // console.log('temps restant', this.tournament.endDate.getTime() - this.tournament.startDate.getTime() );
+  private calculateRemainingDays(): number {
+    return Math.round((this.tournament.endDate.getTime() - new Date().getTime()) / (1000 * 3600 * 24));
   }
 }

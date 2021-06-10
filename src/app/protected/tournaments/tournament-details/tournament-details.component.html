@@ -28,10 +28,12 @@
 
       <div class="row mb-2 px-3">
         <mat-progress-bar
-          [color]="'primary'"
+          [color]="progressCursor < 100 ? 'primary': 'warn'"
           [mode]="'determinate'"
           [value]="progressCursor"
-          [bufferValue]="75">
+          [bufferValue]="75"
+          [matTooltip]="remainingDays > 0 ? 'Temps restant: ' + remainingDays.toString() + ' jours' : 'Temps écoulé'"
+        >
         </mat-progress-bar>
       </div>
 
