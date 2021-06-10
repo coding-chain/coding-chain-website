@@ -6,11 +6,11 @@ import {IProgrammingLanguage} from '../../../shared/models/programming-languages
 
 
 @Component({
-  selector: 'app-tournament-details',
-  templateUrl: './tournament-details.component.html',
+  selector: 'app-tournament-summary-details',
+  templateUrl: './tournament-summary-details.component.html',
   styles: []
 })
-export class TournamentDetailsComponent implements OnInit {
+export class TournamentSummaryDetailsComponent implements OnInit {
 
   @Input() tournament: ITournamentDetail;
   startDateTournament: string;
