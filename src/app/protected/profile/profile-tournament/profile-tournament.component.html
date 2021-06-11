@@ -1,9 +1,9 @@
 <mat-card class="w-100 mb-2">
   <mat-card-content class="col-12">
     <div class="row  d-flex justify-content-between align-items-center">
-      <div class="col-10">
+      <div class="col-9">
         <div class="row">
-          <div class="col-7">
+          <div class="col-9">
             <h2 class="my-0">
               {{tournament.name}}
             </h2>
@@ -19,8 +19,19 @@
           </div>
         </div>
       </div>
-      <div class="col-2">
-          <div class="col-1">
+      <div class="col-3">
+        <div class="row">
+          <div class="col-6">
+            <button
+              [routerLink]="['/tournaments', tournament.id, 'details']"
+              mat-icon-button
+              matTooltip="fiche du tournois"
+              color="primary"
+            >
+              <mat-icon>more</mat-icon>
+            </button>
+          </div>
+          <div class="col-6">
             <button
               *ngIf="connectedUser?.isAdmin() || connectedUser?.isCreator()"
               [routerLink]="['/tournaments', tournament.id, 'edit']"
@@ -33,5 +44,6 @@
           </div>
         </div>
       </div>
+    </div>
   </mat-card-content>
 </mat-card>
