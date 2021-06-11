@@ -6,14 +6,14 @@ export class ConfettiUtils {
     let reset = false;
     (function frame(): void {
       confetti({
-        particleCount: colors.length,
+        particleCount: 2,
         angle: 60,
         spread: 55,
         origin: {x: 0},
         colors
       });
       confetti({
-        particleCount: colors.length,
+        particleCount: 2,
         angle: 120,
         spread: 55,
         origin: {x: 1},
