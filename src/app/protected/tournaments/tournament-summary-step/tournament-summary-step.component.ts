@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {IStepNavigation} from '../../../shared/models/steps/responses';
 import {Theme, ThemeService} from '../../../core/services/states/theme.service';
+import {ITournamentResumeStep} from '../../../shared/models/tournaments/tournament-resume';
 
 @Component({
   selector: 'app-tournament-summary-step',
@@ -8,7 +8,7 @@ import {Theme, ThemeService} from '../../../core/services/states/theme.service';
   styles: []
 })
 export class TournamentSummaryStepComponent implements OnInit {
-  @Input() step: IStepNavigation;
+  @Input() step: ITournamentResumeStep;
   theme: Theme;
 
   constructor(private readonly _themeService: ThemeService) {

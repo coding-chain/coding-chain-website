@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {IStepNavigation} from '../../../shared/models/steps/responses';
+import {ITournamentResumeStep} from '../../../shared/models/tournaments/tournament-resume';
 
 @Component({
   selector: 'app-tournament-summary-steps-list',
@@ -7,12 +8,11 @@ import {IStepNavigation} from '../../../shared/models/steps/responses';
   styles: []
 })
 export class TournamentSummaryStepsListComponent implements OnInit {
-  @Input() steps: IStepNavigation[];
+  @Input() steps: ITournamentResumeStep[];
 
   constructor() {
   }
 
   ngOnInit(): void {
   }
-
 }
