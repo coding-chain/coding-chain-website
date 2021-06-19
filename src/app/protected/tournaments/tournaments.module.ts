@@ -18,6 +18,12 @@ import {TournamentsEditStepsListComponent} from './tournaments-edit-steps-list/t
 import {StepsModule} from '../steps/steps.module';
 import { TournamentsJoinDialogComponent } from './tournaments-join-dialog/tournaments-join-dialog.component';
 import { TournamentsLeaveDialogComponent } from './tournaments-leave-dialog/tournaments-leave-dialog.component';
+import {TournamentSummaryDetailsComponent} from './tournament-summary-details/tournament-summary-details.component';
+import {TournamentSummaryComponent} from './tournament-summary/tournament-summary.component';
+import {TournamentSummaryStepsListComponent} from './tournament-summary-steps-list/tournament-summary-steps-list.component';
+import {TournamentSummaryTeamsListComponent} from './tournament-summary-teams-list/tournament-summary-teams-list.component';
+import {TournamentSummaryStepComponent} from './tournament-summary-step/tournament-summary-step.component';
+import {TournamentSummaryTeamComponent} from './tournament-summary-team/tournament-summary-team.component';
 
 
 @NgModule({
@@ -35,7 +41,13 @@ import { TournamentsLeaveDialogComponent } from './tournaments-leave-dialog/tour
     TournamentsEditFormComponent,
     TournamentsEditStepsListComponent,
     TournamentsJoinDialogComponent,
-    TournamentsLeaveDialogComponent
+    TournamentsLeaveDialogComponent,
+    TournamentSummaryComponent,
+    TournamentSummaryDetailsComponent,
+    TournamentSummaryStepsListComponent,
+    TournamentSummaryStepComponent,
+    TournamentSummaryTeamsListComponent,
+    TournamentSummaryTeamComponent
   ],
   imports: [
     CommonModule,

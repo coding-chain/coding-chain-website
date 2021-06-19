@@ -1,0 +1,22 @@
+<ng-container *ngIf="tournament">
+  <mat-card class="w-100">
+    <mat-card-title class="py-2 d-flex justify-content-center">Tournois</mat-card-title>
+    <mat-card-content class="p-4">
+
+      <div class="row mb-4">
+        <div class="col-6">
+          <app-tournament-summary-details [theme]="theme" [colors]="colors" [tournament]="tournament"></app-tournament-summary-details>
+        </div>
+        <div class="col-6">
+          <app-tournament-summary-teams-list [colors]="colors"></app-tournament-summary-teams-list>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <app-tournament-summary-steps-list [colors]="colors" [steps]="tournament.steps"></app-tournament-summary-steps-list>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</ng-container>

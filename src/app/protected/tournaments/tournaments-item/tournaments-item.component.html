@@ -5,15 +5,29 @@
       <div class="col-7">
         <h1 class="my-0">{{tournament.name}}</h1>
       </div>
-      <div class="col-5 ">
+      <div class="col-5">
         <div class="row align-items-center justify-content-end">
-          <div class="col-3 text-center">
-            <button *ngIf="currentUser?.isAdmin() || currentUser?.isCreator()"
-                    [routerLink]="['/tournaments', tournament.id, 'edit']"
-                    mat-icon-button matTooltip="Modifier" color="primary">
-              <mat-icon>edit</mat-icon>
-            </button>
+
+
+          <div class="col-3">
+            <div class="row">
+              <div class="col-6 text-center">
+                <button
+                  [routerLink]="['/tournaments', tournament.id, 'details']"
+                  mat-icon-button matTooltip="Détail du tournois" color="primary">
+                  <mat-icon>more</mat-icon>
+                </button>
+              </div>
+              <div class="col-6 text-center">
+                <button *ngIf="currentUser?.isAdmin() || currentUser?.isCreator()"
+                        [routerLink]="['/tournaments', tournament.id, 'edit']"
+                        mat-icon-button matTooltip="Modifier" color="primary">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </div>
+            </div>
           </div>
+
           <div *ngIf="canJoin()" class="col-3 text-center">
             <button  (click)="openJoinDialog()"
                     mat-stroked-button color="accent">
