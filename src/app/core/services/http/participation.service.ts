@@ -4,12 +4,14 @@ import {ApiHelperService, HateoasPageResult} from './api-helper.service';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {HateoasResponse} from '../../../shared/models/pagination/hateoas-response';
-import {map} from 'rxjs/operators';
+import {map, switchMap} from 'rxjs/operators';
 import {IParticipationNavigation} from '../../../shared/models/participations/responses';
 import {PageCursor} from '../../../shared/models/pagination/page-cursor';
 import {GetParams} from '../../../shared/models/http/get.params';
 import {ICreateParticipationCommand} from '../../../shared/models/participations/commands';
 import {IParticipationFilter} from '../../../shared/models/participations/filters';
+import {TournamentService} from './tournament.service';
+import {ITournamentNavigation} from '../../../shared/models/tournaments/responses';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +20,7 @@ export class ParticipationService extends ApiHelperService {
 
   protected apiUrl = `${environment.apiUrl}/participations`;
 
-  constructor(http: HttpClient) {
+  constructor(http: HttpClient, private readonly _tournamentService: TournamentService) {
     super(http);
     this.getParticipationNavigationPaginatedFiltered = this.getParticipationNavigationPaginatedFiltered.bind(this);
   }
@@ -41,6 +43,14 @@ export class ParticipationService extends ApiHelperService {
         map(res => res.result)
       );
   }
+
+  public getTournamentNavigationByParticipationId(id: string): Observable<ITournamentNavigation | undefined> {
+    return this.http.get<HateoasResponse<IParticipationNavigation> | undefined>(`${this.apiUrl}/${id}`)
+      .pipe(
+        switchMap(res => this._tournamentService.getById(res.result.tournamentId))
+      );
+  }
+
 
   public getCursor(query: GetParams<IParticipationNavigation, IParticipationFilter>)
     : PageCursor<IParticipationNavigation, IParticipationFilter> {

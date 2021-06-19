@@ -13,6 +13,7 @@ const routes: Routes = [
       {path: 'tournaments', loadChildren: () => import ('./tournaments/tournaments.module').then(m => m.TournamentsModule)},
       {path: 'steps', loadChildren: () => import ('./steps/steps.module').then(m => m.StepsModule)},
       {path: 'teams', loadChildren: () => import('./teams/teams.module').then(m => m.TeamsModule)},
+      {path: 'plagiarism', loadChildren: () => import('./plagiarism/plagiarism.module').then(m => m.PlagiarismModule)},
     ]
   }
 ];

@@ -1,0 +1,29 @@
+<mat-card class="row w-100 mx-0">
+  <div class="col">
+    <div class="row justify-content-between w-100 align-items-center">
+      <div class="col-2 d-flex" matTooltip="Utilisateur plagié">
+        <button mat-icon-button color="accent">
+          <mat-icon>person</mat-icon>
+        </button>
+        <h4 class="my-auto">{{plagiarizedFunction.lastEditor.username}}</h4>
+      </div>
+      <h3 class="my-auto col-4" matTooltip="Nom de la fonction plagiée">
+        {{plagiarizedAppFunction.name}}
+      </h3>
+      <div class="col-4">
+        <div class="row align-items-center">
+          <h4 class="my-0">Similarité</h4>
+          <mat-progress-bar [value]="rate"  color="primary" class="col-9"   matTooltip="{{plagiarizedFunction.rate | percent}}">
+          </mat-progress-bar>
+        </div>
+      </div>
+      <button mat-stroked-button color="accent" (click)="compareFunctions()">
+        Comparer
+      </button>
+      <mat-chip-list>
+        <app-language-chip [language]="plagiarizedFunction.language" [theme]="theme"></app-language-chip>
+      </mat-chip-list>
+
+    </div>
+  </div>
+</mat-card>

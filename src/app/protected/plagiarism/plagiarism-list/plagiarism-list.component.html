@@ -1,0 +1,8 @@
+<app-plagiarism-filter *ngIf="languages$ | async " [languages]="languages"
+                       (filterChanged)="updateFilter($event)" class="col my-3"></app-plagiarism-filter>
+<app-suspect-function-item *ngFor="let function of suspectFunctions$ |async" [suspectFunction]="function"
+                           [theme]="theme$ | async"
+                           class="row my-2">
+</app-suspect-function-item>
+<app-paged-list [cursor]="functionsCursor"></app-paged-list>
+

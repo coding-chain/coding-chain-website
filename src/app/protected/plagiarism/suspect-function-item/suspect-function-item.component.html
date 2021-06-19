@@ -1,0 +1,29 @@
+<mat-card class="row w-100 mx-0">
+  <div class="col">
+    <div class="row  w-100 justify-content-between align-items-center">
+      <div class="col-2 d-flex" matTooltip="Utilisateur suspect">
+        <button mat-icon-button color="warn">
+          <mat-icon>person</mat-icon>
+        </button>
+        <h4 class="my-auto">{{suspectFunction.lastEditor.username}}</h4>
+      </div>
+      <h3 class="my-auto" matTooltip="Nom de la fonction suspecte">
+        {{suspectAppFunction.name}}
+      </h3>
+      <mat-chip-list>
+        <app-language-chip [language]="suspectFunction.language" [theme]="theme"></app-language-chip>
+      </mat-chip-list>
+    </div>
+    <div class="row justify-content-between w-100 align-items-center">
+    </div>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Fonctions plagiées</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div *ngFor="let plagiarizedFunction of suspectFunction.plagiarizedFunctions">
+        <app-plagiarized-function [theme]="theme"
+                                  [plagiarizedFunction]="plagiarizedFunction"></app-plagiarized-function>
+      </div>
+    </mat-expansion-panel>
+  </div>
+</mat-card>

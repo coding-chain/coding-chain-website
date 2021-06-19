@@ -39,7 +39,6 @@ export class TournamentService extends ApiHelperService {
 
   constructor(http: HttpClient,
               private readonly _stepService: StepService,
-              private readonly _participationService: ParticipationService,
               private readonly _languageService: LanguageService,
               private readonly _testService: TestService) {
     super(http);
@@ -312,11 +311,11 @@ export class TournamentService extends ApiHelperService {
     }
     return of([]);
   }
-
-  private getParticipations(participationIds: string[]): Observable<IParticipationNavigation[]> {
-    if (participationIds?.length > 0) {
-      return forkJoin(participationIds.map(participationId => this._participationService.getById(participationId)));
-    }
-    return of([]);
-  }
+  //
+  // private getParticipations(participationIds: string[]): Observable<IParticipationNavigation[]> {
+  //   if (participationIds?.length > 0) {
+  //     return forkJoin(participationIds.map(participationId => this._participationService.getById(participationId)));
+  //   }
+  //   return of([]);
+  // }
 }
