@@ -7,6 +7,7 @@ import { PlagiarismFilterComponent } from './plagiarism-filter/plagiarism-filter
 import { SuspectFunctionItemComponent } from './suspect-function-item/suspect-function-item.component';
 import {SharedModule} from '../../shared/shared.module';
 import { PlagiarizedFunctionComponent } from './plagiarized-function/plagiarized-function.component';
+import { PlagiarismCompareFunctionsDialogComponent } from './plagiarism-compare-functions-dialog/plagiarism-compare-functions-dialog.component';
 
 
 
@@ -16,7 +17,8 @@ import { PlagiarizedFunctionComponent } from './plagiarized-function/plagiarized
     PlagiarismListComponent,
     PlagiarismFilterComponent,
     SuspectFunctionItemComponent,
-    PlagiarizedFunctionComponent
+    PlagiarizedFunctionComponent,
+    PlagiarismCompareFunctionsDialogComponent
   ],
   imports: [
     CommonModule,

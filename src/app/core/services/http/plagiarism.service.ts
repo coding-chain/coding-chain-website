@@ -20,7 +20,8 @@ import _ from 'lodash';
 import {IProgrammingLanguage} from '../../../shared/models/programming-languages/responses';
 import {PublicUser} from '../../../shared/models/users/responses';
 import {ParticipationService} from './participation.service';
-import {ITournamentNavigation} from '../../../shared/models/tournaments/responses';
+import {IParticipationWithTournamentAndStep} from '../../../shared/models/participations/responses';
+import {IUpdateSuspectFunctionValidity} from '../../../shared/models/plagiarism/commands';
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +43,11 @@ export class PlagiarismService extends ApiHelperService {
     return this.getFiltered(obj);
   }
 
+  public updateSuspectFunctionValidity(suspectFunctionId: string, body: IUpdateSuspectFunctionValidity): Observable<any> {
+    return this.http.put(`${this.apiUrl}/functions/${suspectFunctionId}`, body);
+  }
+
+
   public getSuspectFunctionsNavigationCursor(query?: GetParams<ISuspectFunctionNavigation, ISuspectFunctionsFilter>)
     : PageCursor<ISuspectFunctionNavigation, ISuspectFunctionsFilter> {
     return new PageCursor<ISuspectFunctionNavigation, ISuspectFunctionsFilter>(
@@ -61,17 +67,19 @@ export class PlagiarismService extends ApiHelperService {
       .pipe(
         switchMap(page => {
           const suspectFunctions = page.result.map(suspectFunction => suspectFunction.result);
-          const suspectFunctions$ = suspectFunctions.map(suspectFunction => forkJoin({
+          const suspectFunctions$ = suspectFunctions.length ? suspectFunctions.map(suspectFunction => forkJoin({
             suspectFunction: of(suspectFunction),
             plagiarizedFunctions: this.getAllPlagiarizedFunctionsBySuspectFunctionId(suspectFunction.id)
-          }));
+          })) : [of(null)];
           return forkJoin({page: of(page), suspectFunctions: forkJoin([...suspectFunctions$])});
         }),
         switchMap(pageFuncs => {
+          pageFuncs.suspectFunctions = pageFuncs.suspectFunctions.filter(f => f != null);
           const userIds: string[] = _.flatMap(
             pageFuncs.suspectFunctions.map(f => [f.suspectFunction.lastEditorId, ...f.plagiarizedFunctions.map(pF => pF.lastEditorId)])
           );
-          const users$ = forkJoin([...userIds.map(id => this._userService.getOneById(id))]);
+
+          const users$ = userIds.length ? forkJoin([...userIds.map(id => this._userService.getOneById(id))]) : forkJoin([of(null)]);
           return forkJoin({
             page: of(pageFuncs.page),
             languages: this._languageService.getAll(),
@@ -80,13 +88,13 @@ export class PlagiarismService extends ApiHelperService {
           });
         }),
         switchMap(pageFunctions => {
+          pageFunctions.suspectFunctions = pageFunctions.suspectFunctions.filter(f => f != null);
           const participationsIds: string[] = _.uniq(_.flatMap(pageFunctions.suspectFunctions
             .map(sF => [sF.suspectFunction.participationId, ...sF.plagiarizedFunctions.map(pF => pF.participationId)])));
+          const participations$ = participationsIds.length ?
+            participationsIds.map(id => this._participationService.getParticipationWithTournamentAndStep(id)) : [of(null)];
           return forkJoin({
-            participations: forkJoin(participationsIds.map(id => forkJoin({
-              id: of(id),
-              tournament: this._participationService.getTournamentNavigationByParticipationId(id)
-            }))),
+            participations: forkJoin(participations$),
             pageFunctions: of(pageFunctions)
           });
         }),
@@ -106,8 +114,8 @@ export class PlagiarismService extends ApiHelperService {
               ...sF.suspectFunction,
               plagiarizedFunctions,
               lastEditor: user,
-              tournament: pageFunctionsParticipations.participations
-                .find(participation => participation.id === sF.suspectFunction.participationId)?.tournament,
+              participation: pageFunctionsParticipations.participations
+                .find(participation => participation.id === sF.suspectFunction.participationId),
               language
             } as ISuspectFunction;
           });
@@ -124,7 +132,7 @@ export class PlagiarismService extends ApiHelperService {
   }
 
   private toPlagiarizedFunctions(plagiarizedFunctions: IPlagiarizedFunctionNavigation[],
-                                 participations: { id: string, tournament: ITournamentNavigation }[],
+                                 participations: IParticipationWithTournamentAndStep[],
                                  languages: IProgrammingLanguage[],
                                  users: PublicUser[]): IPlagiarizedFunction[] {
     return plagiarizedFunctions.map(pF => {
@@ -133,7 +141,7 @@ export class PlagiarismService extends ApiHelperService {
         ...pF,
         language,
         lastEditor: user,
-        tournament: participations.find(participation => pF.participationId === participation.id)?.tournament
+        participation: participations.find(participation => pF.participationId === participation.id)
       };
     });
   }

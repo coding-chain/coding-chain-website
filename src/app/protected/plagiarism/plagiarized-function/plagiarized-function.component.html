@@ -1,29 +1,41 @@
 <mat-card class="row w-100 mx-0">
   <div class="col">
-    <div class="row justify-content-between w-100 align-items-center">
-      <div class="col-2 d-flex" matTooltip="Utilisateur plagié">
+    <div class="row my-2 justify-content-between w-100 align-items-center">
+      <div class="col-2 px-0 d-flex" matTooltip="Utilisateur plagié">
         <button mat-icon-button color="accent">
           <mat-icon>person</mat-icon>
         </button>
-        <h4 class="my-auto">{{plagiarizedFunction.lastEditor.username}}</h4>
+        <h4 class="my-auto">{{plagiarizedFunction.item.lastEditor.username}}</h4>
       </div>
-      <h3 class="my-auto col-4" matTooltip="Nom de la fonction plagiée">
+      <button mat-stroked-button matTooltip="Voir le détail du tournoi"
+              [routerLink]="['/tournaments', plagiarizedFunction.item.participation.tournament.id, 'details']">
+        <mat-icon>emoji_events</mat-icon>
+        {{plagiarizedFunction.item.participation.tournament.name}} / {{plagiarizedFunction.item.participation.step.name}}
+      </button>
+      <h3 class="my-auto" matTooltip="Nom de la fonction plagiée">
         {{plagiarizedAppFunction.name}}
       </h3>
-      <div class="col-4">
+
+      <mat-chip-list>
+        <app-language-chip [language]="plagiarizedFunction.item.language" [theme]="theme"></app-language-chip>
+      </mat-chip-list>
+
+    </div>
+    <div class="row justify-content-between w-100 align-items-center">
+      <div class="col-7">
         <div class="row align-items-center">
           <h4 class="my-0">Similarité</h4>
-          <mat-progress-bar [value]="rate"  color="primary" class="col-9"   matTooltip="{{plagiarizedFunction.rate | percent}}">
+          <mat-progress-bar [value]="rate" color="primary" class="col-10"
+                            matTooltip="{{plagiarizedFunction.item.rate | percent}}">
           </mat-progress-bar>
         </div>
       </div>
-      <button mat-stroked-button color="accent" (click)="compareFunctions()">
+      <mat-checkbox [(ngModel)]="plagiarizedFunction.check">
+        {{plagiarizedFunction.check ? 'Plagiée' : 'Non plagiée'}}
+      </mat-checkbox>
+      <button mat-stroked-button color="accent" (click)="compareFunctionsClicked()">
         Comparer
       </button>
-      <mat-chip-list>
-        <app-language-chip [language]="plagiarizedFunction.language" [theme]="theme"></app-language-chip>
-      </mat-chip-list>
-
     </div>
   </div>
 </mat-card>

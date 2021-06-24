@@ -36,3 +36,6 @@ export interface IProcessStartEvent {
 export interface IParticipationReadyEvent {
   participationId: string;
 }
+export interface IParticipationScoreChangedEvent {
+  participationId: string;
+}

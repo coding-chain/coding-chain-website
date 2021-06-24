@@ -61,3 +61,8 @@ body {
 .mat-expansion-panel-content > .mat-expansion-panel-body {
   padding: 5px !important;
 }
+
+.mat-checkbox-my-0 > .mat-checkbox-layout {
+  margin-top: 0;
+  margin-bottom: 0;
+}

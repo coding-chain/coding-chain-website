@@ -48,6 +48,7 @@ export class ParticipationPageComponent implements OnInit, OnDestroy {
   private processEndSub: Subscription;
   private processStartSub: Subscription;
   private readySub: Subscription;
+  private scoreSub: Subscription;
 
   constructor(
     private readonly _participationSessionService: ParticipationSessionService,
@@ -145,6 +146,7 @@ export class ParticipationPageComponent implements OnInit, OnDestroy {
     this.processStartSub?.unsubscribe();
     this.processEndSub?.unsubscribe();
     this.readySub?.unsubscribe();
+    this.scoreSub?.unsubscribe();
     return this._participationStateService.stopConnection();
   }
 
@@ -159,6 +161,7 @@ export class ParticipationPageComponent implements OnInit, OnDestroy {
     this.listenUpdatedFunction();
     this.listenRemovedFunction();
     this.listenReadyParticipation();
+    this.listenScoreParticipation();
     this.listenCurrentUser(participationId);
   }
 
@@ -200,6 +203,7 @@ export class ParticipationPageComponent implements OnInit, OnDestroy {
       this.participation.lastError = result.lastError;
       this.participation.passedTestsIds = result.passedTestsIds;
       this.participation.processStartTime = result.processStartTime;
+      this.participation.calculatedScore = result.score;
       this.showTournamentEndMessage(result.endDate);
       this.participation.endDate = result.endDate;
       this.tests = this.testsToTestSession(this.participation.step.tests, this.participation.passedTestsIds);
@@ -307,6 +311,13 @@ export class ParticipationPageComponent implements OnInit, OnDestroy {
       this.participation.isReady = event.isReady;
     });
   }
+
+  private listenScoreParticipation(): void {
+    this.scoreSub = this._participationStateService.score$.subscribe(event => {
+      this.participation.calculatedScore = event.score;
+    });
+  }
+
 
   private listenRemovedFunction(): void {
     this.removedFuncSub = this._participationStateService.removedFunction$.subscribe(func => {

@@ -1,7 +1,9 @@
 <div class=" container-fluid  mt-2" cdkDropListGroup *ngIf=" participation$ | async">
   <div class="row pipeline-container">
     <div class="col-2">
-      <app-participation-step [step]="participation.step" [theme]="theme" [stepCnt]="participation.allParticipations.length"></app-participation-step>
+      <h2 class="mx-auto text-center">Score : {{participation.calculatedScore}}</h2>
+      <app-participation-step [step]="participation.step" [theme]="theme"
+                              [stepCnt]="participation.allParticipations.length"></app-participation-step>
     </div>
     <mat-divider class="mx-1" vertical="true"></mat-divider>
     <div class="col ">
@@ -24,8 +26,8 @@
         [connectedUser]="currentUser"
         [participation]="participation"
         [participationForm]="formGrp"
-      (executeParticipation)="onExecute()"
-      (nextParticipation)="onNextParticipation($event)"
+        (executeParticipation)="onExecute()"
+        (nextParticipation)="onNextParticipation($event)"
       ></app-participation-actions>
 
       <mat-divider class="my-3"></mat-divider>

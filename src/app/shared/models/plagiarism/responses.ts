@@ -1,6 +1,7 @@
 import {PublicUser} from '../users/responses';
 import {IProgrammingLanguage} from '../programming-languages/responses';
 import {ITournamentNavigation} from '../tournaments/responses';
+import {IParticipationWithTournamentAndStep} from '../participations/responses';
 
 export interface IPlagiarismFunctionNavigation {
   id: string;
@@ -13,7 +14,7 @@ export interface IPlagiarismFunctionNavigation {
 export interface IPlagiarismFunction extends IPlagiarismFunctionNavigation{
   lastEditor: PublicUser;
   language: IProgrammingLanguage;
-  tournament: ITournamentNavigation;
+  participation: IParticipationWithTournamentAndStep;
 }
 
 export interface IPlagiarizedFunctionNavigation extends IPlagiarismFunctionNavigation {

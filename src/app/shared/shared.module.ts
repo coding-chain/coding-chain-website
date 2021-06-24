@@ -16,6 +16,7 @@ import {SortedInputComponent} from './components/sorted-input/sorted-input.compo
 import {LanguagesStatsComponent} from './components/languages-stats/languages-stats.component';
 import {NgScrollbarModule} from 'ngx-scrollbar';
 import { LanguageChipComponent } from './components/language-chip/language-chip.component';
+import { CompareFunctionsComponent } from './components/compare-functions/compare-functions.component';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { LanguageChipComponent } from './components/language-chip/language-chip.
     MatDialogExpandedContentDirective,
     SortedInputComponent,
     LanguagesStatsComponent,
-    LanguageChipComponent
+    LanguageChipComponent,
+    CompareFunctionsComponent
   ],
   imports: [
     ChartsModule,
@@ -58,7 +60,8 @@ import { LanguageChipComponent } from './components/language-chip/language-chip.
         SortedInputComponent,
         LanguagesStatsComponent,
         NgScrollbarModule,
-        LanguageChipComponent
+        LanguageChipComponent,
+        CompareFunctionsComponent
     ]
 })
 export class SharedModule {

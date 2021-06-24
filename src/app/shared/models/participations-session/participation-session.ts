@@ -89,15 +89,20 @@ export interface IParticipationExecutionResult {
   lastOutput?: string;
   processStartTime?: Date;
   endDate?: Date;
+  score: number;
 }
 
 export interface IParticipationReadyResult {
   isReady: boolean;
 }
-
+export interface IParticipationScoreChangedResult {
+  score: number;
+}
 export interface IParticipationExecutionStart {
   processStartTime?: Date;
 }
+
+
 
 export interface IStepSession extends IStepNavigation {
   language: IProgrammingLanguage;

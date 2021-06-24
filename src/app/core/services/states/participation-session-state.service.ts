@@ -12,7 +12,7 @@ import {
   IParticipationFunctionAddedEvent,
   IParticipationFunctionRemovedEvent,
   IParticipationFunctionUpdatedEvent,
-  IParticipationReadyEvent,
+  IParticipationReadyEvent, IParticipationScoreChangedEvent,
   IProcessEndEvent,
   IProcessStartEvent,
   IReorderedFunctionsEvent
@@ -22,7 +22,7 @@ import {IFunctionSessionNavigation} from '../../../shared/models/function-sessio
 import {
   IParticipationExecutionResult,
   IParticipationExecutionStart,
-  IParticipationReadyResult,
+  IParticipationReadyResult, IParticipationScoreChangedResult,
   IUserSession,
   ParticipationSession
 } from '../../../shared/models/participations-session/participation-session';
@@ -46,6 +46,7 @@ export class ParticipationSessionStateService {
   public processStart$ = new Subject<IParticipationExecutionStart>();
   public processEnd$ = new Subject<IParticipationExecutionResult>();
   public ready$ = new Subject<IParticipationReadyResult>();
+  public score$ = new Subject<IParticipationScoreChangedResult>();
   private readonly connectionTimeout = environment.realTimeConnectionTimeout;
   private readonly onConnectedUserMethod = 'OnConnectedUser';
   private readonly onDisconnectedUserMethod = 'OnDisconnectedUser';
@@ -57,6 +58,7 @@ export class ParticipationSessionStateService {
   private readonly onProcessEnd = 'OnProcessEnd';
   private readonly onUpdatedConnectedUser = 'OnUpdatedConnectedUser';
   private readonly onFunctionsReordered = 'OnFunctionsReordered';
+  private readonly onScoreChanged = 'OnScoreChanged';
   private hubUrl = `${environment.apiUrl}/participationsessionshub`;
   private hubConnection: HubConnection;
   private _participation: ParticipationSession;
@@ -112,6 +114,7 @@ export class ParticipationSessionStateService {
     this.listenConnectedUser();
     this.listenDisconnectedUser();
     this.listenParticipationReady();
+    this.listenParticipationScoreChanged();
     this.listenUpdatedUser();
     this.listenRemovedFunction();
     this.listenAddedFunction();
@@ -147,6 +150,17 @@ export class ParticipationSessionStateService {
           isReady: participation.isReady,
         };
         this._zone.run(() => this.ready$.next(isReady));
+      });
+    });
+  }
+
+  private listenParticipationScoreChanged(): void {
+    this.hubConnection.on(this.onScoreChanged, (event: IParticipationScoreChangedEvent) => {
+      this._participationSessionService.getSessionById(this._participation.id).subscribe(participation => {
+        const score: IParticipationScoreChangedResult = {
+          score: participation.calculatedScore,
+        };
+        this._zone.run(() => this.score$.next(score));
       });
     });
   }
@@ -214,7 +228,8 @@ export class ParticipationSessionStateService {
           lastError: participation.lastError,
           lastOutput: participation.lastOutput,
           passedTestsIds: participation.passedTestsIds,
-          endDate: participation.endDate
+          endDate: participation.endDate,
+          score: participation.calculatedScore
         };
         this._zone.run(() => this.processEnd$.next(executionResult));
       });

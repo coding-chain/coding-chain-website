@@ -5,8 +5,8 @@ import {IStepNavigation} from '../../../shared/models/steps/responses';
 import {IProgrammingLanguageNavigation} from '../../../shared/models/programming-languages/responses';
 
 export interface IStepsTransferDialogData {
-  currentSteps: IStepNavigation[],
-  languages: IProgrammingLanguageNavigation[]
+  currentSteps: IStepNavigation[];
+  languages: IProgrammingLanguageNavigation[];
 }
 
 @Component({
