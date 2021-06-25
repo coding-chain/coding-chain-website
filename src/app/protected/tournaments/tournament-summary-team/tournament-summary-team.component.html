@@ -6,10 +6,10 @@
 
     <div class="col-5">
       <div class="row">
-        <div class="col-8">
-          <span>Score : {{team.score}}</span>
+        <div class="col-6">
+          <span>{{team.score}}</span>
         </div>
-        <div class="col-4">
+        <div class="col-6">
           <div *ngIf="team.hasFinished">
             <mat-icon  matTooltip="Cette équipe a terminé le tournois">sports_score</mat-icon>
           </div>
