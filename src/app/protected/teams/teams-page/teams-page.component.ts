@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {PublicUser} from '../../../shared/models/users/responses';
+import {IPublicUser} from '../../../shared/models/users/responses';
 import {TeamService} from '../../../core/services/http/team.service';
 import {ITeamNavigation} from '../../../shared/models/teams/responses';
 import {UserService} from '../../../core/services/http/user.service';
@@ -16,12 +16,12 @@ import {BehaviorSubject} from 'rxjs';
 })
 export class TeamsPageComponent implements OnInit {
   isSearching = true; // todo set default to false after tests
-  searchedTeammates: PublicUser[];
-  yourTeammates: PublicUser[]; // = [{username: 'fghjk', email: 'fghjknb', id: 'hj', teamIds: [], rightIds: ['1']}]; // todo remove after tests
+  searchedTeammates: IPublicUser[];
+  yourTeammates: IPublicUser[]; // = [{username: 'fghjk', email: 'fghjknb', id: 'hj', teamIds: [], rightIds: ['1']}]; // todo remove after tests
   teamId: string;
   team: ITeamNavigation;
-  userCursor: PageCursor<PublicUser, IUsersFilter>;
-  users$ = new BehaviorSubject<PublicUser[]>([]);
+  userCursor: PageCursor<IPublicUser, IUsersFilter>;
+  users$ = new BehaviorSubject<IPublicUser[]>([]);
 
   constructor(private route: ActivatedRoute, private teamService: TeamService, private userService: UserService) {
   }
@@ -32,7 +32,7 @@ export class TeamsPageComponent implements OnInit {
       this.fetchTeam();
     });
 
-    this.userCursor = this.userService.getUserResumeCursor();
+    this.userCursor = this.userService.getPublicUsersCursor();
     this.userCursor.resultsSubject$.subscribe(users => {
       console.log('subscribe', users);
       this.users$.next(users);
@@ -62,7 +62,7 @@ export class TeamsPageComponent implements OnInit {
     });
   }
 
-  searchUser($filter: GetParams<PublicUser, IUsersFilter>): void {
+  searchUser($filter: GetParams<IPublicUser, IUsersFilter>): void {
     this.userCursor.updateFilter($filter);
     this.userCursor.current();
   }

@@ -18,7 +18,7 @@ import {GetParams} from '../../../shared/models/http/get.params';
 import {IAddMemberToTeamCommand, ICreateTeamCommand, IRenameTeamCommand} from '../../../shared/models/teams/commands';
 import {ITeamFilter} from '../../../shared/models/teams/filters';
 import {UserService} from './user.service';
-import {PublicUser} from '../../../shared/models/users/responses';
+import {IPublicUser} from '../../../shared/models/users/responses';
 import {ObjectUtils} from '../../../shared/utils/object.utils';
 
 @Injectable({
@@ -168,9 +168,9 @@ export class TeamService extends ApiHelperService {
         of(members),
         ...members.map(m => this._userService.getOneById(m.userId))]
       )),
-      map((res: (IMemberNavigation[] | PublicUser)[]) => {
+      map((res: (IMemberNavigation[] | IPublicUser)[]) => {
         const members = res[0] as IMemberNavigation[];
-        const users = res.slice(1) as PublicUser[];
+        const users = res.slice(1) as IPublicUser[];
         return members.map(m => ({
           ...m, ...users.find(u => u.id === m.userId)
         }));

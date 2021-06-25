@@ -1,12 +1,12 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {PublicUser} from '../../../shared/models/users/responses';
+import {IPublicUser} from '../../../shared/models/users/responses';
 
 @Component({
   selector: 'app-team-teammate',
   templateUrl: './team-teammate.component.html',
 })
 export class TeamTeammateComponent implements OnInit {
-  @Input() teammates: PublicUser[];
+  @Input() teammates: IPublicUser[];
   // @Input() isDelete;
   // icon: string;
   // iconColor: string;

@@ -1,4 +1,4 @@
-import {PublicUser} from '../users/responses';
+import {IPublicUser} from '../users/responses';
 import {IAddMemberToTeamCommand, ICreateTeamCommand} from './commands';
 import {ConnectedUser} from '../users/connected-user';
 import {IParticipationNavigation} from '../participations/responses';
@@ -22,7 +22,7 @@ export interface IMemberNavigation {
 export interface IMemberTeamNavigation extends IMemberNavigation, ITeamNavigation{
 }
 
-export interface IMemberResume extends IMemberNavigation, PublicUser {
+export interface IMemberResume extends IMemberNavigation, IPublicUser {
 
 }
 

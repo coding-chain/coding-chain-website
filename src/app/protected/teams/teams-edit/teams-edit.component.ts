@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {PublicUser} from '../../../shared/models/users/responses';
+import {IPublicUser} from '../../../shared/models/users/responses';
 import {connectedUserWithTeamToMember, IMemberResume, ITeamWithMembersResume} from '../../../shared/models/teams/responses';
 import {PageCursor} from '../../../shared/models/pagination/page-cursor';
 import {IUsersFilter} from '../../../shared/models/users/filters';
@@ -36,7 +36,7 @@ export class TeamsEditComponent implements OnInit {
   users: IMovableMember[] = [];
   team$ = new BehaviorSubject<ITeamWithMembersResume>(this.originalTeam);
   teamMembers: IMovableMember[] = [];
-  userCursor: PageCursor<PublicUser, IUsersFilter>;
+  userCursor: PageCursor<IPublicUser, IUsersFilter>;
   users$ = new BehaviorSubject<IMemberResume[]>([]);
   connectedUser: ConnectedUser;
   teamGrp: FormGroup;
@@ -57,7 +57,7 @@ export class TeamsEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.teamGrp = this._fb.group({});
-    this.userCursor = this.userService.getUserResumeCursor();
+    this.userCursor = this.userService.getPublicUsersCursor();
     this._userStateService.userSubject$.subscribe(user => {
       this.connectedUser = user;
       this.searchUser({filterObj: {}});
@@ -79,7 +79,7 @@ export class TeamsEditComponent implements OnInit {
     this._userStateService.loadUser();
   }
 
-  searchUser($filter: GetParams<PublicUser, IUsersFilter>): void {
+  searchUser($filter: GetParams<IPublicUser, IUsersFilter>): void {
     if (!this.connectedUser || !this.team) {
       return;
     }

@@ -1,7 +1,7 @@
 import {IUserSessionNavigation} from '../user-session/responses';
 import {IStepNavigation} from '../steps/responses';
 import {IProgrammingLanguage} from '../programming-languages/responses';
-import {PublicUser} from '../users/responses';
+import {IPublicUser} from '../users/responses';
 import {IPublicTestNavigation} from '../tests/responses';
 import {IParticipationSessionNavigation} from './responses';
 import {AppFunction} from '../function-session/app-function';
@@ -111,6 +111,6 @@ export interface IStepSession extends IStepNavigation {
   order: number;
 }
 
-export interface IUserSession extends IUserSessionNavigation, PublicUser {
+export interface IUserSession extends IUserSessionNavigation, IPublicUser {
 
 }

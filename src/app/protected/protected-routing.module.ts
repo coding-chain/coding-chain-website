@@ -14,6 +14,7 @@ const routes: Routes = [
       {path: 'steps', loadChildren: () => import ('./steps/steps.module').then(m => m.StepsModule)},
       {path: 'teams', loadChildren: () => import('./teams/teams.module').then(m => m.TeamsModule)},
       {path: 'plagiarism', loadChildren: () => import('./plagiarism/plagiarism.module').then(m => m.PlagiarismModule)},
+      {path: 'users', loadChildren: () => import('./users/users.module').then(m => m.UsersModule)},
     ]
   }
 ];

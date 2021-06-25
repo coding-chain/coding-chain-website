@@ -8,6 +8,9 @@ import {map} from 'rxjs/operators';
 import {GetParams} from '../../../shared/models/http/get.params';
 import {PageCursor} from '../../../shared/models/pagination/page-cursor';
 import {IRightNavigation} from '../../../shared/models/rights/responses';
+import {IProgrammingLanguage, IProgrammingLanguageNavigation} from '../../../shared/models/programming-languages/responses';
+import {toProgrammingLanguage} from '../../../shared/utils/languages.utils';
+import {IChangeUserRightsCommand} from '../../../shared/models/rights/commands';
 
 
 @Injectable({
@@ -26,6 +29,7 @@ export class RightService extends ApiHelperService {
     return this.getFiltered(obj);
   }
 
+
   public getById(id: string): Observable<IRightNavigation | undefined> {
     return this.http.get<HateoasResponse<IRightNavigation> | undefined>(`${this.apiUrl}/${id}`)
       .pipe(
@@ -37,5 +41,12 @@ export class RightService extends ApiHelperService {
     return new PageCursor<IRightNavigation, IRightNavigation>(
       this.getRightNavigationFiltered, {url: this.apiUrl, ...query}
     );
+  }
+
+  public getAll(): Observable<IRightNavigation[]> {
+    return this.fetchAll<IRightNavigation>({url: this.apiUrl})
+      .pipe(
+        map(rights => rights.map(r => r.result))
+      );
   }
 }

@@ -5,7 +5,7 @@ import {EMPTY, forkJoin, Observable, of} from 'rxjs';
 import {ApiHelperService} from './api-helper.service';
 import {catchError, map, switchMap} from 'rxjs/operators';
 import {LoginUser} from '../../../shared/models/users/login-user';
-import {PublicUser, Token} from '../../../shared/models/users/responses';
+import {IPublicUser, Token} from '../../../shared/models/users/responses';
 import {EditUserCommand, RegisterUserCommand} from '../../../shared/models/users/requests';
 import {ConnectedUser} from '../../../shared/models/users/connected-user';
 import {RightService} from './right.service';
@@ -39,7 +39,7 @@ export class AuthenticationService extends ApiHelperService {
   }
 
   isAuthenticated(): Observable<boolean> {
-    return this.http.get<PublicUser>(`${this.apiUrl}/me`, {observe: 'response'})
+    return this.http.get<IPublicUser>(`${this.apiUrl}/me`, {observe: 'response'})
       .pipe(
         map(res => res.ok),
         catchError(err => of(false))
@@ -47,16 +47,16 @@ export class AuthenticationService extends ApiHelperService {
   }
 
   getMe(): Observable<ConnectedUser> {
-    return this.http.get<PublicUser>(`${this.apiUrl}/me`).pipe(
+    return this.http.get<IPublicUser>(`${this.apiUrl}/me`).pipe(
       switchMap(user => {
         return forkJoin([of(user), ...user.rightIds.map(id => this._rightService.getById(id))]);
       }),
       switchMap(res => {
-        const user = res[0] as PublicUser;
+        const user = res[0] as IPublicUser;
         return forkJoin([of(user), of(res.slice(1) as IRightNavigation[]), ...user.teamIds.map(id => this._teamService.getOneById(id))]);
       }),
       switchMap(res => {
-        const user = res[0] as PublicUser;
+        const user = res[0] as IPublicUser;
         const members$ = user.teamIds.map(id => this._teamService.getMemberById(id, user.id));
         return forkJoin([
           of(user),
@@ -65,7 +65,7 @@ export class AuthenticationService extends ApiHelperService {
           ...members$]);
       }),
       map(res => {
-        const user = res[0] as PublicUser;
+        const user = res[0] as IPublicUser;
         const teams = res[2] as ITeamNavigation[];
         const members = res.slice(3) as IMemberNavigation[];
         const connectedUser = new ConnectedUser(user);

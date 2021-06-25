@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ITeamNavigation, ITeamWithMembersResume} from '../../../shared/models/teams/responses';
 import {IUsersFilter} from '../../../shared/models/users/filters';
-import {PublicUser} from '../../../shared/models/users/responses';
+import {IPublicUser} from '../../../shared/models/users/responses';
 import {GetParams} from '../../../shared/models/http/get.params';
 
 @Component({
@@ -13,7 +13,7 @@ export class TeamsFormComponent implements OnInit, OnChanges {
   @Input() team: ITeamNavigation;
   @Input() teamForm: FormGroup;
   teamNameControl: FormControl;
-  @Output() searchMember = new EventEmitter<GetParams<PublicUser, IUsersFilter>>();
+  @Output() searchMember = new EventEmitter<GetParams<IPublicUser, IUsersFilter>>();
   @Output() deleteTeam = new EventEmitter();
   @Output() saveTeam = new EventEmitter();
   @Input() nameMinLength = 3;
@@ -35,7 +35,7 @@ export class TeamsFormComponent implements OnInit, OnChanges {
     });
   }
 
-  searchTeammate($filter: GetParams<PublicUser, IUsersFilter>): void {
+  searchTeammate($filter: GetParams<IPublicUser, IUsersFilter>): void {
     this.searchMember.emit($filter);
   }
 

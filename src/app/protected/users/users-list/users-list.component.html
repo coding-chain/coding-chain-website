@@ -1,0 +1,9 @@
+<ng-container *ngIf="(rights$ | async)">
+  <app-users-filter [rights]="rights"
+                         (filterChanged)="updateFilter($event)" class="col my-3"></app-users-filter>
+  <app-users-item *ngFor="let user of users; trackBy: trackBy" [user]="user"
+                  [rights]="availableRights" (deleted)="onUserDeleted(user)" (updated)="onUserUpdated($event)"
+                  class="row my-2">
+  </app-users-item>
+  <app-paged-list [cursor]="cursor"></app-paged-list>
+</ng-container>

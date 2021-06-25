@@ -1,9 +1,7 @@
 <nav backgroundColor="primary" mat-tab-nav-bar>
   <div class="w-75">
-
+    <a [routerLink]="['/home']" class="nav-link" data-toggle="tab" id="homeLink" mat-tab-link routerLinkActive="active">Accueil</a>
     <ng-container *ngIf="user$ | async as user">
-      <a [routerLink]="['/participation']" class="nav-link" data-toggle="tab" id="participationLink" mat-tab-link
-         routerLinkActive="active">Temporary participation access</a>
       <a [routerLink]="['/tournaments']" class="nav-link" data-toggle="tab" id="tournmanentsLink" mat-tab-link
          routerLinkActive="active">Tournois</a>
       <a *ngIf="user.isAdmin() || user.isCreator()" [routerLink]="['/steps']" class="nav-link" data-toggle="tab"
@@ -11,13 +9,15 @@
          routerLinkActive="active">Etapes</a>
       <a class="nav-link" data-toggle="tab" id="teamLink" mat-tab-link [routerLink]="['/teams']"
          routerLinkActive="active">Equipes</a>
-      <a class="nav-link" data-toggle="tab" id="plagiarismLink" mat-tab-link [routerLink]="['/plagiarism']"
+      <a *ngIf="user.isAdmin()" class="nav-link" data-toggle="tab" id="plagiarismLink" mat-tab-link
+         [routerLink]="['/plagiarism']"
          routerLinkActive="active">Plagiats</a>
+      <a *ngIf="user.isAdmin()" class="nav-link" data-toggle="tab" id="usersLink" mat-tab-link [routerLink]="['/users']"
+         routerLinkActive="active">Utilisateurs</a>
     </ng-container>
     <a *ngIf="!(user$ | async) as user" [routerLink]="['/login']" class="nav-link" data-toggle="tab" id="loginLink"
        mat-tab-link routerLinkActive="active">Connexion</a>
 
-    <a [routerLink]="['/home']" class="nav-link" data-toggle="tab" id="homeLink" mat-tab-link routerLinkActive="active">Accueil</a>
     <a [routerLink]="['/contact']" class="nav-link" data-toggle="tab" id="contactLink" mat-tab-link
        routerLinkActive="active">Contact</a>
   </div>

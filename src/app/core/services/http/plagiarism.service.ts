@@ -18,7 +18,7 @@ import {UserService} from './user.service';
 import {LanguageService} from './language.service';
 import _ from 'lodash';
 import {IProgrammingLanguage} from '../../../shared/models/programming-languages/responses';
-import {PublicUser} from '../../../shared/models/users/responses';
+import {IPublicUser} from '../../../shared/models/users/responses';
 import {ParticipationService} from './participation.service';
 import {IParticipationWithTournamentAndStep} from '../../../shared/models/participations/responses';
 import {IUpdateSuspectFunctionValidity} from '../../../shared/models/plagiarism/commands';
@@ -134,7 +134,7 @@ export class PlagiarismService extends ApiHelperService {
   private toPlagiarizedFunctions(plagiarizedFunctions: IPlagiarizedFunctionNavigation[],
                                  participations: IParticipationWithTournamentAndStep[],
                                  languages: IProgrammingLanguage[],
-                                 users: PublicUser[]): IPlagiarizedFunction[] {
+                                 users: IPublicUser[]): IPlagiarizedFunction[] {
     return plagiarizedFunctions.map(pF => {
       const {language, user} = this.extractLanguageAndUserForFunction(languages, users, pF);
       return {
@@ -146,8 +146,8 @@ export class PlagiarismService extends ApiHelperService {
     });
   }
 
-  private extractLanguageAndUserForFunction(languages: IProgrammingLanguage[], users: PublicUser[], func: IPlagiarismFunctionNavigation):
-    { language: IProgrammingLanguage, user: PublicUser } {
+  private extractLanguageAndUserForFunction(languages: IProgrammingLanguage[], users: IPublicUser[], func: IPlagiarismFunctionNavigation):
+    { language: IProgrammingLanguage, user: IPublicUser } {
     const user = users.find(u => u.id === func.lastEditorId);
     const language = languages.find(l => l.id === func.languageId);
     return {language, user};
