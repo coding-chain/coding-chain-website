@@ -2,13 +2,25 @@
   <div class="row d-flex justify-content-center">
     <h2>Les équipes du tournois</h2>
   </div>
-  <cdk-virtual-scroll-viewport
-    itemSize="50"
-    class="w-100"
-    [ngStyle]="{height: (detailsCardHeight - 80 ).toString() + 'px', borderRadius: '4px'}"
-  >
-    <div *cdkVirtualFor="let team of teams">
-      <app-tournament-summary-team [team]="team"></app-tournament-summary-team>
+
+  <div *ngIf="teams.length > 0; then thenBlock else elseBlock"></div>
+  <ng-template  #thenBlock>
+    <cdk-virtual-scroll-viewport
+      itemSize="50"
+      class="w-100"
+      [ngStyle]="{height: (detailsCardHeight - 80 ).toString() + 'px', borderRadius: '4px'}"
+    >
+      <div *cdkVirtualFor="let team of teams">
+        <app-tournament-summary-team [team]="team"></app-tournament-summary-team>
+      </div>
+    </cdk-virtual-scroll-viewport>
+  </ng-template>
+  <ng-template #elseBlock>
+    <div
+      class="w-100  d-flex justify-content-center align-items-center"
+      [ngStyle]="{height: (detailsCardHeight - 80 ).toString() + 'px'}"
+    >
+      Aucune équipe ne participe au tournois
     </div>
-  </cdk-virtual-scroll-viewport>
+  </ng-template>
 </mat-card>

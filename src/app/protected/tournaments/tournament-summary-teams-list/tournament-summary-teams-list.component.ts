@@ -11,7 +11,7 @@ import {IThemeColors} from '../../../core/services/states/theme.service';
 export class TournamentSummaryTeamsListComponent implements OnInit, AfterViewInit {
 
   @Input() colors: IThemeColors;
-  @Input() teams: ITeamsLeaderBoards;
+  @Input() teams: ITeamsLeaderBoards[];
   detailsCardHeight: number;
 
   constructor(private cdr: ChangeDetectorRef, private readonly _teamService: TeamService) {
