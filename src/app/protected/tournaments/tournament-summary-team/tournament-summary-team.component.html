@@ -1,3 +1,20 @@
 <mat-card class="w-100 mb-1">
- <p>{{team.name}}</p>
+  <div class="row">
+    <div class="col-7">
+      <span>{{team.name}}</span>
+    </div>
+
+    <div class="col-5">
+      <div class="row">
+        <div class="col-8">
+          <span>Score : {{team.score}}</span>
+        </div>
+        <div class="col-4">
+          <div *ngIf="team.hasFinished">
+            <mat-icon  matTooltip="Cette équipe a terminé le tournois">sports_score</mat-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </mat-card>

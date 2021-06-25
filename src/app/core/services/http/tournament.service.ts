@@ -30,6 +30,7 @@ import {ITestNavigation} from '../../../shared/models/tests/responses';
 import {cloneStepResume, IStepResume} from '../../../shared/models/steps/responses';
 import {ObjectUtils} from '../../../shared/utils/object.utils';
 import {ITournamentDetail} from '../../../shared/models/tournaments/tournaments-detail';
+import {ITeamsLeaderBoards} from '../../../shared/models/teams/responses';
 
 @Injectable({
   providedIn: 'root'
@@ -169,6 +170,11 @@ export class TournamentService extends ApiHelperService {
     );
   }
 
+  public getTeamsLeaderBoards(tournamentId: string): Observable<ITeamsLeaderBoards[]> {
+    return this.fetchAll<ITeamsLeaderBoards>({url: `${this.apiUrl}/${tournamentId}/teams`}).pipe(
+      map(teams => teams.map(t => t.result))
+    );
+  }
 
   updateFullTournament(originTournament: ITournamentEdition, originSteps: IStepResume[], editedTournament: ITournamentEdition)
     : Observable<any> {

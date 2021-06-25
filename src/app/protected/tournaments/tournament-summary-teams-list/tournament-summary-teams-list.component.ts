@@ -1,7 +1,5 @@
 import {AfterViewInit, Component, OnInit, ChangeDetectorRef, Input} from '@angular/core';
-import {ITeamWithMembersResume} from '../../../shared/models/teams/responses';
-import {PageCursor} from '../../../shared/models/pagination/page-cursor';
-import {ITeamFilter} from '../../../shared/models/teams/filters';
+import {ITeamsLeaderBoards} from '../../../shared/models/teams/responses';
 import {TeamService} from '../../../core/services/http/team.service';
 import {IThemeColors} from '../../../core/services/states/theme.service';
 
@@ -13,9 +11,8 @@ import {IThemeColors} from '../../../core/services/states/theme.service';
 export class TournamentSummaryTeamsListComponent implements OnInit, AfterViewInit {
 
   @Input() colors: IThemeColors;
+  @Input() teams: ITeamsLeaderBoards;
   detailsCardHeight: number;
-  teams: ITeamWithMembersResume[] = [];
-  teamCursor: PageCursor<ITeamWithMembersResume, ITeamFilter>;
 
   constructor(private cdr: ChangeDetectorRef, private readonly _teamService: TeamService) {
   }
@@ -23,12 +20,6 @@ export class TournamentSummaryTeamsListComponent implements OnInit, AfterViewIni
   ngOnInit(): void {
     this.detailsCardHeight = document.getElementById('detailsCard').offsetHeight;
     this.cdr.detectChanges();
-
-    this.teamCursor = this._teamService.getResumeCursor();
-    this.teamCursor.resultsSubject$.subscribe(team => {
-      this.teams = team;
-    });
-    this.teamCursor.current();
   }
 
    ngAfterViewInit(): void {
