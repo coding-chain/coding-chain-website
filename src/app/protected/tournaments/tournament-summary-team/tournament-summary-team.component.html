@@ -1,12 +1,12 @@
 <mat-card class="w-100 mb-1">
   <div class="row">
-    <div class="col-7">
+    <div class="col-6">
       <span>{{team.name}}</span>
     </div>
 
-    <div class="col-5">
+    <div class="col-6">
       <div class="row">
-        <div class="col-6">
+        <div class="col-6 d-flex justify-content-center">
           <mat-chip-list>
             <mat-chip
               [color]="'accent'"
@@ -18,7 +18,7 @@
             </mat-chip>
           </mat-chip-list>
         </div>
-        <div class="col-6">
+        <div class="col-6 d-flex justify-content-center">
           <div *ngIf="team.hasFinished">
             <mat-icon  matTooltip="Cette équipe a terminé le tournois">sports_score</mat-icon>
           </div>
