@@ -15,7 +15,7 @@
           <div class="col-6">
             <div class="row d-flex align-items-center">
               <span><b>Score</b></span>
-              <button mat-icon-button matSuffix>
+              <button mat-icon-button matSuffix (click)="sortByScore()">
                 <mat-icon class="" style="transform: scale(0.7);">unfold_more</mat-icon>
               </button>
             </div>
@@ -23,7 +23,7 @@
           <div class="col-6">
             <div class="row d-flex align-items-center">
               <span><b>Terminé</b></span>
-              <button mat-icon-button matSuffix>
+              <button mat-icon-button matSuffix (click)="sortByHasFinished()">
                 <mat-icon style="transform: scale(0.7);">unfold_more</mat-icon>
               </button>
             </div>

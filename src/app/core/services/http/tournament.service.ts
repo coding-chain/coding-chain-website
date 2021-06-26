@@ -31,6 +31,9 @@ import {cloneStepResume, IStepResume} from '../../../shared/models/steps/respons
 import {ObjectUtils} from '../../../shared/utils/object.utils';
 import {ITournamentDetail} from '../../../shared/models/tournaments/tournaments-detail';
 import {ITeamsLeaderBoards} from '../../../shared/models/teams/responses';
+import {ITeamsLeaderBoardsFilter} from '../../../shared/models/teams/filters';
+import {IFunctionSessionNavigation} from '../../../shared/models/function-session/responses';
+import {IFunctionSessionFilter} from '../../../shared/models/function-session/filters';
 
 @Injectable({
   providedIn: 'root'
@@ -135,6 +138,7 @@ export class TournamentService extends ApiHelperService {
       })
     );
   }
+
   private getTournamentStepResume(languages: IProgrammingLanguage[], tournamentSteps: ITournamentStepNavigation[])
     : ITournamentResumeStep[] {
     return tournamentSteps.map(step => ({language: languages.find(l => l.id === step.languageId), ...step}));
@@ -170,8 +174,11 @@ export class TournamentService extends ApiHelperService {
     );
   }
 
-  public getTeamsLeaderBoards(tournamentId: string): Observable<ITeamsLeaderBoards[]> {
-    return this.fetchAll<ITeamsLeaderBoards>({url: `${this.apiUrl}/${tournamentId}/teams`}).pipe(
+  public getTeamsLeaderBoards(tournamentId: string, filter?: GetParams<ITeamsLeaderBoards, ITeamsLeaderBoardsFilter>): Observable<ITeamsLeaderBoards[]> {
+    return this.fetchAll<ITeamsLeaderBoards, ITeamsLeaderBoards, ITeamsLeaderBoardsFilter>({
+      url: `${this.apiUrl}/${tournamentId}/teams`,
+      ...filter
+    }).pipe(
       map(teams => teams.map(t => t.result))
     );
   }
