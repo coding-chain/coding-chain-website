@@ -26,8 +26,8 @@ export class TournamentSummaryDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.tournamentLanguages = this.tournament.steps.map(s => s.language);
-    this.startDateTournament = DateUtils.dateToString(this.tournament.startDate);
-    this.endDateTournament = DateUtils.dateToString(this.tournament.endDate);
+    this.startDateTournament =  DateUtils.reformatDate(DateUtils.dateToString(this.tournament.startDate));
+    this.endDateTournament = DateUtils.reformatDate(DateUtils.dateToString(this.tournament.endDate));
     this.remainingDays = this.calculateRemainingDays();
     this.progressCursor = this.progressTournamentDate(this.tournament.startDate, this.tournament.endDate);
   }

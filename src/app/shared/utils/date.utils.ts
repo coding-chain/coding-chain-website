@@ -23,6 +23,11 @@ export class DateUtils {
     return new Date(dateText + 'Z');
   }
 
+  static reformatDate(dateStr): string {
+    const dArr = dateStr.split('-');
+    return dArr[2] + '/' + dArr[1] + '/' + dArr[0].substring(2);
+  }
+
 }
 
 
