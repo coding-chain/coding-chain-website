@@ -34,6 +34,10 @@ import {ITestNavigation} from '../../../shared/models/tests/responses';
 import {cloneStepResume, IStepResume} from '../../../shared/models/steps/responses';
 import {ObjectUtils} from '../../../shared/utils/object.utils';
 import {ITournamentDetail} from '../../../shared/models/tournaments/tournaments-detail';
+import {ITeamsLeaderBoards} from '../../../shared/models/teams/responses';
+import {ITeamsLeaderBoardsFilter} from '../../../shared/models/teams/filters';
+import {IFunctionSessionNavigation} from '../../../shared/models/function-session/responses';
+import {IFunctionSessionFilter} from '../../../shared/models/function-session/filters';
 import {ImageService} from './image.service';
 import {FileUtils} from '../../../shared/utils/file.utils';
 
@@ -209,6 +213,14 @@ export class TournamentService extends ApiHelperService {
     return of(null);
   }
 
+  public getTeamsLeaderBoards(tournamentId: string, filter?: GetParams<ITeamsLeaderBoards, ITeamsLeaderBoardsFilter>): Observable<ITeamsLeaderBoards[]> {
+    return this.fetchAll<ITeamsLeaderBoards, ITeamsLeaderBoards, ITeamsLeaderBoardsFilter>({
+      url: `${this.apiUrl}/${tournamentId}/teams`,
+      ...filter
+    }).pipe(
+      map(teams => teams.map(t => t.result))
+    );
+  }
 
   updateFullTournament(originTournament: ITournamentEdition, originSteps: IStepResume[], editedTournament: ITournamentEdition)
     : Observable<any> {

@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ITeamNavigation} from '../../../shared/models/teams/responses';
+import {ITeamNavigation, ITeamsLeaderBoards} from '../../../shared/models/teams/responses';
 
 @Component({
   selector: 'app-tournament-summary-team',
@@ -7,7 +7,7 @@ import {ITeamNavigation} from '../../../shared/models/teams/responses';
   styles: []
 })
 export class TournamentSummaryTeamComponent implements OnInit {
-  @Input() team: ITeamNavigation;
+  @Input() team: ITeamsLeaderBoards;
 
   constructor() {
   }

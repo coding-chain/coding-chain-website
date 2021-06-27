@@ -5,6 +5,7 @@ import {LanguageService} from '../../../core/services/http/language.service';
 import {Subscription} from 'rxjs';
 import {ITournamentDetail} from '../../../shared/models/tournaments/tournaments-detail';
 import {IThemeColors, Theme, ThemeService} from '../../../core/services/states/theme.service';
+import {ITeamsLeaderBoards} from '../../../shared/models/teams/responses';
 
 
 @Component({
@@ -14,6 +15,7 @@ import {IThemeColors, Theme, ThemeService} from '../../../core/services/states/t
 })
 export class TournamentSummaryComponent implements OnInit {
 
+  teams: ITeamsLeaderBoards[];
   tournament: ITournamentDetail;
   private _routeSub: Subscription;
   theme: Theme;
@@ -41,6 +43,9 @@ export class TournamentSummaryComponent implements OnInit {
   private setTournament(id: string): void {
     this._tournamentService.getOneTournamentDetail(id).subscribe(tournament => {
       this.tournament = tournament;
+    });
+    this._tournamentService.getTeamsLeaderBoards(id).subscribe( teams => {
+      this.teams = teams;
     });
   }
 }

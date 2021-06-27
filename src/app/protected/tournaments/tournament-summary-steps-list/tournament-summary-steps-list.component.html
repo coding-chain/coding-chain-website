@@ -2,5 +2,14 @@
   <div class="row d-flex justify-content-center">
     <h2 matBadge="{{steps.length}}" matBadgeOverlap="false" matBadgeColor="accent">Les étapes du tournois</h2>
   </div>
-  <app-tournament-summary-step *ngFor="let step of steps" [step]="step"></app-tournament-summary-step>
+
+  <div *ngIf="tournamentPublished; then thenBlock else elseBlock"></div>
+  <ng-template  #thenBlock>
+    <app-tournament-summary-step *ngFor="let step of steps" [step]="step"></app-tournament-summary-step>
+  </ng-template>
+  <ng-template #elseBlock>
+    <div class="w-100  d-flex justify-content-center align-items-center py-4">
+      Le tournois doit être publié pour visualiser ses étapes
+    </div>
+  </ng-template>
 </mat-card>

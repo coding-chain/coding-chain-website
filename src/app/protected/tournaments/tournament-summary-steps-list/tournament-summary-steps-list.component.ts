@@ -10,6 +10,7 @@ import {IThemeColors, ThemeService} from '../../../core/services/states/theme.se
 export class TournamentSummaryStepsListComponent implements OnInit {
   @Input() steps: ITournamentResumeStep[];
   @Input() colors: IThemeColors;
+  @Input() tournamentPublished: boolean;
 
   constructor() {
   }

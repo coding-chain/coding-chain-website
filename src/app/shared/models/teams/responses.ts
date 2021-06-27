@@ -10,6 +10,15 @@ export interface ITeamNavigation {
   participationIds: string[];
 }
 
+export interface ITeamsLeaderBoards {
+  id: string;
+  name: string;
+  membersIds: string[];
+  participationIds: string[];
+  score: number;
+  hasFinished: boolean;
+}
+
 export interface IMemberNavigation {
   userId: string;
   teamId: string;

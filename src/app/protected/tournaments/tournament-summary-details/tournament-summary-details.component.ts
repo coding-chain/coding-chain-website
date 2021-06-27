@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ITournamentDetail} from '../../../shared/models/tournaments/tournaments-detail';
 import {DateUtils} from '../../../shared/utils/date.utils';
-import {IThemeColors, Theme, ThemeService} from '../../../core/services/states/theme.service';
+import {IThemeColors, Theme} from '../../../core/services/states/theme.service';
 import {IProgrammingLanguage} from '../../../shared/models/programming-languages/responses';
 
 
@@ -21,15 +21,13 @@ export class TournamentSummaryDetailsComponent implements OnInit {
   progressCursor: number;
   remainingDays: number;
 
-  constructor(private readonly _themeService: ThemeService) {
+  constructor() {
   }
 
   ngOnInit(): void {
-
-
     this.tournamentLanguages = this.tournament.steps.map(s => s.language);
-    this.startDateTournament = DateUtils.dateToString(this.tournament.startDate);
-    this.endDateTournament = DateUtils.dateToString(this.tournament.endDate);
+    this.startDateTournament =  DateUtils.reformatDate(DateUtils.dateToString(this.tournament.startDate));
+    this.endDateTournament = DateUtils.reformatDate(DateUtils.dateToString(this.tournament.endDate));
     this.remainingDays = this.calculateRemainingDays();
     this.progressCursor = this.progressTournamentDate(this.tournament.startDate, this.tournament.endDate);
   }
