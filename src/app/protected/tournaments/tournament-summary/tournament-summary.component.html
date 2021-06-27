@@ -1,6 +1,8 @@
 <ng-container *ngIf="tournament">
   <mat-card class="w-100">
     <mat-card-title class="py-2 d-flex justify-content-center">Tournois</mat-card-title>
+    <img src="{{picture}}" *ngIf="picture" alt="Image du tournois" style="display: block"
+         class="img-fluid"/>
     <mat-card-content class="p-4">
 
       <div class="row mb-4">
@@ -8,7 +10,7 @@
           <app-tournament-summary-details [theme]="theme" [colors]="colors" [tournament]="tournament"></app-tournament-summary-details>
         </div>
         <div class="col-6">
-          <app-tournament-summary-teams-list [colors]="colors" [teams]="teams"></app-tournament-summary-teams-list>
+          <app-tournament-summary-teams-list [colors]="colors" [teamsCursor]="teamsCursor"></app-tournament-summary-teams-list>
         </div>
       </div>
 

@@ -10,3 +10,7 @@
   background: lightgrey;
   border-radius: 10px;
 }
+
+::ng-deep .mat-radio-label-content {
+  padding-left: 0 !important;
+}

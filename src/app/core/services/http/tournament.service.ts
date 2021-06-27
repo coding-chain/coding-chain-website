@@ -56,6 +56,7 @@ export class TournamentService extends ApiHelperService {
     this.getTournamentNavigationFiltered = this.getTournamentNavigationFiltered.bind(this);
     this.getStepNavigationFiltered = this.getStepNavigationFiltered.bind(this);
     this.getTournamentResumeFiltered = this.getTournamentResumeFiltered.bind(this);
+    this.getTeamsLeaderBoards = this.getTeamsLeaderBoards.bind(this);
   }
 
   public getById(id: string): Observable<ITournamentNavigationWithImage | undefined> {
@@ -213,13 +214,16 @@ export class TournamentService extends ApiHelperService {
     return of(null);
   }
 
-  public getTeamsLeaderBoards(tournamentId: string, filter?: GetParams<ITeamsLeaderBoards, ITeamsLeaderBoardsFilter>): Observable<ITeamsLeaderBoards[]> {
-    return this.fetchAll<ITeamsLeaderBoards, ITeamsLeaderBoards, ITeamsLeaderBoardsFilter>({
-      url: `${this.apiUrl}/${tournamentId}/teams`,
-      ...filter
-    }).pipe(
-      map(teams => teams.map(t => t.result))
+  public getTeamsLeaderBoardsCursor(tournamentId: string, filter?: GetParams<ITeamsLeaderBoards, ITeamsLeaderBoardsFilter>)
+    : PageCursor<ITeamsLeaderBoards, ITeamsLeaderBoardsFilter> {
+    return new PageCursor<ITeamsLeaderBoards, ITeamsLeaderBoardsFilter>(
+      this.getTeamsLeaderBoards, {url: `${this.apiUrl}/${tournamentId}/teams`, ...filter}
     );
+  }
+
+  public getTeamsLeaderBoards(filter?: GetParams<ITeamsLeaderBoards, ITeamsLeaderBoardsFilter>):
+    Observable<HateoasPageResult<ITeamsLeaderBoards>> {
+    return this.getFiltered(filter);
   }
 
   updateFullTournament(originTournament: ITournamentEdition, originSteps: IStepResume[], editedTournament: ITournamentEdition)

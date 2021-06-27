@@ -15,21 +15,24 @@ export class TournamentSummaryDetailsComponent implements OnInit {
   @Input() tournament: ITournamentDetail;
   @Input() colors: IThemeColors;
   @Input() theme: Theme;
-  startDateTournament: string;
-  endDateTournament: string;
+  startDateTournament?: string;
+  endDateTournament?: string;
   tournamentLanguages: IProgrammingLanguage[];
-  progressCursor: number;
-  remainingDays: number;
+  progressCursor = 0;
+  remainingDays = 0;
 
   constructor() {
   }
 
   ngOnInit(): void {
     this.tournamentLanguages = this.tournament.steps.map(s => s.language);
-    this.startDateTournament =  DateUtils.reformatDate(DateUtils.dateToString(this.tournament.startDate));
-    this.endDateTournament = DateUtils.reformatDate(DateUtils.dateToString(this.tournament.endDate));
-    this.remainingDays = this.calculateRemainingDays();
-    this.progressCursor = this.progressTournamentDate(this.tournament.startDate, this.tournament.endDate);
+    this.startDateTournament = this.tournament.startDate ? DateUtils.dateToString(this.tournament.startDate) : null;
+    this.endDateTournament = this.tournament.endDate ? DateUtils.dateToString(this.tournament.endDate) : null;
+    if (this.tournament.startDate && this.tournament.endDate) {
+      this.remainingDays = this.calculateRemainingDays();
+      this.progressCursor = this.progressTournamentDate(this.tournament.startDate, this.tournament.endDate);
+    }
+
   }
 
   public progressTournamentDate(start: Date, end: Date): number {

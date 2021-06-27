@@ -6,6 +6,11 @@ import {TournamentService} from '../../../core/services/http/tournament.service'
 import {SortOrder} from '../../../shared/types/sort-order';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
+import {PageCursor} from '../../../shared/models/pagination/page-cursor';
+import {ITeamsLeaderBoardsFilter} from '../../../shared/models/teams/filters';
+import {GetParams} from '../../../shared/models/http/get.params';
+import {filter} from 'rxjs/operators';
+import {FormBuilder, FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-tournament-summary-teams-list',
@@ -15,57 +20,52 @@ import {ActivatedRoute} from '@angular/router';
 export class TournamentSummaryTeamsListComponent implements OnInit, AfterViewInit {
 
   @Input() colors: IThemeColors;
-  @Input() teams: ITeamsLeaderBoards[];
-  private _routeSub: Subscription;
-  private tournamentId: string;
-  private order: SortOrder = 'desc';
-  private hasFinishFilter: boolean = null;
+  @Input() teamsCursor: PageCursor<ITeamsLeaderBoards, ITeamsLeaderBoardsFilter>;
+  filter: GetParams<ITeamsLeaderBoards, ITeamsLeaderBoardsFilter> = {descOrderColumns: ['score'], filterObj: {hasFinished: null}};
+  teams: ITeamsLeaderBoards[] = [];
+  hasFinishedCtrl: FormControl;
 
-  detailsCardHeight: number;
+  get hasFinishedFilterLabel(): string {
+    if (this.hasFinishedCtrl.value) {
+      return 'Terminé';
+    }
+    if (this.hasFinishedCtrl.value === false) {
+      return 'En cours';
+    }
+    return 'Tout';
+  }
 
-  constructor(private cdr: ChangeDetectorRef, private readonly _teamService: TeamService, private readonly _tournamentService: TournamentService, private readonly _route: ActivatedRoute) {
-    this._routeSub = this._route.params.subscribe(params => {
-      this.tournamentId = params.id;
-    });
+  constructor(private fb: FormBuilder, private readonly _teamService: TeamService, private readonly _tournamentService: TournamentService) {
+
   }
 
   ngOnInit(): void {
-    this.detailsCardHeight = document.getElementById('detailsCard').offsetHeight;
-    this.cdr.detectChanges();
+    this.hasFinishedCtrl = this.fb.control(null);
+    this.teamsCursor.resultsSubject$.subscribe(teams => this.teams = teams);
+    this.teamsCursor.current();
+    this.hasFinishedCtrl.valueChanges.subscribe(hasFinished => {
+      this.filter.filterObj.hasFinished = hasFinished;
+      this.teamsCursor.updateFilter(this.filter).current();
+    });
   }
 
   ngAfterViewInit(): void {
-    this.detailsCardHeight = document.getElementById('detailsCard').offsetHeight;
-    this.cdr.detectChanges();
   }
 
   switchOrder(): void {
-    if (this.order === 'asc') {
-      this.order = 'desc';
+    if (this.filter.descOrderColumns?.some(col => col === 'score')) {
+      this.filter.descOrderColumns = null;
+      this.filter.ascOrderColumns = ['score'];
     } else {
-      this.order = 'asc';
-    }
-  }
-
-  switchHasFinishFilter(): void {
-    if (this.hasFinishFilter) {
-      this.hasFinishFilter = null;
-    } else {
-      this.hasFinishFilter = true;
+      this.filter.ascOrderColumns = null;
+      this.filter.descOrderColumns = ['score'];
     }
   }
 
   sortByScore(): void {
     this.switchOrder();
-    this._tournamentService.getTeamsLeaderBoards(this.tournamentId, {ascOrderColumns: [this.order === 'asc' ? 'score' : undefined]}).subscribe(teams => {
-      this.teams = teams;
-    });
+    this.teamsCursor.updateFilter(this.filter).current();
   }
 
-  sortByHasFinished(): void {
-    this.switchHasFinishFilter();
-    this._tournamentService.getTeamsLeaderBoards(this.tournamentId, {filterObj: {hasFinished: this.hasFinishFilter}}).subscribe(teams => {
-      this.teams = teams;
-    });
-  }
+
 }

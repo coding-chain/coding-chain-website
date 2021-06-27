@@ -7,6 +7,4 @@ export interface ITeamFilter {
 
 export interface ITeamsLeaderBoardsFilter {
   hasFinished?: boolean;
-  scoreOrder?: SortOrder;
-  order?: string;
 }

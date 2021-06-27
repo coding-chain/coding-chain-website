@@ -6,6 +6,9 @@ import {Subscription} from 'rxjs';
 import {ITournamentDetail} from '../../../shared/models/tournaments/tournaments-detail';
 import {IThemeColors, Theme, ThemeService} from '../../../core/services/states/theme.service';
 import {ITeamsLeaderBoards} from '../../../shared/models/teams/responses';
+import {FileUtils} from '../../../shared/utils/file.utils';
+import {PageCursor} from '../../../shared/models/pagination/page-cursor';
+import {ITeamsLeaderBoardsFilter} from '../../../shared/models/teams/filters';
 
 
 @Component({
@@ -15,11 +18,12 @@ import {ITeamsLeaderBoards} from '../../../shared/models/teams/responses';
 })
 export class TournamentSummaryComponent implements OnInit {
 
-  teams: ITeamsLeaderBoards[];
   tournament: ITournamentDetail;
   private _routeSub: Subscription;
   theme: Theme;
   colors: IThemeColors;
+  picture: string;
+  teamsCursor: PageCursor<ITeamsLeaderBoards, ITeamsLeaderBoardsFilter>;
 
   constructor(
     private readonly _route: ActivatedRoute,
@@ -43,9 +47,8 @@ export class TournamentSummaryComponent implements OnInit {
   private setTournament(id: string): void {
     this._tournamentService.getOneTournamentDetail(id).subscribe(tournament => {
       this.tournament = tournament;
+      FileUtils.fileToString(this.tournament.image).subscribe(picture => this.picture = picture);
     });
-    this._tournamentService.getTeamsLeaderBoards(id).subscribe( teams => {
-      this.teams = teams;
-    });
+    this.teamsCursor = this._tournamentService.getTeamsLeaderBoardsCursor(id);
   }
 }
