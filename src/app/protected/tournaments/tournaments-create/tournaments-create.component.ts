@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ICreateTournamentCommand} from '../../../shared/models/tournaments/commands';
+import {ICreateTournamentCommand, ICreateTournamentWithImageCommand} from '../../../shared/models/tournaments/commands';
 import {TournamentService} from '../../../core/services/http/tournament.service';
 import Swal from 'sweetalert2';
 import {TournamentsCreateFormComponent} from '../tournaments-create-form/tournaments-create-form.component';
@@ -19,7 +19,7 @@ export class TournamentsCreateComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  createTournament(tournamentCommand$: ICreateTournamentCommand) {
+  createTournament(tournamentCommand$: ICreateTournamentWithImageCommand): void {
     this.tournamentService.createOne(tournamentCommand$).subscribe(
       value => {
         Swal.fire({

@@ -1,8 +1,8 @@
 import {IProgrammingLanguage} from '../programming-languages/responses';
 import {IParticipationNavigation} from '../participations/responses';
-import {ITournamentNavigation, ITournamentStepNavigation} from './responses';
+import {ITournamentNavigation, ITournamentNavigationWithImage, ITournamentStepNavigation} from './responses';
 
-export interface ITournamentResume extends ITournamentNavigation {
+export interface ITournamentResume extends ITournamentNavigationWithImage {
   id: string;
   name: string;
   description: string;
@@ -12,7 +12,6 @@ export interface ITournamentResume extends ITournamentNavigation {
   steps: ITournamentResumeStep[];
   participations: IParticipationNavigation[];
 }
-
 
 
 export interface ITournamentResumeStep extends ITournamentStepNavigation {

@@ -1,7 +1,7 @@
-import {cloneTournamentStepNavigation, ITournamentNavigation, ITournamentStepNavigation} from './responses';
+import {cloneTournamentStepNavigation, ITournamentNavigation, ITournamentNavigationWithImage, ITournamentStepNavigation} from './responses';
 import {cloneStepResume, IStepResume} from '../steps/responses';
 
-export interface ITournamentEdition extends ITournamentNavigation {
+export interface ITournamentEdition extends ITournamentNavigationWithImage {
   steps: ITournamentEditionStep[];
 }
 

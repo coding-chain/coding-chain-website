@@ -1,0 +1,42 @@
+<div class="col">
+  <div class="row  d-flex justify-content-between">
+    <div class="row  mx-auto">
+      <img src="{{picture}}" *ngIf="picture" alt="Your image" style="display: block"
+           class="img-fluid"/>
+    </div>
+  </div>
+  <div class="row align-items-center">
+    <ngx-file-drop class="col-6 " dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
+                   accept=".jpeg, .png, .jpg"
+                   [multiple]="false" [directory]="false">
+      <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+        <div class="col">
+                <span class="row">
+                  <span class="col mx-auto text-center">
+                    {{importLabel}}
+                  </span>
+                </span>
+          <span class="row justify-content-center mt-2">
+                  <button mat-stroked-button type="button" color="primary"
+                          (click)="openFileSelector()">Importer</button>
+                </span>
+        </div>
+      </ng-template>
+    </ngx-file-drop>
+    <span class="col-6 ">
+      <div class="row row-cols-2 justify-content-around">
+        <div class="col">
+              <button mat-stroked-button type="button" color="primary" (click)="editPicture()" [disabled]="canEdit">Editer</button>
+        </div>
+        <div class="col">
+              <button mat-stroked-button type="button" color="warn" (click)="reset()"  [disabled]="!canDelete" >Supprimer</button>
+        </div>
+
+      </div>
+    </span>
+    <span class="align-self-center">
+      <button *ngIf="!hideSaveButton" mat-stroked-button type="button" color="primary" [disabled]="!canSavePicture"
+              (click)="savePicture()">Enregistrer</button>
+    </span>
+  </div>
+</div>

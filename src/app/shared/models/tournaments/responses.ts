@@ -18,6 +18,10 @@ export interface ITournamentNavigation {
   participationsIds: string[];
 }
 
+export interface ITournamentNavigationWithImage extends ITournamentNavigation {
+  image: File;
+}
+
 export function cloneTournamentStepNavigation(tournamentStep: ITournamentStepNavigation): ITournamentStepNavigation {
   const stepNav = cloneStepNavigation(tournamentStep);
   return {

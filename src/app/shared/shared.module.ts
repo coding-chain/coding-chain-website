@@ -15,8 +15,12 @@ import {ChartsModule} from 'ng2-charts';
 import {SortedInputComponent} from './components/sorted-input/sorted-input.component';
 import {LanguagesStatsComponent} from './components/languages-stats/languages-stats.component';
 import {NgScrollbarModule} from 'ngx-scrollbar';
-import { LanguageChipComponent } from './components/language-chip/language-chip.component';
-import { CompareFunctionsComponent } from './components/compare-functions/compare-functions.component';
+import {LanguageChipComponent} from './components/language-chip/language-chip.component';
+import {CompareFunctionsComponent} from './components/compare-functions/compare-functions.component';
+import {ImageDropComponent} from './components/image-drop/image-drop.component';
+import {ImageEditComponent} from './components/image-edit/image-edit.component';
+import {NgxFileDropModule} from 'ngx-file-drop';
+import {ImageCropperModule} from 'ngx-image-cropper';
 
 
 @NgModule({
@@ -30,7 +34,9 @@ import { CompareFunctionsComponent } from './components/compare-functions/compar
     SortedInputComponent,
     LanguagesStatsComponent,
     LanguageChipComponent,
-    CompareFunctionsComponent
+    CompareFunctionsComponent,
+    ImageDropComponent,
+    ImageEditComponent
   ],
   imports: [
     ChartsModule,
@@ -41,28 +47,31 @@ import { CompareFunctionsComponent } from './components/compare-functions/compar
     FormsModule,
     MonacoEditorModule,
     NgScrollbarModule,
+    NgxFileDropModule,
+    ImageCropperModule,
     QuillModule.forRoot()
   ],
-    exports: [
-        ChartsModule,
-        AngularMaterialModule,
-        ReactiveFormsModule,
-        TotalComponent,
-        PagedListComponent,
-        StarRateComponent,
-        SortByArrowsComponent,
-        BootstrapModule,
-        FormsModule,
-        MonacoEditorModule,
-        QuillModule,
-        MatDialogExpanderDirective,
-        MatDialogExpandedContentDirective,
-        SortedInputComponent,
-        LanguagesStatsComponent,
-        NgScrollbarModule,
-        LanguageChipComponent,
-        CompareFunctionsComponent
-    ]
+  exports: [
+    ChartsModule,
+    AngularMaterialModule,
+    ReactiveFormsModule,
+    TotalComponent,
+    PagedListComponent,
+    StarRateComponent,
+    SortByArrowsComponent,
+    BootstrapModule,
+    FormsModule,
+    MonacoEditorModule,
+    QuillModule,
+    MatDialogExpanderDirective,
+    MatDialogExpandedContentDirective,
+    SortedInputComponent,
+    LanguagesStatsComponent,
+    NgScrollbarModule,
+    LanguageChipComponent,
+    CompareFunctionsComponent,
+    ImageDropComponent
+  ]
 })
 export class SharedModule {
 }

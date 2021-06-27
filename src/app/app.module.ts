@@ -10,6 +10,9 @@ import {PublicModule} from './public/public.module';
 import {ProtectedModule} from './protected/protected.module';
 import {AppRoutingModule} from './app-routing.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { UsersRootComponent } from './protected/users/users-root/users-root.component';
+import { UsersListComponent } from './protected/users/users-list/users-list.component';
+import { UsersFilterComponent } from './protected/users/users-filter/users-filter.component';
 
 registerLocaleData(localeFr, 'fr');
 

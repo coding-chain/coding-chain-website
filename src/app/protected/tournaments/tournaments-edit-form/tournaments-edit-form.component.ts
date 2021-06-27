@@ -34,6 +34,7 @@ export class TournamentsEditFormComponent implements OnInit, OnChanges {
   descriptionCtrl: FormControl;
   stepsArray: FormArray;
   tournamentPublished = true;
+  tournamentImageUrl: string;
 
   constructor(private fb: FormBuilder, public dialog: MatDialog) {
 

@@ -4,12 +4,16 @@ import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
 import {combineLatest, EMPTY, forkJoin, Observable, of} from 'rxjs';
 import {HateoasResponse} from '../../../shared/models/pagination/hateoas-response';
-import {catchError, map, switchMap} from 'rxjs/operators';
+import {catchError, map, switchMap, tap} from 'rxjs/operators';
 import {PageCursor} from '../../../shared/models/pagination/page-cursor';
-import {ITournamentNavigation, ITournamentStepNavigation} from '../../../shared/models/tournaments/responses';
+import {
+  ITournamentNavigation,
+  ITournamentNavigationWithImage,
+  ITournamentStepNavigation
+} from '../../../shared/models/tournaments/responses';
 import {GetParams} from '../../../shared/models/http/get.params';
 import {
-  ICreateTournamentCommand,
+  ICreateTournamentCommand, ICreateTournamentWithImageCommand,
   ISetTournamentStepsCommand,
   IUpdateTournamentCommand,
   tournamentEditionStepToSetTournamentStepCommand,
@@ -30,6 +34,8 @@ import {ITestNavigation} from '../../../shared/models/tests/responses';
 import {cloneStepResume, IStepResume} from '../../../shared/models/steps/responses';
 import {ObjectUtils} from '../../../shared/utils/object.utils';
 import {ITournamentDetail} from '../../../shared/models/tournaments/tournaments-detail';
+import {ImageService} from './image.service';
+import {FileUtils} from '../../../shared/utils/file.utils';
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +46,7 @@ export class TournamentService extends ApiHelperService {
   constructor(http: HttpClient,
               private readonly _stepService: StepService,
               private readonly _languageService: LanguageService,
+              private readonly _imageService: ImageService,
               private readonly _testService: TestService) {
     super(http);
     this.getTournamentNavigationFiltered = this.getTournamentNavigationFiltered.bind(this);
@@ -47,11 +54,16 @@ export class TournamentService extends ApiHelperService {
     this.getTournamentResumeFiltered = this.getTournamentResumeFiltered.bind(this);
   }
 
-  public getById(id: string): Observable<ITournamentNavigation | undefined> {
+  public getById(id: string): Observable<ITournamentNavigationWithImage | undefined> {
     return this.http.get<HateoasResponse<ITournamentNavigation> | undefined>(`${this.apiUrl}/${id}`)
       .pipe(
-        map(res => res.result)
+        switchMap(res => forkJoin({tournament: of(res.result), image: this.getTournamentImage(res.result.id)})),
+        map(res => ({...res.tournament, image: res.image}))
       );
+  }
+
+  public setTournamentImage(id: string, image: File): Observable<any> {
+    return this._imageService.saveFile(`${this.apiUrl}/${id}/image`, image);
   }
 
   public getTournamentNavigationFiltered(obj: GetParams<ITournamentNavigation, ITournamentsFilter>):
@@ -74,12 +86,18 @@ export class TournamentService extends ApiHelperService {
     );
   }
 
-  public createOne(body: ICreateTournamentCommand): Observable<ITournamentNavigation> {
+  public createOne(body: ICreateTournamentWithImageCommand): Observable<ITournamentNavigation> {
     return this.createAndGet<ICreateTournamentCommand, HateoasResponse<ITournamentNavigation>>(`${this.apiUrl}`, body)
       .pipe(
-        map(res => res.result)
-      );
+        switchMap(res => forkJoin({
+          tournament: of(res.result),
+          image: body.image ? this.setTournamentImage(res.result.id, body.image) : of(null)
+        })),
+        map(res => res.tournament)
+      )
+      ;
   }
+
 
   public deleteOne(tournamentId: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${tournamentId}`);
@@ -134,6 +152,14 @@ export class TournamentService extends ApiHelperService {
     );
   }
 
+  public getTournamentImage(tournamentId: string): Observable<File | null> {
+    return this._imageService.getData(`${this.apiUrl}/${tournamentId}/image`)
+      .pipe(
+        map(file => FileUtils.base64ToFile(file, tournamentId)),
+        catchError(err => of(null))
+      );
+  }
+
   private getTournamentStepResume(languages: IProgrammingLanguage[], tournamentSteps: ITournamentStepNavigation[])
     : ITournamentResumeStep[] {
     return tournamentSteps.map(step => ({language: languages.find(l => l.id === step.languageId), ...step}));
@@ -169,10 +195,25 @@ export class TournamentService extends ApiHelperService {
     );
   }
 
+  public deleteTournamentImage(tournamentId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${tournamentId}/image`);
+  }
+
+  private updateTournamentImage(originTournament: ITournamentEdition, editedTournament: ITournamentEdition): Observable<any> {
+    if (originTournament.image && !editedTournament.image) {
+      return this.deleteTournamentImage(originTournament.id);
+    }
+    if (editedTournament.image) {
+      return this.setTournamentImage(originTournament.id, editedTournament.image);
+    }
+    return of(null);
+  }
+
 
   updateFullTournament(originTournament: ITournamentEdition, originSteps: IStepResume[], editedTournament: ITournamentEdition)
     : Observable<any> {
 
+    const updateImage$ = this.updateTournamentImage(originTournament, editedTournament);
     const upsertSteps$ = this.upsertSteps(originSteps, editedTournament.steps);
     const updateDetail$ = this.updateTournamentDetail(originTournament, editedTournament);
     return upsertSteps$.pipe(
@@ -187,6 +228,7 @@ export class TournamentService extends ApiHelperService {
         return this.updateTournamentSteps(editedTournament.id, originTournament.steps, editedTournament.steps);
       }),
       switchMap(res => updateDetail$),
+      switchMap(res => updateImage$),
       switchMap(res => this.getTournamentEdition(editedTournament.id))
     );
   }
@@ -305,17 +347,4 @@ export class TournamentService extends ApiHelperService {
     return forkJoin([of(tournaments), of(languages), ...steps$]);
   }
 
-  private getTournamentStepsByIds(tournamentId: string, stepIds: string[]): Observable<ITournamentStepNavigation[]> {
-    if (stepIds?.length > 0) {
-      return forkJoin([...stepIds.map(stepId => this.getTournamentStep(tournamentId, stepId))]);
-    }
-    return of([]);
-  }
-  //
-  // private getParticipations(participationIds: string[]): Observable<IParticipationNavigation[]> {
-  //   if (participationIds?.length > 0) {
-  //     return forkJoin(participationIds.map(participationId => this._participationService.getById(participationId)));
-  //   }
-  //   return of([]);
-  // }
 }

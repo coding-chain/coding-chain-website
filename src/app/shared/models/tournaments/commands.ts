@@ -5,6 +5,11 @@ export interface ICreateTournamentCommand {
   description: string;
 }
 
+export interface ICreateTournamentWithImageCommand extends ICreateTournamentCommand {
+  image: File;
+}
+
+
 export interface IUpdateTournamentCommand {
   name: string;
   description: string;
