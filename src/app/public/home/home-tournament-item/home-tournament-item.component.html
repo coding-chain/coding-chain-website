@@ -25,13 +25,13 @@
             <div class="row">
               <div *ngIf="canJoin()" class="my-2 mx-auto col-10 text-center">
                 <button  (click)="openJoinDialog()"
-                         mat-stroked-button color="accent" class="w-100">
+                         mat-flat-button color="accent" class="w-100">
                   Rejoindre
                 </button>
               </div>
               <div *ngIf="canLeave()" class="my-2 mx-auto  col-10 text-center">
                 <button (click)="openLeaveDialog()" class="w-100"
-                        mat-stroked-button  color="warn">
+                        mat-flat-button  color="warn">
                   Quitter
                 </button>
               </div>
