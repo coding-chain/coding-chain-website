@@ -1,0 +1,37 @@
+.animated-title {
+  font-weight: 700;
+  font-size: 4.5em;
+}
+
+.animated-title .text-wrapper {
+  position: relative;
+  display: inline-block;
+  padding-top: 0.1em;
+  padding-right: 0.05em;
+  padding-bottom: 0.15em;
+}
+
+.animated-title .line {
+  opacity: 0;
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: 3px;
+  transform-origin: 0 50%;
+}
+
+.animated-title .line1 {
+  top: 0;
+  left: 0;
+}
+
+.animated-title .letter {
+  display: inline-block;
+  line-height: 1em;
+}
+
+.description {
+  font-size: 2.3em;
+  line-height: 1.3em;
+}
+

@@ -1,0 +1,23 @@
+<div class="row" *ngIf="theme$|async">
+
+
+  <div class="col-12">
+    <div class="row  justify-content-center my-5">
+      <h1 class="animated-title">
+  <span class="text-wrapper">
+    <span class="line line1" [ngStyle]="{backgroundColor: theme == 'dark' ? 'white' : 'black' }"></span>
+    <span class="letters" #letters>Coding Chain</span>
+  </span>
+      </h1>
+    </div>
+    <div class="row">
+      <app-home-carousel [tournaments]="tournaments"
+                         [theme]="theme" [currentUser]="user" class="w-100"></app-home-carousel>
+    </div>
+    <div class="row justify-content-center my-5">
+      <p class="description text-center">
+        Bienvenue sur Coding Chain le site compétitif de code en équipe qui vous mettra à l'épreuve !
+      </p>
+    </div>
+  </div>
+</div>

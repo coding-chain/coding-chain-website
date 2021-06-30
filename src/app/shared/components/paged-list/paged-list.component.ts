@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnInit} from '@angular/core';
 import {PageCursor} from '../../models/pagination/page-cursor';
 import {PageEvent} from '@angular/material/paginator';
 
@@ -17,17 +17,17 @@ export class PagedListComponent implements OnInit {
   disabled = false;
 
 
-  constructor() {
+  constructor(public elementRef: ElementRef<HTMLElement>) {
   }
 
   ngOnInit(): void {
   }
 
-  changePage(page: number) {
+  changePage(page: number): void {
     this.cursor?.toPage(page);
   }
 
-  updateCursor($event: PageEvent) {
+  updateCursor($event: PageEvent): void {
     this.cursor.setPageSizeAndPage($event.pageSize, $event.pageIndex + 1);
   }
 }

@@ -25,7 +25,7 @@ export class TournamentsItemComponent implements OnInit {
   @Output() tournamentLeave = new EventEmitter<ITeamNavigation[]>();
 
 
-  constructor(private readonly _dialog: MatDialog, private readonly _router: Router) {
+  constructor(protected readonly _dialog: MatDialog, protected readonly _router: Router) {
   }
 
   ngOnInit(): void {

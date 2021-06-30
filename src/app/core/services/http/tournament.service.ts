@@ -72,8 +72,24 @@ export class TournamentService extends ApiHelperService {
   }
 
   public getTournamentNavigationFiltered(obj: GetParams<ITournamentNavigation, ITournamentsFilter>):
-    Observable<HateoasPageResult<ITournamentNavigation>> {
-    return this.getFiltered(obj);
+    Observable<HateoasPageResult<ITournamentNavigationWithImage>> {
+    return this.getFiltered<ITournamentNavigation, ITournamentNavigation, ITournamentsFilter>(obj).pipe(
+      switchMap(page => {
+        const images$ = forkJoin(page.result.map(item =>
+          this.getTournamentImage(item.result.id)
+            .pipe(
+              map(image => ({id: item.result.id, image}))
+            )
+        ));
+        return forkJoin({page: of(page), images: images$});
+      }),
+      map(pageImages => {
+        const tournamentImages = pageImages.page.result.map(item =>
+          ({...item.result, image: pageImages.images.find(image => image.id === item.result.id)?.image} as ITournamentNavigationWithImage)
+        );
+        return pageImages.page.clone(tournamentImages, ((pE, sE) => pE.result.id === sE.id));
+      })
+    );
   }
 
 
@@ -120,13 +136,6 @@ export class TournamentService extends ApiHelperService {
     return this.http.delete(`${this.apiUrl}/${tournamentId}/steps/${stepId}`);
   }
 
-  public getTournamentStep(tournamentId: string, stepId: string): Observable<ITournamentStepNavigation> {
-    return this.http.get<HateoasResponse<ITournamentStepNavigation>>(`${this.apiUrl}/${tournamentId}/steps/${stepId}`)
-      .pipe(
-        map(res => res.result)
-      );
-  }
-
   public getStepNavigationFiltered(obj: GetParams<ITournamentStepNavigation, ITournamentStepNavigation>)
     : Observable<HateoasPageResult<ITournamentStepNavigation>> {
     return this.getFiltered(obj);
@@ -137,9 +146,10 @@ export class TournamentService extends ApiHelperService {
     return new PageCursor<ITournamentStepNavigation, ITournamentStepNavigation>(this.getStepNavigationFiltered, {url: `${this.apiUrl}/${tournamentId}`, ...query});
   }
 
-  public getTournamentResumeFiltered(obj: GetParams<ITournamentResume, ITournamentsFilter>)
+  public getTournamentResumeFiltered(obj: GetParams<ITournamentNavigation, ITournamentsFilter>)
     : Observable<HateoasPageResult<ITournamentResume>> {
-    return this.getFiltered<ITournamentNavigation, ITournamentResume, ITournamentsFilter>(obj).pipe(
+    obj.url ??= this.apiUrl;
+    return this.getTournamentNavigationFiltered(obj).pipe(
       switchMap((page) => {
         return this.toTournamentResumePage(page);
       }),

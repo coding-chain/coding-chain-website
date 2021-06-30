@@ -103,11 +103,11 @@ export class TournamentStepEditItemComponent implements OnInit {
     this.stepGrp.setControl('description', this.descriptionCtrl);
 
     this.stepGrp.valueChanges.subscribe((res: ITournamentEditionStep) => {
-      this.step.name = res.name;
-      this.step.description = res.description;
-      this.step.isOptional = !res.isOptional;
+      this.step.name = this.nameCtrl.value;
+      this.step.description = this.descriptionCtrl.value;
+      this.step.isOptional = !this.isOptionalCtrl.value;
       this.step.language = this.languagesCtrl.value;
-      this.step.score = res.score;
+      this.step.score = this.scoreCtrl.value;
     });
     this.stepGrp.setValidators(ctrl => this.step.tests.length <= 0 ? {minTestsLengthErr: true} : null);
   }

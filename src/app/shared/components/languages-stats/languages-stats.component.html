@@ -1,5 +1,5 @@
-<div class="row w-100">
-  <canvas style="height: 50px; width: 100px" [chartType]="pieChartType"
+<div class="row ">
+  <canvas [ngStyle]="{height: height , width: width}" [chartType]="pieChartType"
           [datasets]="pieChartData"
           [labels]="pieChartLabels"
           [legend]="pieChartLegend"
