@@ -1,0 +1,27 @@
+<div class="p-4">
+  <div class="d-flex flex-column" id="team-data">
+    <mat-form-field appearance="outline" class="w-100 mx-auto" id="team-name">
+      <mat-label>Nom de l'équipe*</mat-label>
+      <input [formControl]="teamNameControl" id="team-name-input" matInput type="text">
+      <mat-hint align="end">{{teamNameControl.value?.length}} / {{nameMaxLength}}</mat-hint>
+      <mat-error *ngIf="teamNameControl.hasError('maxlength')">Le nom de l'équipe doit faire moins de {{nameMaxLength}}
+        caractères
+      </mat-error>
+      <mat-error *ngIf="teamNameControl.hasError('minlength')">Le nom de l'équipe doit faire plus de {{nameMinLength}}
+        caractères
+      </mat-error>
+      <mat-error *ngIf="teamNameControl.hasError('required')">Le nom de l'équipe ne doit pas être vide</mat-error>
+    </mat-form-field>
+  </div>
+  <div class="d-flex flex-column" id="search-teammate">
+    <app-member-filter (filterChanged)="searchTeammate($event)"></app-member-filter>
+  </div>
+  <div class="row">
+    <div class="col-6 text-center">
+      <button mat-stroked-button color="primary" (click)="save()" [disabled]="teamForm.invalid"> Sauvegarder</button>
+    </div>
+    <div class="col-6 text-center">
+      <button mat-stroked-button color="warn" (click)="delete()" [disabled]="!team?.id"> Supprimer</button>
+    </div>
+  </div>
+</div>

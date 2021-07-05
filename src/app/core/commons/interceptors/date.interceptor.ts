@@ -1,14 +1,8 @@
-import {
-  HttpErrorResponse,
-  HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest,
-  HttpResponse
-} from '@angular/common/http';
+import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
+import {DateUtils} from '../../../shared/utils/date.utils';
 
 @Injectable()
 export class DateInterceptor implements HttpInterceptor {
@@ -31,7 +25,7 @@ export class DateInterceptor implements HttpInterceptor {
     );
   }
 
-  convertToDate(body) {
+  convertToDate(body): Date {
     if (body === null || body === undefined) {
       return body;
     }
@@ -43,14 +37,14 @@ export class DateInterceptor implements HttpInterceptor {
     for (const key of Object.keys(body)) {
       const value = body[key];
       if (this.isIso8601(value)) {
-        body[key] = new Date(value);
+        body[key] = DateUtils.toLocaleDate(value);
       } else if (typeof value === 'object') {
         this.convertToDate(value);
       }
     }
   }
 
-  isIso8601(value) {
+  isIso8601(value): boolean {
     if (value === null || value === undefined) {
       return false;
     }

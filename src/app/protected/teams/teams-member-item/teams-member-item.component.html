@@ -1,0 +1,24 @@
+<mat-card>
+  <div class="row align-items-center justify-content-between">
+    <div class="col-3" matTooltip="Pseudo du membre">
+      {{member.username}}
+    </div>
+    <div class="col-3" matTooltip="Email du membre">
+      {{member.email}}
+    </div>
+    <div *ngIf="!member.isAdmin && canDelete" class="col-2 text-center">
+      <button mat-icon-button  color="warn" (click)="delete()" matTooltip="Supprimer le membre de l'équipe">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+    <div *ngIf="!member.isAdmin && canElevate" class="col-2 text-center">
+      <button mat-icon-button color="accent" (click)="elevate()" matTooltip="Nommer l'utilisateur administrateur de l'équipe">
+        <mat-icon >upgrade</mat-icon>
+      </button>
+    </div>
+    <div class="col-2 text-center " >
+      <mat-icon *ngIf="member.isAdmin" color="primary" matTooltip="Administrateur de l'équipe">supervisor_account</mat-icon>
+      <mat-icon *ngIf="!member.isAdmin" color="primary" matTooltip="Membre de l'équipe">person</mat-icon>
+    </div>
+  </div>
+</mat-card>

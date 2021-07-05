@@ -23,7 +23,7 @@
       <div class="mx-auto d-flex flex-column">
         <mat-form-field appearance="outline" class="w-100 mx-auto" id="signup-pwd-ff">
           <mat-label>Mot de passe*</mat-label>
-          <input [formControl]="pwdCtrl" id="password-sign-up" autocomplete="new-password" matInput type="password">
+          <input [formControl]="pwdCtrl" autocomplete="new-password" id="password-sign-up" matInput type="password">
           <mat-error *ngIf="pwdCtrl.dirty && pwdCtrl.hasError('minlength')">Minimum 8 caractères
           </mat-error>
           <mat-error *ngIf="pwdCtrl.dirty && pwdCtrl.hasError('required')">Le mot de passe est
@@ -44,8 +44,8 @@
         </mat-error>
       </div>
     </div>
-    <mat-checkbox class="my-1"
-                  [formControl]="rememberMeCtrl"
+    <mat-checkbox [formControl]="rememberMeCtrl"
+                  class="my-1"
                   labelPosition="after">
       Se souvenir de moi
     </mat-checkbox>

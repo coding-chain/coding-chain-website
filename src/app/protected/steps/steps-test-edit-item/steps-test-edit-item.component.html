@@ -1,0 +1,51 @@
+<mat-card>
+  <mat-card-content>
+    <div class="row h-100 align-items-center justify-content-around">
+      <div class="col-11">
+        <div class="row w-100 justify-content-center">
+          <mat-form-field appearance="outline" class="row w-100">
+            <mat-label>Nom</mat-label>
+            <input type="text" [formControl]="nameCtrl" matInput>
+            <mat-hint>{{nameCtrl.value?.length}}/{{nameMaxLength}}</mat-hint>
+            <mat-error *ngIf="nameCtrl.hasError('required')">
+              Le nom du test doit être renseigné
+            </mat-error>
+            <mat-error *ngIf="nameCtrl.hasError('maxlength')">
+              Le nom du test doit faire moins de {{nameMaxLength}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="row" style="height: 300px">
+          <div class="col-6 p-0">
+            <h3 class="text-center">Générateur d'input</h3>
+            <ngx-monaco-editor [formControl]="inputGeneratorCtrl" [options]="inputMonacoOptions"
+                               class="h-100 w-100"></ngx-monaco-editor>
+          </div>
+          <div class="col-6 p-0">
+            <h3 class="text-center">Validateur d'output</h3>
+            <ngx-monaco-editor [formControl]="outputValidatorCtrl" [options]="outputMonacoOptions"
+                               class="h-100 w-100"></ngx-monaco-editor>
+          </div>
+        </div>
+      </div>
+      <div class="col-1">
+        <mat-form-field appearance="outline" class="mx-auto my-auto w-100 ">
+          <mat-label>Score</mat-label>
+          <input [formControl]="scoreCtrl" matInput type="number">
+          <mat-error *ngIf="scoreCtrl.hasError('min')">
+            Score min > 0
+          </mat-error>
+        </mat-form-field>
+        <button (click)="deleteTest()" [disabled]="test.stepPublished" class="mx-auto my-auto" mat-icon-button>
+          <mat-icon color="warn">
+            clear
+          </mat-icon>
+        </button>
+      </div>
+
+
+    </div>
+
+
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,10 @@
+<ng-container *ngIf="(theme$ | async) && (languages$ | async)">
+  <app-plagiarism-filter [languages]="languages"
+                         (filterChanged)="updateFilter($event)" class="col my-3"></app-plagiarism-filter>
+  <app-suspect-function-item *ngFor="let function of suspectFunctions$ |async; trackBy: trackBy" [suspectFunction]="function"
+                             [theme]="theme" (confirmAdvices)="updateSuspectValidity(function, $event)"
+
+                             class="row my-2">
+  </app-suspect-function-item>
+  <app-paged-list [cursor]="functionsCursor"></app-paged-list>
+</ng-container>

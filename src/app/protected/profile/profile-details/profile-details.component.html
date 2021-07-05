@@ -1,0 +1,59 @@
+<mat-card class="w-100">
+  <mat-card-title class="py-2 d-flex justify-content-center">Profil</mat-card-title>
+  <mat-card-content class="p-4">
+    <ng-container *ngIf="connectedUser$ | async as user">
+      <mat-card>
+        <div class="row d-flex justify-content-between px-4">
+          <h2>Mes Informations</h2>
+          <button
+            color="accent"
+            mat-icon-button
+            matTooltip="Editer mon profil"
+            [routerLink]="['/profile/edit']"
+          >
+            <mat-icon>
+              edit
+            </mat-icon>
+          </button>
+        </div>
+
+        <div class="ml-4">
+          <h3 class="row mb-2">
+            <span class="mr-2"><b>Username :</b></span>
+            <span>{{user.username}}</span>
+          </h3>
+          <h3 class="row mb-2">
+            <span class="mr-2"><b>Email : </b></span>
+            {{user.email}}
+          </h3>
+          <h3 class="row mb-3">
+            <span class="mt-2 mr-2"><b>Droits :</b></span>
+            <mat-chip-list>
+              <mat-chip
+                *ngFor="let right of user.rights;"
+                [color]="right.name === 'Admin' ? 'accent' : 'primary'"
+                selected
+              >
+                {{right.name}}
+              </mat-chip>
+            </mat-chip-list>
+          </h3>
+        </div>
+      </mat-card>
+      <div class="row w-100 pt-5 justify-content-center px-2 mx-0">
+        <div class="w-50 px-2" color="primary">
+          <h2>Mes Teams</h2>
+          <app-profile-teams *ngFor="let team of teams" [team]="team"
+                             [connectedUser]="connectedUser$ | async" (leaveTeam)="leaveTeam(team)"></app-profile-teams>
+          <app-paged-list [cursor]="teamCursor"></app-paged-list>
+        </div>
+        <div class="w-50 px-2">
+          <h2>Mes Tournois</h2>
+          <app-profile-tournament *ngFor="let tournament of tournaments" [tournament]="tournament"
+                             [connectedUser]="connectedUser$ | async"></app-profile-tournament>
+          <app-paged-list [cursor]="tournamentCursor"></app-paged-list>
+        </div>
+      </div>
+    </ng-container>
+  </mat-card-content>
+</mat-card>

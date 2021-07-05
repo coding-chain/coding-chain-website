@@ -1,0 +1,71 @@
+<div class=" container-fluid  mt-2" cdkDropListGroup *ngIf=" participation$ | async">
+  <div class="row pipeline-container">
+    <div class="col-2">
+      <h2 class="mx-auto text-center">Score : {{participation.calculatedScore}}</h2>
+      <app-participation-step [step]="participation.step" [theme]="theme"
+                              [stepCnt]="participation.allParticipations.length"></app-participation-step>
+    </div>
+    <mat-divider class="mx-1" vertical="true"></mat-divider>
+    <div class="col ">
+      <app-participation-pipeline-functions-list
+        [theme]="theme"
+        [formGrp]="formGrp"
+        (functionUpdate)="onPipelineFunctionAdded($event)"
+        [inGenFunctionType]="tests[0].inputType"
+        [outValFunctionType]="tests[0].outputType"
+        [minFunctionsCnt]="participation.step.minFunctionsCount"
+        [maxFunctionsCnt]="participation.step.maxFunctionsCount"
+        [functions]="pipelineFunctions"
+        [canDragOrDrop]="currentUser.isParticipationAdmin"
+      >
+      </app-participation-pipeline-functions-list>
+    </div>
+    <mat-divider class="mx-1" vertical="true"></mat-divider>
+    <div class="col-2">
+      <app-participation-actions
+        [connectedUser]="currentUser"
+        [participation]="participation"
+        [participationForm]="formGrp"
+        (executeParticipation)="onExecute()"
+        (nextParticipation)="onNextParticipation($event)"
+      ></app-participation-actions>
+
+      <mat-divider class="my-3"></mat-divider>
+      <mat-accordion>
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            {{users?.length}} Utilisateurs
+          </mat-expansion-panel-header>
+          <app-participation-users [currentUser]="currentUser" [users]="users" (elevatedUser)="onElevatedUser($event)">
+
+          </app-participation-users>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            {{tests.length}} Tests
+          </mat-expansion-panel-header>
+          <app-participation-tests [tests]="tests">
+          </app-participation-tests>
+        </mat-expansion-panel>
+      </mat-accordion>
+
+    </div>
+  </div>
+  <mat-divider class="my-1"></mat-divider>
+
+  <div class="row-100">
+    <app-participation-functions-list
+      [canDragOrDrop]="currentUser.isParticipationAdmin"
+      [header]="participation.step.headerCode"
+      [theme]="theme"
+      [functions]="stackFunctions"
+      [language]="participation.step.language"
+      (addFunction)="onStackFunctionAdded($event)"
+      (removeFunction)="onStackFunctionRemoved($event)"
+      (updateFunction)="onStackFunctionUpdated($event)"
+      [functionCreatorId]="currentUser.id">
+    </app-participation-functions-list>
+  </div>
+
+</div>
+

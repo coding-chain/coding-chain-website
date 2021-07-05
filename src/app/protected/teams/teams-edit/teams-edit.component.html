@@ -1,0 +1,35 @@
+<div  class="w-100 mx-auto mt-5 d-flex flex-row" cdkDropListGroup>
+  <mat-card class="w-100 d-flex flex-column mx-1">
+    <mat-card-title class="d-flex justify-content-center pt-2">
+      <span>Administration d'équipe</span>
+    </mat-card-title>
+    <app-teams-form *ngIf="(team$ | async)" [team]="team" (searchMember)="searchUser($event)" [teamForm]="teamGrp" (deleteTeam)="deleteTeam()" (saveTeam)="saveTeam()"></app-teams-form>
+    <div
+      (cdkDropListDropped)="drop($event)"
+      [cdkDropListData]="users"
+      cdkDropList
+      class="row justify-content-center  drag-place-holder">
+      <app-teams-member-item *ngFor="let user of users" [member]="user" cdkDrag
+                             class="col-11 my-2">
+      </app-teams-member-item>
+    </div>
+    <app-paged-list [cursor]="userCursor"></app-paged-list>
+    <app-teams-delete-button *ngIf="teamId !== null && teamId !== undefined"
+                             [teamId]="teamId"></app-teams-delete-button>
+  </mat-card>
+  <mat-card class="w-100 d-flex flex-column  mx-1">
+    <mat-card-title class="d-flex justify-content-center pt-2">
+      <span>Membres</span>
+    </mat-card-title>
+    <div
+      (cdkDropListDropped)="drop($event)"
+      [cdkDropListData]="teamMembers"
+      cdkDropList
+      class="row justify-content-center  drag-place-holder">
+      <app-teams-member-item *ngFor="let member of teamMembers; let i = index" [canDelete]="true" [canElevate]="true" (deleteMember)="onMemberDeleted(i)" (elevateMember)="onMemberElevated(member)"
+                             [member]="member" [cdkDragDisabled]="!member.canMove"
+                             cdkDrag class="col-11 my-2">
+      </app-teams-member-item>
+    </div>
+  </mat-card>
+</div>

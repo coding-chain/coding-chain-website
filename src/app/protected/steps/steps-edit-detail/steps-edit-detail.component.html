@@ -1,0 +1,43 @@
+<div class="row h-100">
+  <div class="col-6">
+    <div class="row">
+      <mat-form-field appearance="outline" class="col-6 justify-content-center">
+        <mat-label>Fonctions min</mat-label>
+        <input [formControl]="minFunctionsCntCtrl" matInput type="number">
+        <mat-error *ngIf="minFunctionsCntCtrl.hasError('gtCtrlError')">
+          Nb fonctions min < Nb fonctions max
+        </mat-error>
+        <mat-error *ngIf="minFunctionsCntCtrl.hasError('min')">
+          Nb fonctions min >= 0
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-6 justify-content-center">
+        <mat-label>Fonctions max</mat-label>
+        <input [formControl]="maxFunctionsCntCtrl" matInput type="number">
+        <mat-error *ngIf="maxFunctionsCntCtrl.hasError('ltCtrlError')">
+          Nb fonctions max > Nb fonctions min
+        </mat-error>
+        <mat-error *ngIf="maxFunctionsCntCtrl.hasError('min')">
+          Nb fonctions min >= 0
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row  align-items-center">
+      <quill-editor [formControl]="descriptionCtrl" class="col mw-100 p-0"
+                    style="background-color: white; color: black;"></quill-editor>
+    </div>
+    <div class="row">
+      <mat-error *ngIf="descriptionCtrl.hasError('required')">Veuillez renseigner une description pour l'étape
+      </mat-error>
+      <mat-error *ngIf="descriptionCtrl.hasError('maxlength')">La taille de la description doit être inférieure
+        à {{maxDescriptionLength}}</mat-error>
+    </div>
+  </div>
+  <div class="col-6">
+    <ngx-monaco-editor [(ngModel)]="step.headerCode" [options]="editorOptions" class="h-100 w-100"></ngx-monaco-editor>
+  </div>
+
+</div>
+
+
+

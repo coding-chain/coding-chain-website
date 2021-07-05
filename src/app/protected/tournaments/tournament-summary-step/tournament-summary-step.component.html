@@ -1,0 +1,56 @@
+<mat-card *ngIf="step.isPublished" class="w-100 mb-1">
+  <div class="row">
+    <div class="col-10">
+      <h3 class="my-0">
+        <div class="row mx-0">
+          <div class="mr-2">
+            <span><b>{{step.name}}</b></span>
+          </div>
+          <mat-chip-list>
+            <mat-chip
+              *ngIf="step.isOptional"
+              [color]="'accent'"
+              style="transform: scale(0.7);"
+              selected
+            >
+              Optionnelle
+            </mat-chip>
+          </mat-chip-list>
+        </div>
+      </h3>
+    </div>
+
+    <div class="col-2 d-flex justify-content-end">
+      <mat-chip-list>
+        <app-language-chip [theme]="theme" [language]="step.language" ></app-language-chip>
+      </mat-chip-list>
+    </div>
+  </div>
+
+  <div class="row mb-2">
+    <div class="col-6">
+      <app-star-rate
+        [(rate)]="step.difficulty"
+        [disabled]="step.isPublished"
+        [maxRate]="5"
+        dim="15px"
+      >
+      </app-star-rate>
+    </div>
+  </div>
+
+  <div class="row mx-0">
+    <div class="col-10 px-0">
+      <h3><b>Enoncé : </b></h3>
+      <span [innerHTML]="step.description"></span>
+    </div>
+    <div class="col-2">
+      <div class="row text-center align-middle">
+        <h3>
+          <span class="mr-1"><b>Score : </b></span>
+          <span>{{step.score}}</span>
+        </h3>
+      </div>
+    </div>
+  </div>
+</mat-card>

@@ -1,0 +1,11 @@
+<div mat-dialog-title>
+  Tests
+</div>
+<div appMatDialogExpanderDirective class="container-fluid mx-auto" mat-dialog-content>
+  <app-steps-edit-tests (testsChange)="editedTests = $event" [readonly]="readonly" [step]="step"
+                        [testsArray]="testsArray" [theme]="theme"></app-steps-edit-tests>
+</div>
+<div mat-dialog-actions>
+  <button (click)="onSaveClicked()" *ngIf="!readonly" [disabled]="(invalid$ | async)" mat-button>Valider</button>
+  <button mat-button mat-dialog-close>{{readonly ? 'Fermer' : 'Annuler'}}</button>
+</div>

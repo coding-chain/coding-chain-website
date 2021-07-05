@@ -1,0 +1,5 @@
+<app-teams-filter (filterChanged)="searchTeams($event)"
+                  [currentUser]="connectedUser$ | async"
+                  class="col my-3"></app-teams-filter>
+<app-teams-item  *ngFor="let team of (teams$ | async); trackBy: trackBy" [team]="team" [connectedUser]="connectedUser$ | async" (leaveTeam)="leaveTeam(team)" ></app-teams-item>
+<app-paged-list [cursor]="teamCursor"></app-paged-list>

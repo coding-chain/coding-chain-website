@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col">
+    <div class="row">
+      <div class="col-5 pl-1 text-left">
+        <h3 class="my-0">Ordre : {{step.order}} / {{stepCnt}}</h3>
+      </div>
+      <div class="col-7 p-0 text-right">
+        <h3 class="my-0">{{step.isOptional ? 'Optionnelle' : 'Obligatoire'}}</h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-3 p-0 text-left">
+        <mat-chip-list>
+          <app-language-chip [theme]="theme" [language]="step.language" ></app-language-chip>
+        </mat-chip-list>
+      </div>
+      <div class="col-9 p-0 text-right">
+        <app-star-rate [rate]="step.difficulty" [disabled]="true"></app-star-rate>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 p-0 text-left">
+        <h5 *ngIf="!!step.minFunctionsCount">Nb min fonctions : {{step.minFunctionsCount}}</h5>
+      </div>
+      <div class="col-6 p-0 text-right">
+        <h5 *ngIf="!!step.maxFunctionsCount">Nb max fonctions : {{step.maxFunctionsCount}}</h5>
+      </div>
+    </div>
+
+    <div class="row">
+      <h2 class=" my-1">{{step.name}}</h2>
+    </div>
+    <mat-divider class="my-2"></mat-divider>
+    <div class="row" [innerHTML]="step.description">
+    </div>
+  </div>
+
+</div>

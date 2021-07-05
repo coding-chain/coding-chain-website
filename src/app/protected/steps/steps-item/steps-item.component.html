@@ -1,0 +1,21 @@
+<mat-card class="row w-100 mx-0">
+  <div class="col">
+    <div class="row justify-content-between w-100 align-items-center">
+      <h3 class="my-auto">
+        {{step.name}}
+      </h3>
+      <mat-chip-list>
+        <app-language-chip [language]="step.language" [theme]="theme"></app-language-chip>
+      </mat-chip-list>
+    </div>
+    <div class="row justify-content-between w-100 align-items-center">
+      <app-star-rate [(rate)]="step.difficulty" [disabled]="true" dim="15px"></app-star-rate>
+    </div>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Description</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div [innerHTML]="step.description"></div>
+    </mat-expansion-panel>
+  </div>
+</mat-card>

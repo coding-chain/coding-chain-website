@@ -1,0 +1,41 @@
+<mat-card class="row w-100 mx-0">
+  <div class="col">
+    <div class="row  w-100 justify-content-between align-items-center">
+      <div class="col-2 d-flex" matTooltip="Utilisateur suspect">
+        <button mat-icon-button color="warn">
+          <mat-icon>person</mat-icon>
+        </button>
+        <h4 class="my-auto">{{suspectFunction.lastEditor.username}}</h4>
+      </div>
+      <button mat-stroked-button matTooltip="Voir le détail du tournoi"
+              [routerLink]="['/tournaments', suspectFunction.participation.tournament.id, 'details']">
+        <mat-icon>emoji_events</mat-icon>
+        {{suspectFunction.participation.tournament.name}} / {{suspectFunction.participation.step.name}}
+      </button>
+      <h3 class="my-auto" matTooltip="Nom de la fonction suspecte">
+        {{suspectAppFunction.name}}
+      </h3>
+      <mat-checkbox [(ngModel)]="all" [indeterminate]="indeterminate" class="mat-checkbox-my-0">
+        Avis plagiat
+      </mat-checkbox>
+      <button mat-icon-button color="accent" matTooltip="Confirmer tous les avis de plagiats" (click)="confirmAdvicesClicked()">
+        <mat-icon>local_police</mat-icon>
+      </button>
+
+      <mat-chip-list>
+        <app-language-chip [language]="suspectFunction.language" [theme]="theme"></app-language-chip>
+      </mat-chip-list>
+    </div>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Fonctions plagiées</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div *ngFor="let plagiarizedFunction of plagiarizedFunctions">
+        <app-plagiarized-function [theme]="theme"
+                                  [plagiarizedFunction]="plagiarizedFunction"
+                                  (compareFunctions)="onFunctionsCompare($event)"></app-plagiarized-function>
+      </div>
+    </mat-expansion-panel>
+  </div>
+</mat-card>

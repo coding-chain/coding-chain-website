@@ -1,6 +1,12 @@
-import {Links} from './links';
+import {Link} from './link';
 
-export interface HateoasResponse<T>{
+export class HateoasResponse<T> {
   result: T;
-  links: Links[];
+  links: Link[];
+
+  constructor(obj?: Partial<HateoasResponse<T>>) {
+    this.result = obj?.result;
+    this.links = obj?.links ?? [];
+  }
 }
+

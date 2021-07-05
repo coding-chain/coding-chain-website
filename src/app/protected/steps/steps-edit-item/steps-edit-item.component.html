@@ -1,0 +1,66 @@
+<mat-card *ngIf="step" class="p-1">
+  <mat-card-content>
+    <div class="row justify-content-between align-items-center">
+      <div class="col-4">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Nom</mat-label>
+          <input [formControl]="nameCtrl" matInput type="text">
+          <mat-error *ngIf="nameCtrl.hasError('minlength') || nameCtrl.hasError('required')">
+            Le nom de l'étape doit faire au moins {{minNameLength}} caractères
+          </mat-error>
+          <mat-error *ngIf="nameCtrl.hasError('maxlength')">
+            Le nom de l'étape doit faire au maximun {{maxNameLength}} caractères
+          </mat-error>
+        </mat-form-field>
+
+      </div>
+      <mat-form-field appearance="outline" class="col-2 mx-auto">
+        <mat-label>Langage</mat-label>
+        <mat-select [formControl]="languagesCtrl">
+          <mat-option *ngFor="let language of languages" [value]="language.id">
+            {{language.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="col-1 text-center" matTooltip="Difficulté">
+        <app-star-rate [(rate)]="step.difficulty" [disabled]="step.isPublished" [maxRate]="5"
+                       dim="15px"></app-star-rate>
+      </div>
+      <mat-form-field appearance="outline" class="col-1">
+        <mat-label>Score</mat-label>
+        <input [formControl]="scoreCtrl" matInput type="number">
+        <mat-error *ngIf="scoreCtrl.hasError('min')">
+          Score min > 0
+        </mat-error>
+      </mat-form-field>
+      <div class="col-1 text-center">
+        <button (click)="openTestsDialog()" [matBadge]="step.tests?.length" color="primary" mat-stroked-button
+                matBadgeColor="accent" matBadgePosition="after">Tests
+        </button>
+        <mat-error class="hint-error" *ngIf="stepGrp.hasError('minTestsLengthError')">
+          L'étape doit contenir au moins un test
+        </mat-error>
+      </div>
+      <div class="col-1 text-center">
+        <button (click)="openDetailDialog()" [color]="descriptionCtrl.valid ? 'primary': 'warn'" mat-icon-button
+                matTooltip="Détail">
+          <mat-icon>zoom_in</mat-icon>
+        </button>
+        <mat-error  class="hint-error" *ngIf="descriptionCtrl.errors?.required">
+          Donnez une description à l'étape
+        </mat-error>
+      </div>
+      <div class="col-1 text-center">
+        <button (click)="saveStep()" [disabled]="stepGrp.invalid || step.isPublished" color="primary" mat-icon-button
+                matTooltip="Sauvegarder">
+          <mat-icon>save</mat-icon>
+        </button>
+      </div>
+      <div class="col-1 text-center">
+        <button (click)="delete()" [disabled]="step.isPublished" color="warn" mat-icon-button matTooltip="Supprimer">
+          <mat-icon>clear</mat-icon>
+        </button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -1,1 +1,1 @@
-export type Rel = 'next' | 'previous' | 'current' | string;
+export type Rel = 'nextPage' | 'previousPage' | 'currentPage' | string;

@@ -1,0 +1,30 @@
+<div class="row h-100">
+  <mat-card class="mr-1 d-flex p-1 ">
+    <div class="align-self-center">
+      <h3 class="rotate-l90 my-auto mx-auto" >{{inGenFunctionType}}</h3>
+    </div>
+  </mat-card>
+  <div class="col">
+    <div
+      cdkDropListOrientation="horizontal"
+      [cdkDropListDisabled]="!canDragOrDrop"
+      (cdkDropListDropped)="drop($event)"
+      [cdkDropListData]="_functions"
+      cdkDropList
+      class="row justify-content-start  drag-place-holder">
+      <app-participation-functions-item class="col-2" *ngFor="let functionItem of _functions; let j=index"
+                                        [func]="functionItem" [canEdit]="false" [canRemove]="false"
+                                        cdkDrag [cdkDragDisabled]="!canDragOrDrop"
+                                        (display)="onDisplay($event)"
+      >
+      </app-participation-functions-item>
+
+    </div>
+  </div>
+  <mat-card class="ml-1 d-flex p-1 ">
+    <div class="align-self-center">
+      <h3 class="rotate-r90 my-auto mx-auto" >{{outValFunctionType}}</h3>
+    </div>
+  </mat-card>
+</div>
+

@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>{{step.name}}</h1>
+<div appMatDialogExpanderDirective class="container-fluid mx-auto " mat-dialog-content>
+  <app-steps-edit-detail [stepGrp]="formGroup" [step]="step" [theme]="theme"></app-steps-edit-detail>
+</div>
+
+<div mat-dialog-actions>
+  <button (click)="onSaveClicked()" *ngIf="!step.isPublished" [disabled]="formGroup.invalid" mat-button>Valider
+  </button>
+  <button mat-button mat-dialog-close>{{!step.isPublished ? 'Annuler' : 'Fermer'}}</button>
+</div>
+

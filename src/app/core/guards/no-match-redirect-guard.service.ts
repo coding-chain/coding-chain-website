@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {AuthenticationService} from '../services/http/authentication.service';
 
 @Injectable({providedIn: 'root'})
-export class NoMatchRedirectGuardService implements CanActivate{
+export class NoMatchRedirectGuardService implements CanActivate {
 
   constructor(public auth: AuthenticationService, public router: Router) {
   }
@@ -20,3 +20,4 @@ export class NoMatchRedirectGuardService implements CanActivate{
     }));
   }
 }
+

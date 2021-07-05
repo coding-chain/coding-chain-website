@@ -1,0 +1,89 @@
+<div class="row align-items-center justify-content-around my-3">
+  <div class="col-10">
+    <div class="row">
+      <div class="col-6">
+        <div class="row">
+          <div class="col">
+            <app-tournaments-edit-name-input [nameCtrl]="nameCtrl"></app-tournaments-edit-name-input>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-6 text-center">
+            <mat-form-field>
+              <mat-label>Date début du tournois</mat-label>
+              <input [formControl]="startDateCtrl" matInput type="datetime-local">
+            </mat-form-field>
+            <mat-error *ngIf="startDateCtrl.hasError('minDateError')">
+              La date de début du tournois doit être supérieure à maintenant
+            </mat-error>
+          </div>
+          <div class="col-6 text-center">
+            <mat-form-field>
+              <mat-label>Date fin du tournois</mat-label>
+              <input [formControl]="endDateCtrl" matInput type="datetime-local">
+            </mat-form-field>
+            <mat-error *ngIf="formGroup.hasError('noStartDate')">
+              Le tournois doit avoir une date de début
+            </mat-error>
+          </div>
+
+          <mat-error *ngIf="formGroup.hasError('startDateLower')" class="col text-center">
+            La date de début de tournois doit être inférieure à la date de fin
+          </mat-error>
+        </div>
+        <div class="row my-3">
+          <app-tournaments-edit-description-input
+            [descriptionCtrl]="descriptionCtrl "></app-tournaments-edit-description-input>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="row align-items-center justify-content-around">
+          <app-image-drop [file]="tournament.image" [hideSaveButton]="true" orientation="VERTICAL"
+                          (pictureChanged)="tournament.image = $event"
+                          (pictureRemoved)="tournament.image = null"></app-image-drop>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="col-2 align-self-stretch">
+    <div class="d-flex  justify-content-around flex-column">
+      <button class="my-2" (click)="saveTournament()" [disabled]="!canSave() || (isInvalid$ | async)"
+              mat-stroked-button>
+        Sauvegarder
+      </button>
+      <button class="my-2" (click)="deleteTournament()" [disabled]="!canDelete()" color="warn" mat-stroked-button>
+        Supprimer
+      </button>
+      <mat-slide-toggle class="my-2" [disabled]="!canPublish() || (isInvalid$ | async)"
+                        [formControl]="isPublishedCtrl"
+                        [matTooltip]="isPublishedCtrl.value ? 'Publié' : 'Non publié'" class="mx-auto">
+      </mat-slide-toggle>
+    </div>
+
+  </div>
+
+
+</div>
+
+<mat-divider class="py-2">
+</mat-divider>
+<div class="row">
+  <div class="col-6">
+    <button (click)="addStep()" [disabled]="tournamentPublished || (isInvalid$ | async)" class="w-100 py-1 my-2"
+            mat-stroked-button>Ajouter une nouvelle étape
+    </button>
+  </div>
+  <div class="col-6">
+    <button (click)="openStepsListDialog()" [disabled]="tournamentPublished || (isInvalid$ | async)"
+            class="w-100 py-1 my-2"
+            mat-stroked-button>Ajouter une étape existante
+    </button>
+  </div>
+</div>
+
+<app-tournaments-edit-steps-list [languages]="languages" [stepsArray]="stepsArray"
+                                 [steps]="tournament.steps"
+                                 [tournamentPublished]="tournamentPublished"></app-tournaments-edit-steps-list>
+

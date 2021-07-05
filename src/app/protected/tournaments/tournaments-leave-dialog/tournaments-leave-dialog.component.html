@@ -1,0 +1,23 @@
+<h1 mat-dialog-title>Quitter un tournoi</h1>
+<div appMatDialogExpanderDirective class="container-fluid mx-auto " mat-dialog-content>
+  <mat-checkbox [(ngModel)]="all" [indeterminate]="indeterminate">
+    Sélectionner toutes les équipes
+  </mat-checkbox>
+  <mat-card *ngFor="let team of teams" class="row w-100 mx-auto my-1">
+    <div class="col">
+      <div class="row justify-content-between">
+        <h3 class="col-7 my-0">{{team.item.name}}</h3>
+        <mat-checkbox [(ngModel)]="team.check">
+        </mat-checkbox>
+      </div>
+    </div>
+  </mat-card>
+</div>
+
+<div mat-dialog-actions>
+    <button (click)="close()"  [disabled]="!all && !indeterminate" mat-button>Valider
+    </button>
+  <button mat-button mat-dialog-close>Fermer</button>
+</div>
+
+

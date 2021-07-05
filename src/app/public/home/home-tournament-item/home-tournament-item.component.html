@@ -1,0 +1,46 @@
+<div class="row h-100 align-items-center" >
+  <div class="col-12 p-0 my-container" >
+    <div class="row overlay w-100 mx-3 py-4 pr-3">
+      <div class="col-12">
+        <div class="row justify-content-around">
+          <div class="col" >
+            <div class="d-flex">
+              <h1>{{tournament.name}}</h1>
+            </div>
+            <div class="row px-3" [innerHTML]="tournament.description"  >
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="col-9 mx-auto ">
+              <app-languages-stats [theme]="theme" [languages]="tournamentLanguages"></app-languages-stats>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                Début : {{tournament.startDate | date}}
+              </div>
+              <div class="col-6">
+                Fin : {{tournament.endDate | date}}
+              </div>
+            </div>
+            <div class="row">
+              <div *ngIf="canJoin()" class="my-2 mx-auto col-10 text-center">
+                <button  (click)="openJoinDialog()"
+                         mat-flat-button color="accent" class="w-100">
+                  Rejoindre
+                </button>
+              </div>
+              <div *ngIf="canLeave()" class="my-2 mx-auto  col-10 text-center">
+                <button (click)="openLeaveDialog()" class="w-100"
+                        mat-flat-button  color="warn">
+                  Quitter
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <img src="{{picture}}" *ngIf="picture" alt="Image du tournois"
+         class="img-fluid image w-100" style="display: block"/>
+  </div>
+</div>

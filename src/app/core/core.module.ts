@@ -8,12 +8,14 @@ import {RouterModule} from '@angular/router';
 import {NavBarComponent} from './components/nav-bar/nav-bar.component';
 import {SharedModule} from '../shared/shared.module';
 import {AuthenticationService} from './services/http/authentication.service';
-import {UserStateService} from './services/user-state.service';
+import {UserStateService} from './services/states/user-state.service';
 import {MatButtonModule} from '@angular/material/button';
+import {HateoasInterceptor} from './commons/interceptors/hateoas.interceptor';
+import { ThemeEmitterComponent } from './components/theme-emitter/theme-emitter.component';
 
 
 @NgModule({
-  declarations: [NavBarComponent],
+  declarations: [NavBarComponent, ThemeEmitterComponent],
   imports: [
     HttpClientModule,
     CommonModule,
@@ -21,9 +23,10 @@ import {MatButtonModule} from '@angular/material/button';
     SharedModule,
     MatButtonModule
   ],
-  exports: [
-    NavBarComponent
-  ],
+    exports: [
+        NavBarComponent,
+        ThemeEmitterComponent
+    ],
   providers: [AuthenticationService, UserStateService,
     {
       provide: HTTP_INTERCEPTORS,
@@ -32,6 +35,11 @@ import {MatButtonModule} from '@angular/material/button';
     }, {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HateoasInterceptor,
       multi: true
     },
     {

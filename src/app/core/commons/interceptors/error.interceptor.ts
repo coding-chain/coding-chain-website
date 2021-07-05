@@ -11,8 +11,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         catchError((error: HttpErrorResponse) => {
           if (error.error instanceof ErrorEvent) {
             // ErrorMessageUtils.clientError();
-          }
-          else {
+          } else {
             // ErrorMessageUtils.serverError(error.status);
           }
           return throwError(error);

@@ -1,0 +1,12 @@
+<div class="col">
+  <div class="row  align-items-center">
+    <quill-editor [formControl]="descriptionCtrl" class="col w-100 p-0"
+                  style="background-color: white; color: black;"></quill-editor>
+  </div>
+  <mat-error *ngIf="descriptionCtrl.hasError('maxlength')">
+    La description du tournoi doit faire au maximum {{maxDescriptionLength}}
+  </mat-error>
+  <mat-error *ngIf="descriptionCtrl.hasError('required')">
+    La description du tournoi ne doit pas être vide
+  </mat-error>
+</div>

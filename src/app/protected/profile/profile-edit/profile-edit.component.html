@@ -1,1 +1,123 @@
-<p>profile-edit works!</p>
+<div class="container">
+  <mat-card class="w-100 my-3">
+    <mat-card-title class="mb-3 py-2 d-flex justify-content-center">Editer mon profil</mat-card-title>
+    <mat-card-content>
+      <form (ngSubmit)="onSubmitUser()" [formGroup]="userForm" class="p-4">
+        <div class="d-flex flex-column" id="user-data">
+          <mat-accordion class="headers-align" multi>
+            <mat-expansion-panel class="mb-2">
+              <mat-expansion-panel-header>
+                <mat-panel-title color="primary">Mes indentifiants</mat-panel-title>
+                <mat-panel-description class="justify-content-between">
+                  Modifier ses informations personnel
+                  <mat-icon>account_circle</mat-icon>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div class="row">
+                <div class="col">
+                  <mat-form-field appearance="outline" class="w-50 ml-5" id="edit-username">
+                    <mat-label>Nom d'utilisateur*</mat-label>
+                    <input [formControl]="usernameCtrl" id="username-edit" matInput type="text">
+                    <mat-error *ngIf="usernameCtrl.dirty && usernameCtrl.hasError('minlength')">Entre 6 et 20 caractères
+                    </mat-error>
+                    <mat-error *ngIf="usernameCtrl.dirty && usernameCtrl.hasError('maxlength')">Entre 6 et 20 caractères
+                    </mat-error>
+                    <mat-error *ngIf="usernameCtrl.dirty && usernameCtrl.hasError('required')">Le nom d'utilisateur est
+                      obligatoire
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <mat-form-field appearance="outline" class="w-50 ml-5" id="edit-email">
+                    <mat-label>Email*</mat-label>
+                    <input [formControl]="emailCtrl" id="email-edit" matInput type="email">
+                    <mat-error *ngIf="emailCtrl.dirty && emailCtrl.hasError('email')">L'email doit respecter le format
+                      frederic@esgi.fr
+                    </mat-error>
+                    <mat-error *ngIf="emailCtrl.dirty && emailCtrl.hasError('required')">L'email est obligatoire
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel class="mb-2">
+              <mat-expansion-panel-header>
+                <mat-panel-title>Confidentiel</mat-panel-title>
+                <mat-panel-description class="justify-content-between">
+                  Changer son mot de passe
+                  <mat-icon>vpn_key</mat-icon>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div class="row">
+                <div class="col">
+                  <mat-form-field appearance="outline" class="w-50 ml-5" id="edit-pwd">
+                    <mat-label>Nouveau mot de passe*</mat-label>
+                    <input [formControl]="pwdCtrl" autocomplete="new-password" id="password-edit" matInput
+                           [type]="hidePassword ? 'password' : 'text'">
+                    <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword"
+                            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+                      <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                    <mat-error *ngIf="pwdCtrl.dirty && pwdCtrl.hasError('minlength')">Minimum 8 caractères
+                    </mat-error>
+                    <mat-error *ngIf="pwdCtrl.dirty && pwdCtrl.hasError('required')">Le mot de passe est
+                      obligatoire
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <mat-form-field appearance="outline" class="w-50 ml-5" id="edit-confirm-pwd">
+                    <mat-label>Confirmation*</mat-label>
+                    <input [formControl]="confirmPwdCtrl" id="confirm-password-sign-up" matInput type="password"
+                           [type]="hideConfirmPassword ? 'password' : 'text'">
+                    <button mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword"
+                            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPassword">
+                      <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                    <mat-error *ngIf="confirmPwdCtrl.dirty && confirmPwdCtrl.hasError('required')">La confirmation
+                      de mot de passe est obligatoire
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <mat-error
+                *ngIf="confirmPwdCtrl.dirty && passwordForm.hasError('eqValidatorErr') ">
+                Les mots de passe ne
+                correspondent pas
+              </mat-error>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+        <div class="row d-flex justify-content-center mt-2">
+          <button
+            [disabled]="!isFormValid || !isDisabled()"
+            class="border-primary mx-2"
+            color="primary"
+            id="update-user-button"
+            mat-stroked-button
+            type="submit"
+          >
+            Enregister
+          </button>
+
+          <button
+            class="border-warn mx-2"
+            color="warn"
+            id="cancel-user-button"
+            mat-stroked-button
+            type="submit"
+            [routerLink]="['/profile']"
+          >
+            {{!isDisabled() ? 'Retour' : 'Annuler'}}
+          </button>
+
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

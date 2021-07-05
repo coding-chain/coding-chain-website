@@ -1,40 +1,68 @@
 @import "~bootstrap/scss/bootstrap";
+@import '~quill/dist/quill.core.css';
+@import '~quill/dist/quill.bubble.css';
+@import '~quill/dist/quill.snow.css';
+@import "assets/light-theme";
+@import "assets/dark-theme";
+@import "assets/theme-color";
 
-// Custom Theming for Angular Material
-// For more information: https://material.angular.io/guide/theming
-@import '~@angular/material/theming';
-// Plus imports for other components in your app.
 
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
-@include mat-core();
+.light-theme {
+  @include angular-material-theme($light-theme);
+  @include theme-color($light-theme);
+}
 
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue. Available color palettes: https://material.io/design/color/
-$coding-chain-website-primary: mat-palette($mat-indigo);
-$coding-chain-website-accent: mat-palette($mat-pink, A200, A100, A400);
+.dark-theme {
+  @include angular-material-theme($dark-theme);
+  @include theme-color($dark-theme);
+}
+html, body {
+  height: 100%;
+}
 
-// The warn palette is optional (defaults to red).
-$coding-chain-website-warn: mat-palette($mat-red);
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
-// Create the theme object. A theme consists of configurations for individual
-// theming systems such as "color" or "typography".
-$coding-chain-website-theme: mat-light-theme((
-  color: (
-    primary: $coding-chain-website-primary,
-    accent: $coding-chain-website-accent,
-    warn: $coding-chain-website-warn,
-  )
-));
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
 
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
-@include angular-material-theme($coding-chain-website-theme);
+.drag-place-holder {
+  padding: 5px;
+  border: solid 1px #ccc;
+  min-height: 60px;
+  border-radius: 4px;
+  overflow: hidden;
+}
 
-/* You can add global styles to this file, and also import other style files */
+.hint-error{
+  font-size: $small-font-size;
+}
+.rotate-l90 {
+  transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.rotate-r90 {
+  transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+
+.mat-expansion-panel-content > .mat-expansion-panel-body {
+  padding: 5px !important;
+}
+
+.mat-checkbox-my-0 > .mat-checkbox-layout {
+  margin-top: 0;
+  margin-bottom: 0;
+}

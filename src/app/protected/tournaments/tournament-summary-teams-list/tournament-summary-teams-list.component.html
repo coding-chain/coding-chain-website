@@ -1,0 +1,66 @@
+<mat-card class="w-100 h-100" [ngStyle]="{ backgroundColor: colors.primary, color: 'white'}">
+  <div class="col  h-100" #card>
+    <div class="row d-flex justify-content-center">
+      <h2>Les équipes du tournois</h2>
+    </div>
+
+    <div *ngIf="teams.length">
+      <div class="row mb-2 d-flex align-items-center mx-1">
+        <div class="col-6 px-0">
+          <span><b>Nom de l'équipe</b></span>
+        </div>
+
+        <div class="col-6">
+          <div class="row d-flex align-items-center">
+            <div class="col-6">
+              <div class="row justify-content-center d-flex align-items-center">
+                <span><b>Score</b></span>
+                <button mat-icon-button matSuffix (click)="sortByScore()">
+                  <mat-icon>unfold_more</mat-icon>
+                </button>
+              </div>
+            </div>
+            <div class="col-6">
+
+              <div class="col text-center">
+                <span><b>{{hasFinishedFilterLabel}}</b></span>
+              </div>
+              <div class="col">
+                <mat-radio-group [formControl]="hasFinishedCtrl" class="d-flex justify-content-center">
+                  <mat-radio-button [value]="null" matTooltip="Tout" class="mx-1">
+                  </mat-radio-button>
+                  <mat-radio-button [value]="true" matTooltip="Terminé" class="mx-1">
+                  </mat-radio-button>
+                  <mat-radio-button [value]="false" matTooltip="En cours" class="mx-1">
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div #scroll [ngStyle]="{ borderRadius: '4px', height: scrollHeight}">
+        <cdk-virtual-scroll-viewport
+          itemSize="50"
+          class=" w-100 h-100"
+        >
+          <div *cdkVirtualFor="let team of teams">
+            <app-tournament-summary-team [team]="team"></app-tournament-summary-team>
+          </div>
+        </cdk-virtual-scroll-viewport>
+      </div>
+      <div #paginator class="pt-2">
+        <app-paged-list [cursor]="teamsCursor"></app-paged-list>
+
+      </div>
+    </div>
+    <div *ngIf="!teams?.length">
+      <div
+        class="w-100  h-100 d-flex justify-content-center align-items-center"
+      >
+        Aucune équipe ne participe au tournois
+      </div>
+    </div>
+  </div>
+
+</mat-card>

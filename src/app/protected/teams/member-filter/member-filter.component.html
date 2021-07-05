@@ -1,0 +1,7 @@
+<mat-form-field appearance="outline" class="w-100 mx-auto" id="search-teammates">
+  <mat-label>Chercher un nouveau coéquipier</mat-label>
+  <input [formControl]="usernameCtrl" id="search-teammates-input" matInput type="text">
+  <button mat-icon-button (click)="searchUsers()" matSuffix>
+    <mat-icon aria-hidden="false" aria-label="Search">search</mat-icon>
+  </button>
+</mat-form-field>

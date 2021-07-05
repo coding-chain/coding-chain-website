@@ -1,0 +1,12 @@
+<div class="row ">
+  <div class="col-11 mr-0 pr-0">
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a [routerLink]="['list']" class="nav-link" data-toggle="tab" routerLinkActive="active">Lister les tournois</a>
+      </li>
+      <li *ngIf="canCreateTournament" class="nav-item">
+        <a [routerLink]="['create']" class="nav-link" data-toggle="tab" routerLinkActive="active">Créer un tournois</a>
+      </li>
+    </ul>
+  </div>
+</div>

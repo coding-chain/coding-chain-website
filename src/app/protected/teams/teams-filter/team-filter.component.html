@@ -1,0 +1,20 @@
+<div class="row align-items-center">
+
+  <div class="col-3">
+    <app-sorted-input>
+      <mat-form-field appearance="outline" sortedInput>
+        <mat-label>Nom de l'équipe</mat-label>
+        <input [formControl]="nameCtrl" matInput type="text">
+      </mat-form-field>
+      <app-sort-by-arrows (orderChanged)="nameOrder = $event" [order]="nameOrder" sort></app-sort-by-arrows>
+    </app-sorted-input>
+  </div>
+
+  <mat-slide-toggle [formControl]="myTeamCtrl"
+                    class="col-2">
+    {{myTeamCtrl.value ? "Mes équipe" : "Toutes les équipes"}}
+  </mat-slide-toggle>
+  <div class="col-2 text-center">
+    <button (click)="updateForm()" class="ml-2" id="filter-button" mat-stroked-button>Filtrer</button>
+  </div>
+</div>

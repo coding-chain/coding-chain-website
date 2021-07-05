@@ -1,24 +1,43 @@
 <nav backgroundColor="primary" mat-tab-nav-bar>
   <div class="w-75">
-
+    <a [routerLink]="['/home']" class="nav-link" data-toggle="tab" id="homeLink" mat-tab-link routerLinkActive="active">Accueil</a>
     <ng-container *ngIf="user$ | async as user">
-      <!--TODO Admin routes-->
+      <a [routerLink]="['/tournaments']" class="nav-link" data-toggle="tab" id="tournmanentsLink" mat-tab-link
+         routerLinkActive="active">Tournois</a>
+      <a *ngIf="user.isAdmin() || user.isCreator()" [routerLink]="['/steps']" class="nav-link" data-toggle="tab"
+         id="stepsLink" mat-tab-link
+         routerLinkActive="active">Etapes</a>
+      <a class="nav-link" data-toggle="tab" id="teamLink" mat-tab-link [routerLink]="['/teams']"
+         routerLinkActive="active">Equipes</a>
+      <a *ngIf="user.isAdmin()" class="nav-link" data-toggle="tab" id="plagiarismLink" mat-tab-link
+         [routerLink]="['/plagiarism']"
+         routerLinkActive="active">Plagiats</a>
+      <a *ngIf="user.isAdmin()" class="nav-link" data-toggle="tab" id="usersLink" mat-tab-link [routerLink]="['/users']"
+         routerLinkActive="active">Utilisateurs</a>
     </ng-container>
-    <a *ngIf="!(user$ | async) as user" class="nav-link" data-toggle="tab" id="loginLink" mat-tab-link
-       [routerLink]="['/login']" routerLinkActive="active">Connexion</a>
+    <a *ngIf="!(user$ | async) as user" [routerLink]="['/login']" class="nav-link" data-toggle="tab" id="loginLink"
+       mat-tab-link routerLinkActive="active">Connexion</a>
 
-    <a class="nav-link" data-toggle="tab" id="homeLink" mat-tab-link [routerLink]="['/home']" routerLinkActive="active">Accueil</a>
-    <a class="nav-link" data-toggle="tab" id="contactLink" mat-tab-link [routerLink]="['/contact']"
+    <a [routerLink]="['/contact']" class="nav-link" data-toggle="tab" id="contactLink" mat-tab-link
        routerLinkActive="active">Contact</a>
   </div>
-  <div class="d-flex w-25 justify-content-end">
+  <div class="d-flex w-25 justify-content-end align-items-center">
+    <mat-slide-toggle [formControl]="toggleThemeCtrl" class="mx-2">
+    </mat-slide-toggle>
+    <mat-icon *ngIf="toggleThemeCtrl.value" class="mx-2" color="accent">
+      brightness_2
+    </mat-icon>
+    <mat-icon *ngIf="!toggleThemeCtrl.value" class="mx-2" color="accent">
+      brightness_5
+    </mat-icon>
+
     <ng-container *ngIf="user$ | async as user">
       <button [matMenuTriggerFor]="userMenu" aria-label="Profile" mat-button>
         {{user.username}}
         <mat-icon>account_circle</mat-icon>
       </button>
       <mat-menu #userMenu="matMenu">
-        <button [routerLink]="['profiles',user.id]" mat-menu-item>
+        <button [routerLink]="['/profile']" mat-menu-item>
           <mat-icon>portrait</mat-icon>
           <span>Profile</span>
         </button>
@@ -30,3 +49,4 @@
     </ng-container>
   </div>
 </nav>
+

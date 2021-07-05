@@ -6,7 +6,6 @@
  * on performance if an error is thrown.
  */
 import 'zone.js/dist/zone-error';
-import * as _ from 'lodash';
 import {BaseEnvironment} from './base-environment'; // Included with Angular CLI.
 
 // This file can be replaced during build by using the `fileReplacements` array.

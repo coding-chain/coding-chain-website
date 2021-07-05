@@ -1,0 +1,7 @@
+<ng-container *ngIf="(languages$ | async) as languages">
+  <app-tournaments-edit-form (addExistingStep)="onExistingStepAdded($event)" (tournamentDelete)="onTournamentDelete()"
+                             (tournamentSave)="onTournamentSave($event)" *ngIf="(tournament$ | async) as tournament"
+                             [languages]="languages"
+                             [tournament]="tournament"></app-tournaments-edit-form>
+</ng-container>
+

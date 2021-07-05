@@ -1,12 +1,11 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {LoginUser} from '../../../shared/models/users/login-user';
 
 @Component({
   selector: 'app-login-form',
   templateUrl: './login-form.component.html',
-  styles: [
-  ]
+  styles: []
 })
 export class LoginFormComponent implements OnInit {
 
@@ -21,7 +20,7 @@ export class LoginFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.emailCtrl = this.formBuilder.control('', [ Validators.required, Validators.email]);
+    this.emailCtrl = this.formBuilder.control('', [Validators.required, Validators.email]);
     this.userPwdCtrl = this.formBuilder.control('', Validators.required);
     this.rememberMeCtrl = this.formBuilder.control(false);
     this.userLoginForm = this.formBuilder.group({

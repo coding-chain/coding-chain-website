@@ -1,0 +1,12 @@
+<div class="d-flex" #carousel>
+  <ngb-carousel [interval]="0" [pauseOnHover]="true"
+                [showNavigationArrows]="false" [showNavigationIndicators]="true" class="col" (slide)="onCarouselReady()" >
+    <ng-template *ngFor="let tournament of tournaments; let i=index" ngbSlide>
+      <div class="col h-100">
+        <app-home-tournament-item [tournament]="tournament" [theme]="_theme" (tournamentLeave)="onTournamentLeft($event)"
+                                  [currentUser]="currentUser"></app-home-tournament-item>
+      </div>
+    </ng-template>
+  </ngb-carousel>
+
+</div>
