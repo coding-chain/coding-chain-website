@@ -34,6 +34,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
+            file: Dockerfile.cloud
             context: .
             push: true
             tags: codingchain.azurecr.io/coding-chain-website:latest
