@@ -1,7 +1,7 @@
 FROM  node:alpine as builder
 WORKDIR /app
 COPY . .
-RUN npm ci  --debug && npm run build-prod
+RUN npm ci  --debug && npm run build-docker-local
 
 FROM nginx:1.17.5
 COPY default.conf.template /etc/nginx/conf.d/default.conf.template

@@ -12,6 +12,8 @@ import {AppRoutingModule} from './app-routing.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 registerLocaleData(localeFr, 'fr');
+const baseHref = document.getElementById('base-href').getAttribute('href');
+console.log('HREF', baseHref);
 
 @NgModule({
   declarations: [
