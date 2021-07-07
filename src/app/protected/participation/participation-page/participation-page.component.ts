@@ -184,6 +184,9 @@ export class ParticipationPageComponent implements OnInit, OnDestroy {
       _.remove(this.users, u => u.id === userId);
       this.users = [...this.users];
       this.currentUser.updateElevateRight(this.users);
+      if (userId === this.currentUser.id){
+        Swal.fire(SwalUtils.infoOptions('Vous avez été supprimé de l\'équipe.')).then(closed => this._router.navigate(['/home']));
+      }
     });
   }
 

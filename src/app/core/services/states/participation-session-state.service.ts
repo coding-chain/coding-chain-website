@@ -81,6 +81,10 @@ export class ParticipationSessionStateService {
           .withUrl(this.hubUrl, {accessTokenFactory: () => token.token})
           .build();
         this.hubConnection.serverTimeoutInMilliseconds = this.connectionTimeout;
+        this.hubConnection.onclose(error => {
+          console.error(error);
+          this.hubConnection.start();
+        });
         return from(this.hubConnection.start());
       })
     );
